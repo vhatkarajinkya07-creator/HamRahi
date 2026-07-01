@@ -1,3 +1,7 @@
+//don't copy paste anything here -AJINKYA
+
+
+
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "./components/Navbar/Navbar";

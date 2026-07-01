@@ -1,3 +1,5 @@
+//       don't change any thing in this until asked to AJINKYA
+
 import { useEffect, useRef } from "react";
 import * as Cesium from "cesium";
 import { destinations, CATEGORY_THEME } from "../../data/destinations";
@@ -15,73 +17,77 @@ export default function GlobeSection() {
   const viewerRef = useCesiumViewer(cesiumContainer, {
     onReady: (viewer) => {
       viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(78, 15, 1.8e7),
+        destination: Cesium.Cartesian3.fromDegrees(78.9629, 22.5937, 4500000),
       });
 
-      // One labeled marker per destination, always visible on the globe.
+      viewer.scene.globe.depthTestAgainstTerrain = true;
+      viewer.scene.globe.enableLighting = true;
+      viewer.scene.globe.showGroundAtmosphere = true;
+
       markerEntitiesRef.current = destinations.map((dest, index) => {
         const isActive = index === 0;
+
         return viewer.entities.add({
           position: Cesium.Cartesian3.fromDegrees(dest.lon, dest.lat),
           point: {
             pixelSize: isActive ? 12 : 8,
             color: isActive
-              ? Cesium.Color.fromCssColorString("#ff6a4d")
-              : Cesium.Color.WHITE.withAlpha(0.85),
-            outlineColor: Cesium.Color.fromCssColorString("#1c1b1b"),
+              ? Cesium.Color.WHITE
+              : Cesium.Color.WHITE.withAlpha(0.78),
+            outlineColor: Cesium.Color.BLACK.withAlpha(0.5),
             outlineWidth: 1.5,
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-            disableDepthTestDistance: Number.POSITIVE_INFINITY,
           },
           label: {
             text: dest.name,
-            font: isActive ? "600 15px 'Plus Jakarta Sans', sans-serif" : "500 12px 'Inter', sans-serif",
+            font: isActive
+              ? "600 15px 'Plus Jakarta Sans', sans-serif"
+              : "500 12px 'Inter', sans-serif",
             fillColor: Cesium.Color.WHITE,
-            outlineColor: Cesium.Color.fromCssColorString("#1c1b1b"),
+            outlineColor: Cesium.Color.BLACK.withAlpha(0.72),
             outlineWidth: 3,
             style: Cesium.LabelStyle.FILL_AND_OUTLINE,
             verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-            pixelOffset: new Cesium.Cartesian2(0, -14),
+            pixelOffset: new Cesium.Cartesian2(0, -16),
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-            disableDepthTestDistance: Number.POSITIVE_INFINITY,
             showBackground: true,
-            backgroundColor: Cesium.Color.fromCssColorString("#0A0A0A").withAlpha(
-              isActive ? 0.55 : 0.35
+            backgroundColor: Cesium.Color.fromCssColorString("#07111f").withAlpha(
+              isActive ? 0.62 : 0.42
             ),
-            backgroundPadding: new Cesium.Cartesian2(6, 3),
+            backgroundPadding: new Cesium.Cartesian2(7, 4),
+            distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
+              0,
+              9000000
+            ),
           },
         });
       });
 
-      // Extra glow pulse layered on top of the active marker.
       glowEntityRef.current = viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(
           destinations[0].lon,
           destinations[0].lat
         ),
         point: {
-          pixelSize: 26,
-          color: Cesium.Color.fromCssColorString("#ff6a4d").withAlpha(0.25),
+          pixelSize: 28,
+          color: Cesium.Color.WHITE.withAlpha(0.2),
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          disableDepthTestDistance: Number.POSITIVE_INFINITY,
         },
       });
     },
   });
 
-  // Fly the globe camera + move the glow pulse + re-style markers whenever
-  // the active destination card changes — this is the "pulled from Earth"
-  // moment.
   useEffect(() => {
     const viewer = viewerRef.current;
     if (!viewer || viewer.isDestroyed()) return;
+
     const dest = destinations[activeIndex];
 
     viewer.camera.flyTo({
-      destination: Cesium.Cartesian3.fromDegrees(dest.lon, dest.lat, 40000),
-      duration: 3,
-      maximumHeight: 8_000_000, // arcs the camera way up mid-flight before descending
-      pitchAdjustHeight: 50_000, // levels off to look down near the end, avoids clipping the ground
+      destination: Cesium.Cartesian3.fromDegrees(dest.lon, dest.lat, 8000),
+      duration: 4,
+      maximumHeight: 8000000,
+      pitchAdjustHeight: 50000,
       easingFunction: Cesium.EasingFunction.QUADRATIC_IN_OUT,
     });
 
@@ -93,16 +99,18 @@ export default function GlobeSection() {
 
     markerEntitiesRef.current.forEach((entity, index) => {
       const isActive = index === activeIndex;
+
       entity.point.pixelSize = isActive ? 12 : 8;
       entity.point.color = isActive
-        ? Cesium.Color.fromCssColorString("#ff6a4d")
-        : Cesium.Color.WHITE.withAlpha(0.85);
+        ? Cesium.Color.WHITE
+        : Cesium.Color.WHITE.withAlpha(0.78);
+
       entity.label.font = isActive
         ? "600 15px 'Plus Jakarta Sans', sans-serif"
         : "500 12px 'Inter', sans-serif";
       entity.label.backgroundColor = Cesium.Color.fromCssColorString(
-        "#0A0A0A"
-      ).withAlpha(isActive ? 0.55 : 0.35);
+        "#07111f"
+      ).withAlpha(isActive ? 0.62 : 0.42);
     });
   }, [activeIndex, viewerRef]);
 
@@ -111,29 +119,31 @@ export default function GlobeSection() {
   return (
     <section
       id="destinations"
-      className={`relative transition-[background] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeTheme}`}
+      className={`relative bg-black transition-[background] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeTheme}`}
       style={{
         background:
-          "linear-gradient(180deg, var(--color-cream) 0%, color-mix(in srgb, var(--theme-primary) 10%, var(--color-cream)) 100%)",
+          "linear-gradient(180deg, #050505 0%, #0a0a0a 46%, #000000 100%)",
       }}
     >
       <div
         className="absolute inset-0 pointer-events-none transition-[background] duration-[1200ms] ease-linear"
         style={{
           background:
-            "radial-gradient(circle at 75% 30%, color-mix(in srgb, var(--theme-primary) 24%, transparent) 0%, transparent 60%)",
+            "radial-gradient(circle at 25% 45%, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.42) 34%, transparent 66%)",
         }}
         aria-hidden="true"
       />
+
       <div
         className="sticky top-0 h-screen w-full -mb-[100vh] z-0 opacity-90 [mask-image:radial-gradient(circle_at_68%_45%,black_42%,transparent_72%)] max-[900px]:[mask-image:none] max-[900px]:opacity-35"
         ref={cesiumContainer}
       />
+
       <div
-        className="sticky top-0 h-screen -mb-[100vh] pointer-events-none z-[1] [mix-blend-mode:screen] transition-[background] duration-[1200ms] ease-linear max-[900px]:opacity-35"
+        className="sticky top-0 h-screen -mb-[100vh] pointer-events-none z-[1] transition-[background] duration-[1200ms] ease-linear max-[900px]:opacity-35"
         style={{
           background:
-            "radial-gradient(circle at 68% 45%, color-mix(in srgb, var(--theme-glow) 35%, transparent) 0%, transparent 55%)",
+            "radial-gradient(circle at 24% 50%, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.38) 34%, transparent 62%)",
         }}
         aria-hidden="true"
       />

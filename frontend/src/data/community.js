@@ -1,4 +1,7 @@
-// Static demo data for traveler-generated content (Pinterest + Instagram style)
+
+
+// aabhi sab kuch static last mai backend ko call kr kee save kr lenge iss file se (don't change )-AJINKYA
+
 
 export const communityPosts = [
   {

@@ -1,3 +1,8 @@
+
+
+//under building don't not touch the file -AJINKYA 
+
+
 import { useParams, Link, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getDestinationById, CATEGORY_THEME } from "../../data/destinations";

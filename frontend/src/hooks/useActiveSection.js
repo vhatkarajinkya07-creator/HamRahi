@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState } from "react";
 
-/**
- * Observes a list of section refs and reports which one is currently
- * most visible in the viewport. Used to sync the globe camera + theme
- * to whichever destination the user has scrolled to.
- */
+//dont't touch -AJINKYA
+
+
+import { useEffect, useRef, useState } from "react";
 export function useActiveSection(count) {
   const [activeIndex, setActiveIndex] = useState(0);
   const refs = useRef([]);

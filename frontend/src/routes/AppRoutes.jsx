@@ -1,3 +1,8 @@
+
+//sirf aapna aapna path dalna dusro ka mat change mat kr dena aur ... sidha AI se copy paste mat krna orginal code ko change mat krna
+//                                                                                                  -AJINKYA VHATKAR
+
+
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Destination from "../pages/Destination/Destination";

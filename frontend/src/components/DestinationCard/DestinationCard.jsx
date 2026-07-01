@@ -4,7 +4,7 @@ import { cardEmerge, fadeUp, staggerContainer } from "../../animations/variants"
 
 function formatCoord(value, posLabel, negLabel) {
   const dir = value >= 0 ? posLabel : negLabel;
-  return `${Math.abs(value).toFixed(2)}° ${dir}`;
+  return `${Math.abs(value).toFixed(2)} deg ${dir}`;
 }
 
 export default function DestinationCard({ destination, isActive }) {
@@ -25,88 +25,133 @@ export default function DestinationCard({ destination, isActive }) {
   } = destination;
 
   return (
-    <motion.div
-      className="grid grid-cols-[0.9fr_1.1fr] max-[900px]:grid-cols-1 max-w-[1100px] mx-auto w-full rounded-[var(--radius-lg)] overflow-hidden shadow-[var(--shadow-soft)]"
+    <motion.article
+      className="mr-auto w-full max-w-[520px]"
       variants={cardEmerge}
       initial="hidden"
       animate={isActive ? "visible" : "hidden"}
     >
-      <div className="relative min-h-[460px] max-[900px]:min-h-[260px]">
-        <img
-          src={heroImage}
-          alt={`${name}, ${country}`}
-          loading="lazy"
-          className="w-full h-full object-cover absolute inset-0"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(16,26,51,0.05)_0%,rgba(16,26,51,0.35)_100%)]" />
-        <span className="absolute bottom-[18px] left-[18px] font-mono text-[11px] tracking-[0.06em] text-white bg-[rgba(16,26,51,0.45)] px-3 py-1.5 rounded-full backdrop-blur-[6px]">
-          {formatCoord(lat, "N", "S")} · {formatCoord(lon, "E", "W")}
-        </span>
-      </div>
-
       <motion.div
-        className="px-11 py-[46px] max-[900px]:px-6 max-[900px]:py-[30px] flex flex-col justify-center gap-1.5 bg-white/[0.55] border border-white/40 backdrop-blur-[18px]"
-        variants={staggerContainer(0.06, 0.25)}
-        initial="hidden"
-        animate={isActive ? "visible" : "hidden"}
+        className="relative isolate flex min-h-[840px] flex-col overflow-hidden rounded-2xl border border-white/12 bg-black text-white shadow-[0_34px_110px_-54px_rgba(0,0,0,1)] backdrop-blur-3xl"
+        variants={staggerContainer(0.055, 0.12)}
+        whileHover={{ y: -6, scale: 1.01 }}
+        transition={{ type: "spring", stiffness: 260, damping: 24 }}
       >
-        <motion.span
-          className="font-mono text-[13px] text-[var(--theme-primary)] tracking-[0.12em] uppercase"
-          variants={fadeUp}
-        >
-          {country}
-        </motion.span>
-        <motion.h2 className="text-[clamp(2rem,3.2vw,2.8rem)] text-ink my-1 mb-1.5" variants={fadeUp}>
-          {name}
-        </motion.h2>
-        <motion.p className="font-bold text-[var(--theme-primary)] mb-3" variants={fadeUp}>
-          {tagline}
-        </motion.p>
-        <motion.p className="text-ink-soft leading-[1.65] mb-[18px]" variants={fadeUp}>
-          {description}
-        </motion.p>
+        <div
+          className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_12%,rgba(255,255,255,0.08)_0%,transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.015)_44%,rgba(255,255,255,0.035))]"
+          aria-hidden="true"
+        />
 
-        <motion.div className="flex flex-wrap gap-2 mb-[22px]" variants={fadeUp}>
-          {tags.slice(0, 4).map((t) => (
-            <span
-              key={t}
-              className="text-xs font-semibold px-3.5 py-[7px] rounded-full text-[var(--theme-primary)] brightness-[0.85]"
-              style={{ background: "color-mix(in srgb, var(--theme-primary) 14%, white)" }}
-            >
-              {t}
-            </span>
-          ))}
-        </motion.div>
+        <div
+          className="pointer-events-none absolute inset-px -z-10 rounded-[15px] border border-white/8 bg-white/[0.025]"
+          aria-hidden="true"
+        />
 
-        <motion.div
-          className="flex gap-[26px] mb-[26px] py-[18px] border-t border-b border-[rgba(16,26,51,0.08)]"
-          variants={fadeUp}
-        >
-          <div className="flex flex-col gap-0.5">
-            <span className="font-display font-bold text-[1.1rem]">★ {rating}</span>
-            <span className="text-[11px] text-ink-soft uppercase tracking-[0.06em]">
-              {reviews.toLocaleString()} reviews
-            </span>
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <span className="font-display font-bold text-[1.1rem]">${priceFrom}</span>
-            <span className="text-[11px] text-ink-soft uppercase tracking-[0.06em]">from / trip</span>
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <span className="font-display font-bold text-[1.1rem]">{bestSeason}</span>
-            <span className="text-[11px] text-ink-soft uppercase tracking-[0.06em]">best season</span>
-          </div>
-        </motion.div>
+        <div className="relative h-[470px] overflow-hidden">
+          <img
+            src={heroImage}
+            alt={`${name}, ${country}`}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
 
-        <motion.div variants={fadeUp}>
-          <Link
-            to={`/destination/${id}`}
-            className="self-start font-body font-bold text-[15px] px-7 py-3.5 rounded-full inline-flex items-center gap-2.5 transition-transform duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-0.5 bg-[var(--grad-sunrise)] text-white shadow-[0_12px_30px_-10px_rgba(255,106,77,0.55)] hover:shadow-[0_18px_40px_-8px_rgba(255,106,77,0.65)]"
+          <div
+            className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.96)_0%,rgba(0,0,0,0.48)_48%,rgba(0,0,0,0.14)_100%)]"
+            aria-hidden="true"
+          />
+
+          <motion.div
+            className="absolute left-5 right-5 top-5 flex items-center justify-between gap-3"
+            variants={fadeUp}
           >
-            Explore {name} →
-          </Link>
-        </motion.div>
+            <span className="rounded-full border border-white/14 bg-black/45 px-3.5 py-2 text-xs font-medium uppercase text-white/84 backdrop-blur-2xl">
+              {country}
+            </span>
+
+            <span className="grid h-11 w-11 place-items-center rounded-full border border-white/14 bg-black/45 text-white/88 backdrop-blur-2xl">
+              <i className="pi pi-map-marker" aria-hidden="true" />
+            </span>
+          </motion.div>
+
+          <motion.div className="absolute inset-x-5 bottom-5" variants={fadeUp}>
+            <span className="font-mono text-[11px] text-white/58">
+              {formatCoord(lat, "N", "S")} / {formatCoord(lon, "E", "W")}
+            </span>
+
+            <h2 className="mt-3 text-5xl font-semibold leading-none text-white">
+              {name}
+            </h2>
+
+            <p className="mt-4 text-base font-medium leading-7 text-white/76">
+              {tagline}
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="flex flex-1 flex-col px-6 pb-6 pt-6">
+          <motion.div className="flex flex-wrap gap-2" variants={fadeUp}>
+            {tags.slice(0, 4).map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-white/12 bg-white/[0.07] px-3.5 py-2 text-xs font-semibold text-white/72 backdrop-blur-xl"
+              >
+                {tag}
+              </span>
+            ))}
+          </motion.div>
+
+          <motion.p
+            className="mt-6 text-base leading-8 text-white/64"
+            variants={fadeUp}
+          >
+            {description}
+          </motion.p>
+
+          <motion.div className="mt-7 grid grid-cols-3 gap-3" variants={fadeUp}>
+            <div className="rounded-xl border border-white/12 bg-white/[0.06] p-4 backdrop-blur-xl">
+              <span className="flex items-center gap-1.5 text-base font-semibold text-white">
+                <i className="pi pi-star-fill text-[0.7rem]" aria-hidden="true" />
+                {rating}
+              </span>
+              <span className="mt-1 block text-[10px] uppercase text-white/42">
+                rating
+              </span>
+            </div>
+
+            <div className="rounded-xl border border-white/12 bg-white/[0.06] p-4 backdrop-blur-xl">
+              <span className="text-base font-semibold text-white">
+                ${priceFrom}
+              </span>
+              <span className="mt-1 block text-[10px] uppercase text-white/42">
+                from
+              </span>
+            </div>
+
+            <div className="rounded-xl border border-white/12 bg-white/[0.06] p-4 backdrop-blur-xl">
+              <span className="text-base font-semibold text-white">
+                {bestSeason}
+              </span>
+              <span className="mt-1 block text-[10px] uppercase text-white/42">
+                season
+              </span>
+            </div>
+          </motion.div>
+
+          <motion.div className="mt-5 text-sm text-white/46" variants={fadeUp}>
+            {reviews.toLocaleString()} traveler reviews
+          </motion.div>
+
+          <motion.div className="mt-auto pt-6" variants={fadeUp}>
+            <Link
+              to={`/destination/${id}`}
+              className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-semibold text-black transition-all duration-300 hover:bg-white/88 active:scale-[0.98]"
+            >
+              Explore {name}
+              <i className="pi pi-arrow-right text-xs" aria-hidden="true" />
+            </Link>
+          </motion.div>
+        </div>
       </motion.div>
-    </motion.div>
+    </motion.article>
   );
 }
