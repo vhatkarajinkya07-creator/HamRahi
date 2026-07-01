@@ -30,7 +30,7 @@ export function useCesiumViewer(containerRef, options = {}) {
     viewer.scene.globe.depthTestAgainstTerrain = true;
     viewer.scene.globe.enableLighting = true;
     viewer.scene.globe.showGroundAtmosphere = true;
-    viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
+    viewer.scene.backgroundColor = Cesium.Color.fromCssColorString("#111");
     viewer.clock.shouldAnimate = true;
 
     viewerRef.current = viewer;
