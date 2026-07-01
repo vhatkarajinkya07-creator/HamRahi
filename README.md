@@ -20,7 +20,7 @@ Step 2
 Repository clone kar lena
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/vhatkarajinkya07-creator/HamRahi
 ```
 
 Step 3
