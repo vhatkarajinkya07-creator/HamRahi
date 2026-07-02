@@ -4,7 +4,7 @@ Jis page par jo kaam kar raha hai us page ko add karke apna naam likh dena
 
 ### Assigned Pages
 
-Home -> AJINKYA
+Home -> AJINKYA 
 
 Explore -> AJINKYA
 
