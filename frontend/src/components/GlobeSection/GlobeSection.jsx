@@ -1,18 +1,24 @@
 //       don't change any thing in this until asked to AJINKYA
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Cesium from "cesium";
 import { destinations, CATEGORY_THEME } from "../../data/destinations";
 import { useCesiumViewer } from "../../hooks/useCesiumViewer";
 import { useActiveSection } from "../../hooks/useActiveSection";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import DestinationCard from "../DestinationCard/DestinationCard";
-import Sidebar from "../Sidebar/Sidebar";
 
 export default function GlobeSection() {
   const cesiumContainer = useRef(null);
   const glowEntityRef = useRef(null);
   const markerEntitiesRef = useRef([]);
+  const cinematicTimeoutRef = useRef(null);
   const { activeIndex, registerRef } = useActiveSection(destinations.length);
+  const isMobile = useIsMobile(900);
+
+  // Tracks whether the camera has finished "arriving" at the active
+  // destination — gates the CTA reveal on DestinationCard.
+  const [isArrived, setIsArrived] = useState(isMobile);
 
   const viewerRef = useCesiumViewer(cesiumContainer, {
     onReady: (viewer) => {
@@ -81,15 +87,12 @@ export default function GlobeSection() {
     const viewer = viewerRef.current;
     if (!viewer || viewer.isDestroyed()) return;
 
+    let cancelled = false;
     const dest = destinations[activeIndex];
 
-    viewer.camera.flyTo({
-      destination: Cesium.Cartesian3.fromDegrees(dest.lon, dest.lat, 8000),
-      duration: 4,
-      maximumHeight: 8000000,
-      pitchAdjustHeight: 50000,
-      easingFunction: Cesium.EasingFunction.QUADRATIC_IN_OUT,
-    });
+    // Reset arrival state: mobile "arrives" instantly (no cinematic zoom),
+    // desktop stays hidden until the second flight completes.
+    setIsArrived(isMobile);
 
     if (glowEntityRef.current) {
       glowEntityRef.current.position = new Cesium.ConstantPositionProperty(
@@ -112,7 +115,59 @@ export default function GlobeSection() {
         "#07111f"
       ).withAlpha(isActive ? 0.62 : 0.42);
     });
-  }, [activeIndex, viewerRef]);
+
+    if (isMobile) {
+      // Mobile: keep it light. One flight, no cinematic street-entry.
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(dest.lon, dest.lat, 20000),
+        duration: 2,
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    // Desktop — stage 1: the existing wide establishing flyTo.
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(dest.lon, dest.lat, 8000),
+      duration: 4,
+      maximumHeight: 8000000,
+      pitchAdjustHeight: 50000,
+      easingFunction: Cesium.EasingFunction.QUADRATIC_IN_OUT,
+      complete: () => {
+        if (cancelled || viewer.isDestroyed()) return;
+
+        // brief pause before the "entering the city" push-in
+        cinematicTimeoutRef.current = setTimeout(() => {
+          if (cancelled || viewer.isDestroyed()) return;
+
+          // Desktop — stage 2: cinematic close-in. Zooms low, tilts down,
+          // rotates slightly — the "arriving at street level" feeling.
+          viewer.camera.flyTo({
+            destination: Cesium.Cartesian3.fromDegrees(dest.lon, dest.lat, 350),
+            orientation: {
+              heading: Cesium.Math.toRadians(38),
+              pitch: Cesium.Math.toRadians(-26),
+              roll: 0,
+            },
+            duration: 3.6,
+            easingFunction: Cesium.EasingFunction.QUINTIC_IN_OUT,
+            complete: () => {
+              if (!cancelled) setIsArrived(true);
+            },
+          });
+        }, 350);
+      },
+    });
+
+    return () => {
+      cancelled = true;
+      if (cinematicTimeoutRef.current) {
+        clearTimeout(cinematicTimeoutRef.current);
+        cinematicTimeoutRef.current = null;
+      }
+    };
+  }, [activeIndex, viewerRef, isMobile]);
 
   const activeTheme = CATEGORY_THEME[destinations[activeIndex].themeCategory];
 
@@ -148,16 +203,6 @@ export default function GlobeSection() {
         aria-hidden="true"
       />
 
-      <Sidebar
-        items={destinations}
-        activeIndex={activeIndex}
-        onSelect={(index) =>
-          document
-            .querySelector(`.destination-section[data-index="${index}"]`)
-            ?.scrollIntoView({ behavior: "smooth", block: "start" })
-        }
-      />
-
       <div className="relative z-[2]">
         {destinations.map((dest, index) => (
           <div
@@ -170,6 +215,7 @@ export default function GlobeSection() {
               destination={dest}
               isActive={index === activeIndex}
               index={index}
+              arrived={index === activeIndex ? isArrived : false}
             />
           </div>
         ))}

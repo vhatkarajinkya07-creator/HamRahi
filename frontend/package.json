@@ -10,14 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@primeuix/themes": "^2.0.3",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "@tailwindcss/vite": "^4.3.2",
     "cesium": "^1.142.0",
     "framer-motion": "^12.42.2",
+    "motion": "^12.42.2",
     "primeicons": "^7.0.0",
+    "primereact": "^10.9.8",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.1",
     "tailwindcss": "^4.3.2",
+    "three": "^0.185.1",
     "vite-plugin-cesium": "^1.2.23"
   },
   "devDependencies": {

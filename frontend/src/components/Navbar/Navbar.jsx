@@ -1,8 +1,4 @@
-
-
-//       don't change any thing in this until asked to AJINKYA  
-
-
+// don't change any thing in this until asked to AJINKYA
 
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
@@ -11,8 +7,8 @@ import "primeicons/primeicons.css";
 import { useScrollPosition } from "../../hooks/useScrollPosition";
 
 const links = [
-  { to: "/", label: "Home" },
-  { to: "/#destinations", label: "Explore" },
+  { to: "/", label: "Home", icon: "pi-home" },
+  { to: "/#destinations", label: "Explore", icon: "pi-compass" },
 ];
 
 export default function Navbar() {
@@ -20,53 +16,71 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const solid = scrollY > 50;
 
-  // Lock body scroll while the drawer is open
   useEffect(() => {
     document.body.classList.toggle("overflow-hidden", menuOpen);
+
     return () => document.body.classList.remove("overflow-hidden");
   }, [menuOpen]);
 
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, []);
+
   const closeDrawer = () => setMenuOpen(false);
+  const toggleDrawer = () => setMenuOpen((open) => !open);
 
   return (
     <>
       <motion.header
-        className={`fixed top-0 w-full z-50 backdrop-blur-[14px] border-b border-white/10 transition-all duration-500 ease-in-out ${
-          solid ? "bg-[rgba(10,10,10,0.85)] shadow-xl" : "bg-[rgba(10,10,10,0.4)]"
+        className={`fixed top-0 z-50 w-full border-b border-white/10 backdrop-blur-[14px] transition-all duration-500 ease-in-out ${
+          solid
+            ? "bg-[rgba(10,10,10,0.85)] shadow-xl"
+            : "bg-[rgba(10,10,10,0.4)]"
         }`}
         initial={{ y: -84 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="flex justify-between items-center px-6 md:px-16 py-4 max-w-[1280px] mx-auto">
-          {/* Leading: Menu + Brand */}
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 md:px-16">
           <div className="flex items-center gap-4">
             <button
-              className="flex items-center justify-center text-white hover:opacity-70 transition-opacity cursor-pointer active:scale-95 duration-500"
-              onClick={() => setMenuOpen(true)}
-              aria-label="Open menu"
+              type="button"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-white transition-all duration-300 hover:bg-white/10 active:scale-95 md:hidden"
+              onClick={toggleDrawer}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation-drawer"
             >
-              <i className="pi pi-bars text-[22px]" />
+              <i className={`pi ${menuOpen ? "pi-times" : "pi-bars"} text-[22px]`} />
             </button>
+
             <Link
               to="/"
-              className="font-bold tracking-tighter text-white text-[24px] md:text-[32px]"
+              onClick={closeDrawer}
+              className="text-[24px] font-bold tracking-tighter text-white md:text-[32px]"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               HUMRAHI
             </Link>
           </div>
 
-          {/* Center Nav Links */}
-          <nav className="hidden md:flex items-center space-x-20">
+          <nav className="hidden items-center space-x-20 md:flex">
             {links.map((l) => (
               <NavLink
                 key={l.label}
                 to={l.to}
                 className={({ isActive }) =>
-                  `font-medium transition-colors duration-300 pb-1 ${
+                  `pb-1 font-medium transition-colors duration-300 ${
                     isActive
-                      ? "text-white font-bold border-b-2 border-white"
+                      ? "border-b-2 border-white font-bold text-white"
                       : "text-white/60 hover:text-white"
                   }`
                 }
@@ -76,11 +90,11 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Trailing Action */}
           <div className="flex items-center gap-4">
             <Link
               to="/login"
-              className="font-medium text-[14px] text-white hover:opacity-70 transition-opacity duration-300 active:scale-95"
+              onClick={closeDrawer}
+              className="text-[14px] font-medium text-white transition-opacity duration-300 hover:opacity-70 active:scale-95"
             >
               Login
             </Link>
@@ -88,11 +102,10 @@ export default function Navbar() {
         </div>
       </motion.header>
 
-      {/* Drawer Overlay */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[55]"
+            className="fixed inset-0 z-[55] bg-black/50 backdrop-blur-sm md:hidden"
             onClick={closeDrawer}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -102,20 +115,22 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Navigation Drawer */}
       <AnimatePresence>
         {menuOpen && (
           <motion.aside
-            className="fixed inset-y-0 left-0 z-[60] h-full w-[280px] bg-[#0A0A0A] backdrop-blur-[20px] shadow-xl border-r border-white/10 flex flex-col p-6"
+            id="mobile-navigation-drawer"
+            className="fixed inset-y-0 left-0 z-[60] flex h-full w-[280px] flex-col border-r border-white/10 bg-[#0A0A0A] p-6 shadow-xl backdrop-blur-[20px] md:hidden"
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="flex items-center justify-between mb-10">
-              <span className="font-bold text-[24px] text-white">HUMRAHI</span>
+            <div className="mb-10 flex items-center justify-between">
+              <span className="text-[24px] font-bold text-white">HUMRAHI</span>
+
               <button
-                className="hover:opacity-70 transition-opacity text-white"
+                type="button"
+                className="flex h-10 w-10 items-center justify-center rounded-full text-white transition-all duration-300 hover:bg-white/10 active:scale-95"
                 onClick={closeDrawer}
                 aria-label="Close menu"
               >
@@ -130,32 +145,29 @@ export default function Navbar() {
                   to={l.to}
                   onClick={closeDrawer}
                   className={({ isActive }) =>
-                    `px-4 py-3 rounded-full flex items-center gap-6 text-[14px] font-medium transition-all duration-300 ${
+                    `flex items-center gap-6 rounded-full px-4 py-3 text-[14px] font-medium transition-all duration-300 ${
                       isActive
                         ? "bg-white/10 text-white"
                         : "text-white/60 hover:bg-white/5 hover:text-white"
                     }`
                   }
                 >
-                  <i
-                    className={`pi ${
-                      l.label === "Home" ? "pi-home" : "pi-compass"
-                    } text-[16px]`}
-                  />
+                  <i className={`pi ${l.icon} text-[16px]`} />
                   <span>{l.label}</span>
                 </NavLink>
               ))}
             </nav>
 
-            <div className="mt-auto pt-6 border-t border-white/10">
-              <div className="p-4 bg-white/5 rounded-xl">
-                <p className="text-[12px] font-semibold text-white/50 mb-2">
+            <div className="mt-auto border-t border-white/10 pt-6">
+              <div className="rounded-xl bg-white/5 p-4">
+                <p className="mb-2 text-[12px] font-semibold text-white/50">
                   Member of HUMRAHI?
                 </p>
+
                 <Link
                   to="/login"
                   onClick={closeDrawer}
-                  className="w-full block text-center bg-white text-[#0A0A0A] py-3 rounded-full text-[14px] font-medium hover:bg-white/90 active:scale-95 transition-all"
+                  className="block w-full rounded-full bg-white py-3 text-center text-[14px] font-medium text-[#0A0A0A] transition-all hover:bg-white/90 active:scale-95"
                 >
                   Sign In
                 </Link>

@@ -3,8 +3,8 @@
 import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import * as Cesium from "cesium";
-import { useCesiumViewer } from "../../hooks/useCesiumViewer";
-import { fadeUp, staggerContainer } from "../../animations/variants";
+import { useCesiumViewer } from "../../../hooks/useCesiumViewer";
+import { fadeUp, staggerContainer } from "../../../animations/variants";
 
 export default function Hero() {
   const cesiumContainer = useRef(null);
