@@ -7,7 +7,18 @@ function formatCoord(value, posLabel, negLabel) {
   return `${Math.abs(value).toFixed(2)} deg ${dir}`;
 }
 
-export default function DestinationCard({ destination, isActive }) {
+const PHASE_LABEL = {
+  establishing: "Arriving",
+  streetview: "Entering destination",
+  arrived: "Arrived",
+};
+
+export default function DestinationCard({
+  destination,
+  isActive,
+  isMobile = false,
+  phase = "establishing",
+}) {
   const {
     id,
     name,
@@ -24,6 +35,8 @@ export default function DestinationCard({ destination, isActive }) {
     bestSeason,
   } = destination;
 
+  const isDimmed = !isMobile && phase !== "establishing";
+
   return (
     <motion.article
       className="mr-auto w-full max-w-[520px]"
@@ -32,9 +45,11 @@ export default function DestinationCard({ destination, isActive }) {
       animate={isActive ? "visible" : "hidden"}
     >
       <motion.div
-        className="relative isolate flex min-h-[840px] flex-col overflow-hidden rounded-2xl border border-white/12 bg-black text-white shadow-[0_34px_110px_-54px_rgba(0,0,0,1)] backdrop-blur-3xl"
+        className={`relative isolate flex min-h-[840px] flex-col overflow-hidden rounded-2xl border border-white/12 bg-black text-white shadow-[0_34px_110px_-54px_rgba(0,0,0,1)] backdrop-blur-3xl transition-[filter] duration-700 ease-out ${
+          isDimmed ? "brightness-[0.55] saturate-[0.7] blur-[1px]" : ""
+        }`}
         variants={staggerContainer(0.055, 0.12)}
-        whileHover={{ y: -6, scale: 1.01 }}
+        whileHover={!isDimmed ? { y: -6, scale: 1.01 } : undefined}
         transition={{ type: "spring", stiffness: 260, damping: 24 }}
       >
         <div
@@ -141,14 +156,24 @@ export default function DestinationCard({ destination, isActive }) {
             {reviews.toLocaleString()} traveler reviews
           </motion.div>
 
-          <motion.div className="mt-auto pt-6" variants={fadeUp}>
-            <Link
-              to={`/destination/${id}`}
-              className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-semibold text-black transition-all duration-300 hover:bg-white/88 active:scale-[0.98]"
-            >
-              Explore {name}
-              <i className="pi pi-arrow-right text-xs" aria-hidden="true" />
-            </Link>
+          <motion.div className="mt-auto pt-6 min-h-[56px]" variants={fadeUp}>
+            {isMobile ? (
+              // Mobile: no globe, no cinematic sequence — one button, direct nav.
+              <Link
+                to={`/destination/${id}`}
+                className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-7 text-sm font-semibold text-black transition-all duration-300 hover:bg-white/88 active:scale-[0.98]"
+              >
+                Explore {name}
+                <i className="pi pi-arrow-right text-xs" aria-hidden="true" />
+              </Link>
+            ) : (
+              // Desktop: no button here at all — the popup is the CTA,
+              // and it opens automatically once the flight finishes.
+              <div className="flex h-14 items-center justify-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-white/38">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white/45" />
+                {PHASE_LABEL[phase]}
+              </div>
+            )}
           </motion.div>
         </div>
       </motion.div>
