@@ -11,7 +11,7 @@ Explore -> AJINKYA
 
 ## Project Setup
 
-Step 1
+Step 1  
 
 Node.js install kar lena
 
