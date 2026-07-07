@@ -25,11 +25,21 @@ const userSchema = new mongoose.Schema({
 		default : ""
 	},
 	verificationTokenExpires: {
-    type: Date
+    	type: Date
 	},
 	registrationSession: {
 		type: String,
 		default: null
+	},
+	googleId: {
+		type: String,
+		default: null
+	},
+
+	provider: {
+		type: String,
+		enum: ["local", "google"],
+		default: "local"
 	}
 });
 
