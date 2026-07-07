@@ -1,81 +1,86 @@
-//       don't change any thing in this until asked to AJINKYA
+//this is new toggle added hero section -AJINKYA
 
-import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import * as Cesium from "cesium";
-import { useCesiumViewer } from "../../../hooks/useCesiumViewer";
-import { fadeUp, staggerContainer } from "../../../animations/variants";
+import { lazy, Suspense, useRef, useState } from "react";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { fadeUp, staggerContainer } from "../../animations/variants";
+import Client, { SetModeOfView } from "../../model/ClientSettings";
+import HeroToggle from "./HeroToggle";
+const HeroCesium = lazy(() => import("./HeroCesium"));
+const HeroThree = lazy(() => import("./HeroThree"));
 
 export default function Hero() {
-  const cesiumContainer = useRef(null);
   const sectionRef = useRef(null);
-  const viewerRef = useCesiumViewer(cesiumContainer, {
-    onReady: (viewer) => {
-      viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(78, 12, 0.7e7),
-      });
+  const [modeOfView, setModeOfView] = useState(Client.modeOfView);
 
-      const controller = viewer.scene.screenSpaceCameraController;
-      controller.enableRotate = false;
-      controller.enableZoom = false;
-      controller.enableTilt = false;
-      controller.enableTranslate = false;
-      controller.enableLook = false;
-      viewer.canvas.style.pointerEvents = "none";
-    },
-  });
+  const handleModeChange = (nextMode) => {
+    SetModeOfView(Client, nextMode);
+    setModeOfView(Client.modeOfView);
+  };
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
   });
+
   const contentOpacity = useTransform(scrollYProgress, [0, 0.72], [1, 0]);
   const contentY = useTransform(scrollYProgress, [0, 1], [0, 104]);
   const globeScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-
-  useEffect(() => {
-    let raf;
-
-    const tick = () => {
-      const viewer = viewerRef.current;
-      if (viewer && !viewer.isDestroyed()) {
-        viewer.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z, -0.00042);
-      }
-      raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [viewerRef]);
 
   return (
     <section
       className="relative flex min-h-screen w-full items-center overflow-hidden bg-[#101722]"
       ref={sectionRef}
     >
-      <motion.div
-        className="absolute inset-0 h-full w-full pointer-events-none [&_canvas]:outline-none"
-        ref={cesiumContainer}
-        aria-hidden="true"
-        style={{ scale: globeScale }}
-      />
+      <AnimatePresence mode="wait">
+        {modeOfView === "high" ? (
+          <motion.div
+            key="cesium"
+            className="absolute inset-0 h-full w-full"
+            initial={{ opacity: 0, scale: 1.01 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.99 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+          >
+            <Suspense fallback={null}>
+              <HeroCesium scale={globeScale} />
+            </Suspense>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="three"
+            className="absolute inset-0 h-full w-full"
+            initial={{ opacity: 0, scale: 1.01 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.99 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+          >
+            <Suspense fallback={null}>
+              <HeroThree />
+            </Suspense>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div
-        className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_66%_45%,rgba(255,255,255,0)_0%,rgba(16,23,34,0.08)_44%,rgba(16,23,34,0.52)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_66%_45%,rgba(255,255,255,0)_0%,rgba(16,23,34,0.08)_44%,rgba(16,23,34,0.52)_100%)]"
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 pointer-events-none bg-[linear-gradient(90deg,rgba(16,23,34,0.84)_0%,rgba(16,23,34,0.58)_32%,rgba(16,23,34,0.08)_68%,rgba(16,23,34,0.3)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(16,23,34,0.84)_0%,rgba(16,23,34,0.58)_32%,rgba(16,23,34,0.08)_68%,rgba(16,23,34,0.3)_100%)]"
         aria-hidden="true"
       />
       <div
-        className="absolute inset-x-0 bottom-0 h-40 pointer-events-none bg-gradient-to-t from-[#101722] to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#101722] to-transparent"
         aria-hidden="true"
       />
       <div
         className="absolute left-[8vw] top-[14vh] h-64 w-64 rounded-full bg-sky-200/14 blur-3xl"
         aria-hidden="true"
       />
+
+      <div className="absolute right-4 top-24 z-[45] md:right-8 md:top-28">
+        <HeroToggle mode={modeOfView} onChange={handleModeChange} />
+      </div>
 
       <motion.div
         className="relative z-[2] mx-auto grid w-full max-w-[1400px] grid-cols-1 items-end gap-12 px-[6vw] py-24 lg:grid-cols-[1fr_380px] lg:py-28"

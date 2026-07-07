@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import * as Cesium from "cesium";
-import { useCesiumViewer } from "../../../hooks/useCesiumViewer";
+import { useCesiumViewer } from "../../hooks/useCesiumViewer";
 
 export default function HeroCesium({ scale }) {
   const cesiumContainer = useRef(null);

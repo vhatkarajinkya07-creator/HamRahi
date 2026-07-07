@@ -1,46 +1,13 @@
-// Hero/HeroThree.jsx
-//
-// Lightweight, premium background for low-end devices. Inspired by
-// cinematic landing pages (ambient particles, a faint wireframe wave,
-// slow camera drift) rather than trying to imitate the Cesium globe.
-//
-// Deliberately avoids: GLTF models, HDR/environment maps, shadows, large
-// textures, physics, and heavy post-processing. Everything here is a
-// handful of cheap draw calls driven by simple sine-based motion.
 
 import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Sparkles } from "@react-three/drei";
 import * as THREE from "three";
+const SCENE_BUDGET = {
+  particleCount: 180,
+  segments: 22,
+};
 
-// Scales particle count and mesh detail down for weaker devices, based on
-// the signals already gathered by usePerformanceTier — no extra detection
-// work happens here.
-function computeSceneBudget(perfMeta) {
-  let particleCount = 220;
-  let segments = 26;
-
-  if (perfMeta?.mobile) {
-    particleCount -= 70;
-    segments -= 8;
-  }
-  if (typeof perfMeta?.cores === "number" && perfMeta.cores <= 4) {
-    particleCount -= 40;
-    segments -= 4;
-  }
-  if (typeof perfMeta?.fps === "number" && perfMeta.fps < 40) {
-    particleCount -= 40;
-    segments -= 6;
-  }
-
-  return {
-    particleCount: Math.max(70, particleCount),
-    segments: Math.max(10, segments),
-  };
-}
-
-// A low-poly plane whose vertices are displaced by two summed sine waves.
-// No physics, no textures — just a wireframe for a subtle atmospheric feel.
 function WaveSurface({ segments }) {
   const geometry = useMemo(() => {
     const geo = new THREE.PlaneGeometry(14, 8, segments, segments);
@@ -86,8 +53,8 @@ function DriftingCamera() {
   return null;
 }
 
-export default function HeroThree({ perfMeta }) {
-  const budget = useMemo(() => computeSceneBudget(perfMeta), [perfMeta]);
+export default function HeroThree() {
+  const budget = SCENE_BUDGET;
   const canvasRef = useRef(null);
 
   return (

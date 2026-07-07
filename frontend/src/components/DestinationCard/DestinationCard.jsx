@@ -177,6 +177,6 @@ export default function DestinationCard({
           </motion.div>
         </div>
       </motion.div>
-    </motion.article>
+    </motion.article> 
   );
 }

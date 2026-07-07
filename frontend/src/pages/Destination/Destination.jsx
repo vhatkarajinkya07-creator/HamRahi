@@ -6,7 +6,6 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getDestinationById, CATEGORY_THEME } from "../../data/destinations";
-import { communityPosts } from "../../data/community";
 import { fadeUp, staggerContainer } from "../../animations/variants";
 
 export default function Destination() {
