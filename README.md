@@ -64,3 +64,8 @@ Jis page par kaam kar rahe ho uske saamne apna naam add kar dena
 Commit messages samajhne layak rakhna
 
 Unnecessary files push mat karna
+_______________________________________________________________________________________________
+
+SHIVANSH ->
+
+frontend guys : email verification page bnana haii!!!
