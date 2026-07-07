@@ -17,7 +17,7 @@ Node.js install kar lena
 
 Step 2
 
-Repository clone kar lena
+Repository clone kar lena  
 
 ```bash
 git clone https://github.com/vhatkarajinkya07-creator/HamRahi
