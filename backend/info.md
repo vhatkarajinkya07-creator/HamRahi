@@ -26,38 +26,97 @@ Always use this instance for authenticated requests.
 
 
 ____________________________________________________________________________________
-**GOOGLE AUTH** 
+# Get Current User
 
-zinki search more about this while doing frontend
+Used to check whether the user is already authenticated (e.g. on app load or page refresh).
 
-backend ki .env me GOOGLE_CLIENT_ID add krni hai project mail id bnane ke baad
+### GET `/api/auth/me`
 
-Frontend
+No request body required.
 
-Wrap your app:
+### Success Response
 
-<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-    <App />
-</GoogleOAuthProvider>
-Button
+```json
+{
+  "_id": "...",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "isVerified": true,
+  "provider": "local"
+}
+```
 
-<GoogleLogin
-    onSuccess={(credentialResponse) => {
+### Unauthorized Response
 
-    }}
-/>
+```json
+{
+  "message": "Unauthorized"
+}
+```
 
-Send token
+### Frontend Usage
 
-await api.post("/auth/google-login", {
-    credential: credentialResponse.credential
-});
+Call this API once when the application starts.
 
-Backend logs in the user and sets the cookie.
+- **200** → User is authenticated. Save the returned user in global state/context.
+- **401** → User is not authenticated. Redirect to Login if accessing protected routes.
 
-Navigate:
+---
 
-navigate("/");
+# Google Authentication
+
+Google authentication is a separate sign-in method and does **not** require email verification.
+
+### POST `/api/auth/google-login`
+
+Request
+
+```json
+{
+  "credential": "<google_id_token>"
+}
+```
+
+The `credential` is obtained from the Google Login component.
+
+### Success Response
+
+```json
+{
+  "message": "google login done"
+}
+```
+
+The backend will automatically:
+
+- Verify the Google ID token.
+- Create the user if it doesn't exist.
+- Link the Google account if the email already exists.
+- Create a JWT.
+- Set the HttpOnly authentication cookie.
+
+No token needs to be stored on the frontend.
+
+### Frontend Flow
+
+```text
+User clicks "Continue with Google"
+        │
+        ▼
+Google Login Popup
+        │
+        ▼
+Receive Google credential
+        │
+        ▼
+POST /api/auth/google
+        │
+        ▼
+Backend sets authentication cookie
+        │
+        ▼
+Navigate to Home/Dashboard
+```
 
 _____________________________________________________________________________________
 
