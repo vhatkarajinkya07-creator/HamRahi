@@ -22,7 +22,7 @@ export function SetModeOfView(Client, mode){
 const Client = {
   name: "Ajinkya",
   email:"vhatkarajinkya07@gmail.com",
-  modeOfView:"low",//(graphics)
+  modeOfView:"high",//(graphics)
   placesVisted:[],
   dateChart:[],
 };
