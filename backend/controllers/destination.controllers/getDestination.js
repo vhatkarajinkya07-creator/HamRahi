@@ -30,7 +30,7 @@ const getDestination = async (req, res) => {
         }
 
         return res.status(500).json({
-            message: "Server error"
+            message: err.message || "Server error"
         });
     }
 };

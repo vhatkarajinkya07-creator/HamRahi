@@ -1,4 +1,9 @@
 const axios = require("axios");
+const { getDestinationImages } = require("./unsplash.service");
+const { getHeroImage } = require("./wikipedia.service");
+const { getWeather } = require("./weather.service");
+const {getDestinationTags, getDestinationTagline} = require("./ai.service");
+const DestinationMetadata = require("../models/destinationMetadata.model");
 
 const typeMap = {
     relation: "R",
@@ -85,7 +90,8 @@ const getDestinationDetails = async (placeId) => {
                 format: "jsonv2",
                 addressdetails: 1,
                 extratags: 1,
-                namedetails: 1
+                namedetails: 1,
+                "accept-language": "en"
             },
             headers: {
                 "User-Agent": "HamRahi/1.0"
@@ -99,50 +105,104 @@ const getDestinationDetails = async (placeId) => {
 
     const place = data[0];
 
+    const title =
+        place.namedetails?.["name:en"] ||
+        place.namedetails?.name ||
+        place.name ||
+        place.display_name.split(",")[0];
+
+    const city =
+        place.address?.city ||
+        place.address?.town ||
+        place.address?.village ||
+        null;
+
+    const state = place.address?.state || null;
+
+    const country = place.address?.country || null;
+
+    const imageQuery = [
+        title,
+        state,
+        country
+    ]
+    .filter(Boolean)
+    .join(", ");
+
+    const images = await getDestinationImages(imageQuery);
+    const heroImage = await getHeroImage(title);
+
+    const weather = await getWeather(
+        Number(place.lat),
+        Number(place.lon)
+    );
+
+    let metadata = await DestinationMetadata.findOne({ placeId });
+
+    if (!metadata) {
+        metadata = await DestinationMetadata.create({
+            placeId
+        });
+    }
+
+    if (metadata.tags.length === 0) {
+
+        metadata.tags = await getDestinationTags(
+            heroImage.title,
+            heroImage.description
+        );
+
+        await metadata.save();
+    }
+
+    if (!metadata.tagline) {
+        metadata.tagline = await getDestinationTagline(
+            heroImage.title,
+            heroImage.description
+        );
+        await metadata.save();
+    }
+
     return {
         placeId,
 
-        title:
-            place.namedetails?.name ||
-            place.name ||
-            place.display_name.split(",")[0],
+        basicInfo: {
+            title,
 
-        subtitle: [
-            place.address?.city ||
-            place.address?.town ||
-            place.address?.village,
-            place.address?.state,
-            place.address?.country
-        ]
-            .filter(Boolean)
-            .join(", "),
+            subtitle: [city, state, country]
+                .filter(Boolean)
+                .join(", "),
 
-        coordinates: {
-            latitude: Number(place.lat),
-            longitude: Number(place.lon)
+            coordinates: {
+                latitude: Number(place.lat),
+                longitude: Number(place.lon)
+            },
+
+            location: {
+                city,
+                state,
+                country,
+                countryCode:
+                    place.address?.country_code?.toUpperCase() || null
+            },
+
+            tagline: metadata.tagline,
+            tags : metadata.tags,
+        }, 
+
+        gallery: {
+            heroImage: heroImage ?? null,
+            images: images
+        } ,
+        stats: {
+            rating: null,
+            reviewCount: 0,
+            priceFrom: null,
+            bestSeason: null
         },
 
-        address: {
-            city:
-                place.address?.city ||
-                place.address?.town ||
-                place.address?.village ||
-                null,
+        weather,
 
-            state: place.address?.state || null,
-
-            country: place.address?.country || null,
-
-            countryCode:
-                place.address?.country_code?.toUpperCase() || null
-        },
-
-        category: place.category,
-        type: place.type,
-
-        boundingBox: place.boundingbox,
-
-        extraTags: place.extratags || {}
     };
 };
 
