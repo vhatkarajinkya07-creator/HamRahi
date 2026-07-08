@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const getHeroImage = async (title) => {
+const getWikipediaSummary = async (title) => {
     const { data } = await axios.get(
         `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`,
         {
@@ -22,6 +22,36 @@ const getHeroImage = async (title) => {
     };
 };
 
+const getWikipediaAttraction = async (article) => {
+    try {
+
+        const title = article.includes(":")
+            ? article.split(":")[1]
+            : article;
+
+        const { data } = await axios.get(
+            `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`
+        );
+
+        return {
+            title: data.title,
+
+            description: data.extract,
+
+            heroImage:
+                data.originalimage?.source ||
+                data.thumbnail?.source ||
+                null
+        };
+
+    } catch (err) {
+
+        return null;
+
+    }
+};
+
 module.exports = {
-    getHeroImage
+    getWikipediaSummary,
+    getWikipediaAttraction
 };

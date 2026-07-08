@@ -1,9 +1,10 @@
 const axios = require("axios");
 const { getDestinationImages } = require("./unsplash.service");
-const { getHeroImage } = require("./wikipedia.service");
+const { getWikipediaAttraction, getWikipediaSummary } = require("./wikipedia.service");
 const { getWeather } = require("./weather.service");
 const {getDestinationTags, getDestinationTagline} = require("./ai.service");
 const DestinationMetadata = require("../models/destinationMetadata.model");
+const { getNearbyPlaces } = require("./nearby.service");
 
 const typeMap = {
     relation: "R",
@@ -130,7 +131,7 @@ const getDestinationDetails = async (placeId) => {
     .join(", ");
 
     const images = await getDestinationImages(imageQuery);
-    const heroImage = await getHeroImage(title);
+    const heroImage = await getWikipediaSummary(title);
 
     const weather = await getWeather(
         Number(place.lat),
@@ -162,6 +163,11 @@ const getDestinationDetails = async (placeId) => {
         );
         await metadata.save();
     }
+
+    const nearbyAttractions = await getNearbyPlaces(
+        Number(place.lat),
+        Number(place.lon)
+    );
 
     return {
         placeId,
@@ -202,7 +208,9 @@ const getDestinationDetails = async (placeId) => {
         },
 
         weather,
-
+        nearby: {
+            attractions: nearbyAttractions
+        }
     };
 };
 
