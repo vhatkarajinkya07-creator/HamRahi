@@ -11,16 +11,55 @@ const getDestinationTags = async (title, description) => {
     const prompt = `
 You are a travel expert.
 
-Return ONLY a JSON array.
+Return ONLY a JSON array of exactly 5 tags.
 
-Example:
-["City","Food","Culture","Shopping","Nightlife"]
+Rules:
+
+1. The FIRST tag MUST be exactly one of these:
+
+const PRIMARY_TAGS = [
+    "Beaches",
+    "Mountains",
+    "Cities",
+    "Islands",
+    "Forests",
+    "Deserts",
+    "Lakes",
+    "Rivers",
+    "Waterfalls",
+    "Snow Destinations",
+    "National Parks",
+    "Historical",
+    "Religious",
+    "Wildlife"
+];
+
+2. The remaining four tags should describe the destination.
+
+Examples:
+
+Tokyo
+["Cities","Food","Shopping","Culture","Nightlife"]
+
+Manali
+["Mountains","Adventure","Snow","Hiking","Nature"]
+
+Goa
+["Beaches","Nightlife","Water Sports","Relaxation","Food"]
+
+Dubai
+["Deserts","Luxury","Shopping","Architecture","Nightlife"]
+
+Swiss Alps
+["Snow Destinations","Mountains","Skiing","Nature","Photography"]
 
 Destination:
 ${title}
 
 Description:
 ${description}
+
+Return ONLY JSON.
 `;
 
     const result = await model.generateContent(prompt);
