@@ -66,8 +66,5 @@ Commit messages samajhne layak rakhna
 Unnecessary files push mat karna
 _______________________________________________________________________________________________
 
-SHIVANSH ->
-
-frontend guys : email verification page bnana haii!!!
-
-Lavanya -> itinerary page try krri
+frontend guys, email verification page bnana haii!!!
+detailed INFO of All APIs is available in /backend/info.md
