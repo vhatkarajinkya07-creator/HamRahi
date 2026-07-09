@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 
-const auth = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
     try {
+
         const token = req.cookies.token;
 
         if (!token) {
@@ -10,16 +11,23 @@ const auth = (req, res, next) => {
             });
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        );
 
         req.user = decoded;
+        console.log("Authenticated user:", req.user);
 
         next();
+
     } catch (err) {
+
         return res.status(401).json({
-            message: "Invalid or expired token"
+            message: "Unauthorized"
         });
+
     }
 };
 
-module.exports = auth;
+module.exports = authMiddleware;

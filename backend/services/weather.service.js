@@ -41,40 +41,49 @@ const weatherMap = {
 };
 
 const getWeather = async (latitude, longitude) => {
-
-    const { data } = await axios.get(
-        "https://api.open-meteo.com/v1/forecast",
-        {
-            params: {
-                latitude,
-                longitude,
-                current: [
-                    "temperature_2m",
-                    "weather_code",
-                    "wind_speed_10m"
-                ].join(",")
+    try{
+        const { data } = await axios.get(
+            "https://api.open-meteo.com/v1/forecast",
+            {
+                params: {
+                    latitude,
+                    longitude,
+                    current: [
+                        "temperature_2m",
+                        "weather_code",
+                        "wind_speed_10m"
+                    ].join(",")
+                }
             }
-        }
-    );
+        );
 
-    const current = data.current;
+        const current = data.current;
 
-    const weather =
-        weatherMap[current.weather_code] ||
-        {
+        const weather =
+            weatherMap[current.weather_code] ||
+            {
+                condition: "Unknown",
+                icon: "unknown"
+            };
+
+        return {
+            temperature: current.temperature_2m,
+
+            windSpeed: current.wind_speed_10m,
+
+            condition: weather.condition,
+
+            icon: weather.icon
+        };
+    } catch (err) {
+        console.error("Error fetching weather data");
+        return {
+            temperature: null,
+            windSpeed: null,
             condition: "Unknown",
             icon: "unknown"
         };
-
-    return {
-        temperature: current.temperature_2m,
-
-        windSpeed: current.wind_speed_10m,
-
-        condition: weather.condition,
-
-        icon: weather.icon
-    };
+    }
 };
 
 module.exports = {

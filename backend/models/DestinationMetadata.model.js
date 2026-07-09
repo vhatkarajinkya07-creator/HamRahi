@@ -8,7 +8,10 @@ const destinationMetadataSchema = new mongoose.Schema(
             unique: true,
             trim: true
         },
-
+        title: {
+            type: String,
+            required: true
+        },
         tags: {
             type: [String],
             default: []

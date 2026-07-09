@@ -27,6 +27,8 @@ const searchDestination = async (query) => {
                 q: query,
                 format: "jsonv2",
                 addressdetails: 1,
+                namedetails: 1,
+                "accept-language": "en",
                 limit: 20
             },
             headers: {
@@ -52,18 +54,13 @@ const searchDestination = async (query) => {
             placeId: `${typeMap[place.osm_type]}${place.osm_id}`,
 
             title:
-                place.name ||
+                place.namedetails?.["name:en"] ||
+                place.namedetails?.int_name ||
+                place.namedetails?.name ||
                 place.display_name.split(",")[0],
 
-            subtitle: [
-                place.address?.city ||
-                place.address?.town ||
-                place.address?.village,
-                place.address?.state,
-                place.address?.country
-            ]
-                .filter(Boolean)
-                .join(", "),
+
+            subtitle:  place.display_name,
 
             coordinates: {
                 latitude: Number(place.lat),
@@ -130,13 +127,12 @@ const getDestinationDetails = async (placeId) => {
     .filter(Boolean)
     .join(", ");
 
-    const images = await getDestinationImages(imageQuery);
-    const heroImage = await getWikipediaSummary(title);
-
-    const weather = await getWeather(
-        Number(place.lat),
-        Number(place.lon)
-    );
+    const [images, heroImage, weather, nearbyAttractions] = await Promise.all([
+        getDestinationImages(imageQuery),
+        getWikipediaSummary(title),
+        getWeather(Number(place.lat), Number(place.lon)),
+        getNearbyPlaces(Number(place.lat), Number(place.lon))
+    ]);
 
     let metadata = await DestinationMetadata.findOne({ placeId });
 
@@ -144,6 +140,13 @@ const getDestinationDetails = async (placeId) => {
         metadata = await DestinationMetadata.create({
             placeId
         });
+    }
+
+    if (!metadata.title) {
+
+        metadata.title = heroImage.title;
+
+        await metadata.save();
     }
 
     if (metadata.tags.length === 0) {
@@ -163,11 +166,6 @@ const getDestinationDetails = async (placeId) => {
         );
         await metadata.save();
     }
-
-    const nearbyAttractions = await getNearbyPlaces(
-        Number(place.lat),
-        Number(place.lon)
-    );
 
     return {
         placeId,
