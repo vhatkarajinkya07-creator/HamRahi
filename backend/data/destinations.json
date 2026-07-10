@@ -1,0 +1,5174 @@
+[
+{
+"title": "Goa",
+"tagline": "Sun, sand, and vibrant coastal culture.",
+"tags": [
+"Beaches",
+"Nightlife",
+"Food",
+"Backpacking"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 95
+}
+},
+{
+"title": "Varkala",
+"tagline": "Cliffs overlooking the tranquil Arabian Sea.",
+"tags": [
+"Beaches",
+"Backpacking",
+"Scenic",
+"Spiritual"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Gokarna",
+"tagline": "Pristine beaches with a soulful vibe.",
+"tags": [
+"Beaches",
+"Hidden Gem",
+"Backpacking",
+"Spiritual"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 70
+}
+},
+{
+"title": "Bali",
+"tagline": "Tropical paradise of temples and shores.",
+"tags": [
+"Beaches",
+"Romantic",
+"Culture",
+"Nature"
+],
+"bestSeason": "Apr-Jun, Jul-Sep",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 94
+}
+},
+{
+"title": "Maldives",
+"tagline": "Luxury island escapes and crystal waters.",
+"tags": [
+"Beaches",
+"Luxury",
+"Romantic",
+"Nature"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 98
+}
+},
+{
+"title": "Phuket",
+"tagline": "Vibrant beaches and spectacular nightlife.",
+"tags": [
+"Beaches",
+"Nightlife",
+"Shopping",
+"Adventure"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Manali",
+"tagline": "Himalayan haven for thrill and chill.",
+"tags": [
+"Mountains",
+"Adventure",
+"Backpacking",
+"Scenic"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 92
+}
+},
+{
+"title": "Darjeeling",
+"tagline": "The Queen of Hills and tea.",
+"tags": [
+"Mountains",
+"Scenic",
+"Heritage",
+"Romantic"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Spiti Valley",
+"tagline": "Rugged landscapes and ancient Buddhist monasteries.",
+"tags": [
+"Mountains",
+"Adventure",
+"Road Trip",
+"Photography"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Tawang",
+"tagline": "Mystical mountains and serene high passes.",
+"tags": [
+"Mountains",
+"Hidden Gem",
+"Culture",
+"Scenic"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 72
+}
+},
+{
+"title": "Swiss Alps",
+"tagline": "Majestic peaks and pure alpine luxury.",
+"tags": [
+"Mountains",
+"Luxury",
+"Adventure",
+"Scenic"
+],
+"bestSeason": "Dec-Feb, Jun-Aug",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 97
+}
+},
+{
+"title": "Banff",
+"tagline": "Stunning glacial lakes and rocky peaks.",
+"tags": [
+"Mountains",
+"Nature",
+"Hiking",
+"Photography"
+],
+"bestSeason": "Jun-Aug, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 84
+}
+},
+{
+"title": "Jaipur",
+"tagline": "Where royalty wears pink every day.",
+"tags": [
+"Cities",
+"Heritage",
+"Architecture",
+"Shopping"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 93
+}
+},
+{
+"title": "Mysore",
+"tagline": "City of palaces and fragrant sandalwood.",
+"tags": [
+"Cities",
+"Heritage",
+"Culture",
+"Architecture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 77
+}
+},
+{
+"title": "Udaipur",
+"tagline": "Romantic lakes and grand Rajput architecture.",
+"tags": [
+"Cities",
+"Romantic",
+"Heritage",
+"Luxury"
+],
+"bestSeason": "Sep-Nov, Dec-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 91
+}
+},
+{
+"title": "New York City",
+"tagline": "The city that never actually sleeps.",
+"tags": [
+"Cities",
+"Shopping",
+"Food",
+"Nightlife"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 99
+}
+},
+{
+"title": "Dubai",
+"tagline": "Futuristic skyline meeting endless golden sands.",
+"tags": [
+"Cities",
+"Luxury",
+"Shopping",
+"Architecture"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 83
+}
+},
+{
+"title": "Cape Town",
+"tagline": "Breathtaking coastal views and vibrant culture.",
+"tags": [
+"Cities",
+"Nature",
+"Adventure",
+"Scenic"
+],
+"bestSeason": "Feb-Apr, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 81
+}
+},
+{
+"title": "Lakshadweep",
+"tagline": "Undiscovered atolls with turquoise coral reefs.",
+"tags": [
+"Islands",
+"Hidden Gem",
+"Nature",
+"Adventure"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 68
+}
+},
+{
+"title": "Majuli",
+"tagline": "The largest river island on Earth.",
+"tags": [
+"Islands",
+"Culture",
+"Hidden Gem",
+"Nature"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 65
+}
+},
+{
+"title": "Neil Island",
+"tagline": "Peaceful shores away from the crowds.",
+"tags": [
+"Islands",
+"Romantic",
+"Scenic",
+"Hidden Gem"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 73
+}
+},
+{
+"title": "Santorini",
+"tagline": "White cliffs above a sapphire sea.",
+"tags": [
+"Islands",
+"Romantic",
+"Photography",
+"Architecture"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 96
+}
+},
+{
+"title": "Maui",
+"tagline": "Volcanic landscapes and perfect surfer waves.",
+"tags": [
+"Islands",
+"Nature",
+"Romantic",
+"Scenic"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 79
+}
+},
+{
+"title": "Wayanad",
+"tagline": "Lush green forests and spice plantations.",
+"tags": [
+"Forests",
+"Nature",
+"Hiking",
+"Weekend Getaway"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 76
+}
+},
+{
+"title": "Coorg",
+"tagline": "The Scotland of India in mist.",
+"tags": [
+"Forests",
+"Weekend Getaway",
+"Nature",
+"Scenic"
+],
+"bestSeason": "Sep-Nov, Dec-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Tirthan Valley",
+"tagline": "Unspoiled woodlands near the great Himalayas.",
+"tags": [
+"Forests",
+"Hidden Gem",
+"Camping",
+"Nature"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 69
+}
+},
+{
+"title": "Munnar",
+"tagline": "Rolling hills blanketed in emerald tea.",
+"tags": [
+"Forests",
+"Romantic",
+"Scenic",
+"Nature"
+],
+"bestSeason": "Sep-Nov, Dec-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 84
+}
+},
+{
+"title": "Amazon Rainforest",
+"tagline": "The ultimate jungle expedition awaits you.",
+"tags": [
+"Forests",
+"Adventure",
+"Nature",
+"Photography"
+],
+"bestSeason": "Jun-Aug, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Jaisalmer",
+"tagline": "Golden forts amidst the endless dunes.",
+"tags": [
+"Deserts",
+"Heritage",
+"Adventure",
+"Camping"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 81
+}
+},
+{
+"title": "Kutch",
+"tagline": "A mesmerizing stretch of white salt.",
+"tags": [
+"Deserts",
+"Culture",
+"Photography",
+"Scenic"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 77
+}
+},
+{
+"title": "Pushkar",
+"tagline": "Holy lake surrounded by desert magic.",
+"tags": [
+"Deserts",
+"Spiritual",
+"Culture",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 71
+}
+},
+{
+"title": "Nubra Valley",
+"tagline": "High altitude desert with double-humped camels.",
+"tags": [
+"Deserts",
+"Adventure",
+"Road Trip",
+"Scenic"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 74
+}
+},
+{
+"title": "Petra",
+"tagline": "Ancient rose city carved from rock.",
+"tags": [
+"Deserts",
+"Heritage",
+"Architecture",
+"Photography"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 87
+}
+},
+{
+"title": "Nainital",
+"tagline": "Charming lakeside retreat in the mountains.",
+"tags": [
+"Lakes",
+"Family",
+"Scenic",
+"Weekend Getaway"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Pangong Tso",
+"tagline": "Crystal blue waters at extreme altitude.",
+"tags": [
+"Lakes",
+"Adventure",
+"Photography",
+"Road Trip"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 92
+}
+},
+{
+"title": "Dal Lake",
+"tagline": "Floating gardens and traditional wooden houseboats.",
+"tags": [
+"Lakes",
+"Romantic",
+"Scenic",
+"Culture"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Chilika Lake",
+"tagline": "Vast lagoon hosting spectacular migratory birds.",
+"tags": [
+"Lakes",
+"Nature",
+"Photography",
+"Hidden Gem"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 66
+}
+},
+{
+"title": "Lake Como",
+"tagline": "Italian elegance by the mountain waters.",
+"tags": [
+"Lakes",
+"Luxury",
+"Romantic",
+"Scenic"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 83
+}
+},
+{
+"title": "Alleppey",
+"tagline": "Cruise the tranquil palm-fringed backwaters.",
+"tags": [
+"Rivers",
+"Romantic",
+"Scenic",
+"Nature"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 90
+}
+},
+{
+"title": "Rishikesh",
+"tagline": "Yoga capital beside the holy Ganges.",
+"tags": [
+"Rivers",
+"Adventure",
+"Spiritual",
+"Backpacking"
+],
+"bestSeason": "Sep-Nov, Feb-Apr",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": true,
+"priority": 91
+}
+},
+{
+"title": "Varanasi",
+"tagline": "Eternal city on the sacred riverbanks.",
+"tags": [
+"Rivers",
+"Spiritual",
+"Culture",
+"Heritage"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": true,
+"priority": 94
+}
+},
+{
+"title": "Dawki",
+"tagline": "Sail on unbelievably clear river waters.",
+"tags": [
+"Rivers",
+"Hidden Gem",
+"Scenic",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 72
+}
+},
+{
+"title": "Nile River",
+"tagline": "Sail through the heart of history.",
+"tags": [
+"Rivers",
+"Heritage",
+"Culture",
+"Scenic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Cherrapunji",
+"tagline": "Living root bridges and cascading rain.",
+"tags": [
+"Waterfalls",
+"Nature",
+"Photography",
+"Scenic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 79
+}
+},
+{
+"title": "Chitrakoot Falls",
+"tagline": "The magnificent Niagara of incredible India.",
+"tags": [
+"Waterfalls",
+"Hidden Gem",
+"Nature",
+"Scenic"
+],
+"bestSeason": "Jul-Sep, Oct-Dec",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 64
+}
+},
+{
+"title": "Jog Falls",
+"tagline": "Plunging streams amidst lush western ghats.",
+"tags": [
+"Waterfalls",
+"Nature",
+"Scenic",
+"Weekend Getaway"
+],
+"bestSeason": "Aug-Oct",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 70
+}
+},
+{
+"title": "Niagara Falls",
+"tagline": "Iconic roar of massive cascading waters.",
+"tags": [
+"Waterfalls",
+"Family",
+"Nature",
+"Scenic"
+],
+"bestSeason": "Jun-Aug",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 86
+}
+},
+{
+"title": "Victoria Falls",
+"tagline": "The smoke that thunders across borders.",
+"tags": [
+"Waterfalls",
+"Adventure",
+"Nature",
+"Photography"
+],
+"bestSeason": "Feb-Apr, May-Jul",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Auli",
+"tagline": "Pristine ski slopes with Himalayan views.",
+"tags": [
+"Snow Destinations",
+"Adventure",
+"Scenic",
+"Hiking"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Gulmarg",
+"tagline": "Paradise of snow and alpine meadows.",
+"tags": [
+"Snow Destinations",
+"Adventure",
+"Romantic",
+"Scenic"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 93
+}
+},
+{
+"title": "Sonamarg",
+"tagline": "Golden meadows blanketed in winter snow.",
+"tags": [
+"Snow Destinations",
+"Nature",
+"Hiking",
+"Photography"
+],
+"bestSeason": "Apr-Jun, Jul-Sep",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 73
+}
+},
+{
+"title": "Queenstown",
+"tagline": "The global capital of extreme adventure.",
+"tags": [
+"Snow Destinations",
+"Adventure",
+"Scenic",
+"Nightlife"
+],
+"bestSeason": "Jun-Aug",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Zermatt",
+"tagline": "Ski under the iconic Matterhorn peak.",
+"tags": [
+"Snow Destinations",
+"Luxury",
+"Scenic",
+"Adventure"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 86
+}
+},
+{
+"title": "Valley of Flowers",
+"tagline": "A high-altitude paradise of vivid blooms.",
+"tags": [
+"National Parks",
+"Hiking",
+"Nature",
+"Photography"
+],
+"bestSeason": "Jul-Sep",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Kanha National Park",
+"tagline": "The real inspiration for Jungle Book.",
+"tags": [
+"National Parks",
+"Nature",
+"Photography",
+"Family"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 77
+}
+},
+{
+"title": "Hemis National Park",
+"tagline": "Track the elusive Himalayan snow leopard.",
+"tags": [
+"National Parks",
+"Adventure",
+"Hiking",
+"Hidden Gem"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 68
+}
+},
+{
+"title": "Grand Canyon",
+"tagline": "Epic scale of nature's majestic architecture.",
+"tags": [
+"National Parks",
+"Nature",
+"Photography",
+"Hiking"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 97
+}
+},
+{
+"title": "Yosemite",
+"tagline": "Granite cliffs and towering ancient sequoias.",
+"tags": [
+"National Parks",
+"Nature",
+"Camping",
+"Hiking"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 84
+}
+},
+{
+"title": "Agra",
+"tagline": "Home to the monument of love.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Romantic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 98
+}
+},
+{
+"title": "Hampi",
+"tagline": "Ruins of a lost golden empire.",
+"tags": [
+"Historical",
+"Heritage",
+"Backpacking",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": true,
+"priority": 92
+}
+},
+{
+"title": "Khajuraho",
+"tagline": "Intricate ancient carvings and stunning temples.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Rome",
+"tagline": "Step straight into the ancient world.",
+"tags": [
+"Historical",
+"Food",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 96
+}
+},
+{
+"title": "Machu Picchu",
+"tagline": "Lost Incan citadel in the clouds.",
+"tags": [
+"Historical",
+"Adventure",
+"Hiking",
+"Heritage"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 99
+}
+},
+{
+"title": "Angkor Wat",
+"tagline": "Colossal temple complex hidden by jungles.",
+"tags": [
+"Historical",
+"Heritage",
+"Spiritual",
+"Architecture"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Amritsar",
+"tagline": "Spiritual center featuring the Golden Temple.",
+"tags": [
+"Religious",
+"Spiritual",
+"Food",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 81
+}
+},
+{
+"title": "Bodh Gaya",
+"tagline": "Where the Buddha attained supreme enlightenment.",
+"tags": [
+"Religious",
+"Spiritual",
+"Heritage",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 76
+}
+},
+{
+"title": "Kedarnath",
+"tagline": "Divine Himalayan trek to Shiva's shrine.",
+"tags": [
+"Religious",
+"Spiritual",
+"Adventure",
+"Hiking"
+],
+"bestSeason": "May-Jul, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 79
+}
+},
+{
+"title": "Madurai",
+"tagline": "Vibrant temple city of ancient Tamil.",
+"tags": [
+"Religious",
+"Culture",
+"Architecture",
+"Heritage"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 74
+}
+},
+{
+"title": "Kyoto",
+"tagline": "Serene shrines and blossoming cherry trees.",
+"tags": [
+"Religious",
+"Culture",
+"Heritage",
+"Photography"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Ranthambore",
+"tagline": "Spot majestic tigers amidst ancient ruins.",
+"tags": [
+"Wildlife",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 90
+}
+},
+{
+"title": "Kaziranga",
+"tagline": "Sanctuary of the rare horned rhinoceros.",
+"tags": [
+"Wildlife",
+"Nature",
+"Photography",
+"Family"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 83
+}
+},
+{
+"title": "Sunderbans",
+"tagline": "Dense mangroves guarding the Bengal tiger.",
+"tags": [
+"Wildlife",
+"Nature",
+"Adventure",
+"Photography"
+],
+"bestSeason": "Sep-Nov, Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Jim Corbett",
+"tagline": "India's oldest park for exciting safaris.",
+"tags": [
+"Wildlife",
+"Weekend Getaway",
+"Nature",
+"Family"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Masai Mara",
+"tagline": "The grand stage of wilderness migration.",
+"tags": [
+"Wildlife",
+"Adventure",
+"Photography",
+"Nature"
+],
+"bestSeason": "Jul-Sep",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Galapagos Islands",
+"tagline": "Evolutionary wonder filled with unique creatures.",
+"tags": [
+"Wildlife",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Year Round",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 87
+}
+},
+{
+"title": "Kovalam",
+"tagline": "Crescent beaches and ancient lighthouse views.",
+"tags": [
+"Beaches",
+"Family",
+"Scenic",
+"Weekend Getaway"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 70
+}
+},
+{
+"title": "Palolem",
+"tagline": "Tranquil crescent bay surrounded by palm trees.",
+"tags": [
+"Beaches",
+"Backpacking",
+"Scenic",
+"Hidden Gem"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 72
+}
+},
+{
+"title": "Radhanagar Beach",
+"tagline": "Asia's finest stretch of pristine white sand.",
+"tags": [
+"Beaches",
+"Nature",
+"Romantic",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 95
+}
+},
+{
+"title": "Bora Bora",
+"tagline": "Overwater bungalows in a brilliant blue lagoon.",
+"tags": [
+"Beaches",
+"Luxury",
+"Romantic",
+"Nature"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 98
+}
+},
+{
+"title": "Tulum",
+"tagline": "Ancient ruins overlooking the turquoise Caribbean Sea.",
+"tags": [
+"Beaches",
+"Heritage",
+"Architecture",
+"Photography"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Leh",
+"tagline": "Majestic mountains and ancient Tibetan monasteries.",
+"tags": [
+"Mountains",
+"Adventure",
+"Road Trip",
+"Photography",
+"Culture"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 96
+}
+},
+{
+"title": "Ooty",
+"tagline": "The charming queen of the Nilgiri hills.",
+"tags": [
+"Mountains",
+"Romantic",
+"Scenic",
+"Heritage",
+"Family"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 92
+}
+},
+{
+"title": "Mussoorie",
+"tagline": "Colonial charm with sweeping Himalayan valley views.",
+"tags": [
+"Mountains",
+"Weekend Getaway",
+"Scenic",
+"Family"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Kodaikanal",
+"tagline": "Misty hills and a beautiful star-shaped lake.",
+"tags": [
+"Mountains",
+"Romantic",
+"Nature",
+"Scenic"
+],
+"bestSeason": "Sep-Nov, Dec-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Mount Fuji",
+"tagline": "Iconic sacred volcano soaring above the clouds.",
+"tags": [
+"Mountains",
+"Hiking",
+"Photography",
+"Culture"
+],
+"bestSeason": "Jul-Sep",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Patagonia",
+"tagline": "Dramatic peaks and glaciers at the world's edge.",
+"tags": [
+"Mountains",
+"Hiking",
+"Adventure",
+"Nature",
+"Photography"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 97
+}
+},
+{
+"title": "Mumbai",
+"tagline": "The bustling city of dreams and cinema.",
+"tags": [
+"Cities",
+"Nightlife",
+"Food",
+"Heritage",
+"Culture"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 94
+}
+},
+{
+"title": "Kolkata",
+"tagline": "India's cultural capital rich in colonial heritage.",
+"tags": [
+"Cities",
+"Culture",
+"Food",
+"Heritage",
+"Architecture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Chennai",
+"tagline": "Vibrant traditions meet stunning coastal sunrises.",
+"tags": [
+"Cities",
+"Culture",
+"Heritage",
+"Food"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Paris",
+"tagline": "The ultimate city of love and art.",
+"tags": [
+"Cities",
+"Romantic",
+"Architecture",
+"Culture",
+"Food"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 99
+}
+},
+{
+"title": "Tokyo",
+"tagline": "Neon-lit streets blending with ancient shrines.",
+"tags": [
+"Cities",
+"Shopping",
+"Food",
+"Culture",
+"Architecture"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 98
+}
+},
+{
+"title": "Pondicherry",
+"tagline": "French colonial elegance by the tranquil sea.",
+"tags": [
+"Cities",
+"Architecture",
+"Culture",
+"Weekend Getaway",
+"Food"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": true,
+"priority": 91
+}
+},
+{
+"title": "Havelock Island",
+"tagline": "Pristine coral reefs and magical underwater adventures.",
+"tags": [
+"Islands",
+"Adventure",
+"Nature",
+"Romantic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Diu",
+"tagline": "A coastal fortress town with Portuguese flair.",
+"tags": [
+"Islands",
+"Heritage",
+"Architecture",
+"Scenic"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 76
+}
+},
+{
+"title": "Munroe Island",
+"tagline": "Hidden backwater jewel with quiet winding canals.",
+"tags": [
+"Islands",
+"Hidden Gem",
+"Nature",
+"Scenic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 74
+}
+},
+{
+"title": "Seychelles",
+"tagline": "Spectacular granite boulders on perfect white shores.",
+"tags": [
+"Islands",
+"Luxury",
+"Romantic",
+"Nature",
+"Photography"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 96
+}
+},
+{
+"title": "Fiji",
+"tagline": "Tropical wonderland known for its friendly locals.",
+"tags": [
+"Islands",
+"Family",
+"Adventure",
+"Culture",
+"Scenic"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 86
+}
+},
+{
+"title": "Agumbe",
+"tagline": "The lush rainforest cherrapunji of the south.",
+"tags": [
+"Forests",
+"Nature",
+"Photography",
+"Hiking",
+"Hidden Gem"
+],
+"bestSeason": "Sep-Nov, Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Silent Valley",
+"tagline": "Untouched evergreen forests in the Western Ghats.",
+"tags": [
+"Forests",
+"Nature",
+"Hiking",
+"Photography",
+"Hidden Gem"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Binsar",
+"tagline": "Peaceful pine forests offering panoramic Himalayan views.",
+"tags": [
+"Forests",
+"Nature",
+"Scenic",
+"Weekend Getaway"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 79
+}
+},
+{
+"title": "Daintree Rainforest",
+"tagline": "The oldest surviving tropical rainforest on Earth.",
+"tags": [
+"Forests",
+"Nature",
+"Adventure",
+"Photography",
+"Culture"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 87
+}
+},
+{
+"title": "Black Forest",
+"tagline": "Enchanting woods straight out of a fairytale.",
+"tags": [
+"Forests",
+"Nature",
+"Hiking",
+"Food",
+"Architecture"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Bikaner",
+"tagline": "Desert dunes surrounding a magnificent red fort.",
+"tags": [
+"Deserts",
+"Heritage",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Jodhpur",
+"tagline": "The vibrant blue city of the desert.",
+"tags": [
+"Deserts",
+"Heritage",
+"Architecture",
+"Photography",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Barmer",
+"tagline": "Raw desert culture and intricate traditional handicrafts.",
+"tags": [
+"Deserts",
+"Culture",
+"Hidden Gem",
+"Shopping"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 70
+}
+},
+{
+"title": "Sahara Desert",
+"tagline": "Endless waves of golden sand and stars.",
+"tags": [
+"Deserts",
+"Adventure",
+"Camping",
+"Photography",
+"Scenic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 95
+}
+},
+{
+"title": "Atacama Desert",
+"tagline": "The driest place on Earth offering surreal landscapes.",
+"tags": [
+"Deserts",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Sep-Nov, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 86
+}
+},
+{
+"title": "Vembanad Lake",
+"tagline": "The longest lake in India offering serene cruises.",
+"tags": [
+"Lakes",
+"Scenic",
+"Nature",
+"Romantic"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Loktak Lake",
+"tagline": "Only floating national park on a tranquil lake.",
+"tags": [
+"Lakes",
+"Nature",
+"Hidden Gem",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Bhimtal",
+"tagline": "Peaceful lake island destination nestled in hills.",
+"tags": [
+"Lakes",
+"Family",
+"Weekend Getaway",
+"Scenic"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 77
+}
+},
+{
+"title": "Lake Baikal",
+"tagline": "The deepest and oldest freshwater lake worldwide.",
+"tags": [
+"Lakes",
+"Nature",
+"Adventure",
+"Photography"
+],
+"bestSeason": "Jun-Aug, Dec-Feb",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 84
+}
+},
+{
+"title": "Lake Tahoe",
+"tagline": "Crystal clear waters surrounded by alpine mountains.",
+"tags": [
+"Lakes",
+"Adventure",
+"Nature",
+"Family",
+"Scenic"
+],
+"bestSeason": "Jun-Aug, Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Jabalpur",
+"tagline": "Sail between marble rocks on the Narmada river.",
+"tags": [
+"Rivers",
+"Nature",
+"Photography",
+"Scenic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 76
+}
+},
+{
+"title": "Prayagraj",
+"tagline": "The holy confluence of India's grandest rivers.",
+"tags": [
+"Rivers",
+"Spiritual",
+"Culture",
+"Heritage"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 81
+}
+},
+{
+"title": "Dibrugarh",
+"tagline": "Cruise the mighty Brahmaputra past tea estates.",
+"tags": [
+"Rivers",
+"Nature",
+"Scenic",
+"Heritage"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Amazon River",
+"tagline": "Navigating the lifeblood of the great rainforest.",
+"tags": [
+"Rivers",
+"Adventure",
+"Nature",
+"Photography"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Rhine River",
+"tagline": "Majestic river passing medieval castles and vineyards.",
+"tags": [
+"Rivers",
+"Romantic",
+"Architecture",
+"Scenic",
+"Culture"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 90
+}
+},
+{
+"title": "Athirappilly Falls",
+"tagline": "The roaring silver cascade of the western ghats.",
+"tags": [
+"Waterfalls",
+"Nature",
+"Photography",
+"Scenic"
+],
+"bestSeason": "Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Dudhsagar Falls",
+"tagline": "A spectacular sea of milk falling through jungles.",
+"tags": [
+"Waterfalls",
+"Adventure",
+"Nature",
+"Hiking",
+"Photography"
+],
+"bestSeason": "Jul-Sep, Oct-Dec",
+"difficulty": "Challenging",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Shivanasamudra Falls",
+"tagline": "Twin waterfalls cascading dramatically over rocky cliffs.",
+"tags": [
+"Waterfalls",
+"Nature",
+"Scenic",
+"Weekend Getaway"
+],
+"bestSeason": "Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 74
+}
+},
+{
+"title": "Nohkalikai Falls",
+"tagline": "India's tallest plunge waterfall amidst green cliffs.",
+"tags": [
+"Waterfalls",
+"Nature",
+"Scenic",
+"Photography"
+],
+"bestSeason": "Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 79
+}
+},
+{
+"title": "Iguazu Falls",
+"tagline": "A breathtaking chain of powerful tropical cascades.",
+"tags": [
+"Waterfalls",
+"Nature",
+"Adventure",
+"Photography",
+"Scenic"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 95
+}
+},
+{
+"title": "Angel Falls",
+"tagline": "The highest uninterrupted waterfall in the world.",
+"tags": [
+"Waterfalls",
+"Adventure",
+"Nature",
+"Hidden Gem"
+],
+"bestSeason": "Jun-Aug, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 91
+}
+},
+{
+"title": "Pahalgam",
+"tagline": "Pristine valleys offering the ultimate snowy retreat.",
+"tags": [
+"Snow Destinations",
+"Romantic",
+"Nature",
+"Scenic"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Narkanda",
+"tagline": "Peaceful skiing destination draped in white snow.",
+"tags": [
+"Snow Destinations",
+"Adventure",
+"Scenic",
+"Hidden Gem"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Munsiyari",
+"tagline": "A snow-capped Himalayan outpost for trekking enthusiasts.",
+"tags": [
+"Snow Destinations",
+"Hiking",
+"Nature",
+"Adventure"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Challenging",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 81
+}
+},
+{
+"title": "Lachung",
+"tagline": "Picturesque snow-covered mountain village of North Sikkim.",
+"tags": [
+"Snow Destinations",
+"Nature",
+"Scenic",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 83
+}
+},
+{
+"title": "Whistler",
+"tagline": "World-class skiing and vibrant alpine village life.",
+"tags": [
+"Snow Destinations",
+"Adventure",
+"Luxury",
+"Family"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 94
+}
+},
+{
+"title": "Chamonix",
+"tagline": "Legendary alpine town at the base of Mont Blanc.",
+"tags": [
+"Snow Destinations",
+"Adventure",
+"Scenic",
+"Hiking"
+],
+"bestSeason": "Dec-Feb, Jun-Aug",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Periyar National Park",
+"tagline": "A verdant sanctuary centered around an artificial lake.",
+"tags": [
+"National Parks",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Bandhavgarh National Park",
+"tagline": "Incredible biodiversity and ancient fort ruins.",
+"tags": [
+"National Parks",
+"Nature",
+"Heritage",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 86
+}
+},
+{
+"title": "Mudumalai National Park",
+"tagline": "Beautiful forested habitats forming an elephant corridor.",
+"tags": [
+"National Parks",
+"Nature",
+"Family",
+"Scenic"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 76
+}
+},
+{
+"title": "Yellowstone",
+"tagline": "Geysers and wildlife in America's first park.",
+"tags": [
+"National Parks",
+"Nature",
+"Camping",
+"Adventure"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 97
+}
+},
+{
+"title": "Serengeti",
+"tagline": "Witness the majestic great migration across endless plains.",
+"tags": [
+"National Parks",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Jun-Aug",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 98
+}
+},
+{
+"title": "Ajanta Caves",
+"tagline": "Ancient rock-cut Buddhist temples holding exquisite frescoes.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": true,
+"priority": 93
+}
+},
+{
+"title": "Ellora Caves",
+"tagline": "Monumental monolithic rock temples carved from basalt.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Culture",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 87
+}
+},
+{
+"title": "Fatehpur Sikri",
+"tagline": "The brilliantly preserved ghost city of Akbar.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Mahabalipuram",
+"tagline": "Coastal town famed for its ancient stone temples.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Culture",
+"Scenic"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Chichen Itza",
+"tagline": "Marvel of Mayan astronomical and architectural genius.",
+"tags": [
+"Historical",
+"Heritage",
+"Culture",
+"Architecture"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 94
+}
+},
+{
+"title": "Acropolis of Athens",
+"tagline": "The enduring symbol of classical Greek civilization.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 90
+}
+},
+{
+"title": "Tirupati",
+"tagline": "The spiritual crown jewel of southern India.",
+"tags": [
+"Religious",
+"Spiritual",
+"Culture",
+"Heritage"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": true,
+"priority": 92
+}
+},
+{
+"title": "Haridwar",
+"tagline": "Participate in the mesmerizing evening river rituals.",
+"tags": [
+"Religious",
+"Spiritual",
+"Culture",
+"Photography"
+],
+"bestSeason": "Sep-Nov, Feb-Apr",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 84
+}
+},
+{
+"title": "Badrinath",
+"tagline": "A highly revered shrine nestled in snowy mountains.",
+"tags": [
+"Religious",
+"Spiritual",
+"Hiking",
+"Scenic"
+],
+"bestSeason": "May-Jul, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Shirdi",
+"tagline": "The sacred town of peace and unwavering devotion.",
+"tags": [
+"Religious",
+"Spiritual",
+"Culture",
+"Family"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 79
+}
+},
+{
+"title": "Vatican City",
+"tagline": "The artistic and spiritual center of Catholicism.",
+"tags": [
+"Religious",
+"Architecture",
+"Heritage",
+"Culture"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 96
+}
+},
+{
+"title": "Gir National Park",
+"tagline": "The last remaining refuge of the Asiatic lion.",
+"tags": [
+"Wildlife",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 94
+}
+},
+{
+"title": "Tadoba Andhari Reserve",
+"tagline": "Experience thrilling tiger sightings in the bamboo forest.",
+"tags": [
+"Wildlife",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Mar-May, Oct-Dec",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 86
+}
+},
+{
+"title": "Pench National Park",
+"tagline": "Dense teak forests teeming with diverse wildlife.",
+"tags": [
+"Wildlife",
+"Nature",
+"Family",
+"Photography"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 83
+}
+},
+{
+"title": "Kruger National Park",
+"tagline": "Africa's largest and most famous wildlife reserve.",
+"tags": [
+"Wildlife",
+"Adventure",
+"Nature",
+"Photography"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 90
+}
+},
+{
+"title": "Okavango Delta",
+"tagline": "A sprawling inland oasis teeming with diverse life.",
+"tags": [
+"Wildlife",
+"Nature",
+"Adventure",
+"Scenic",
+"Photography"
+],
+"bestSeason": "Jun-Aug, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Marari",
+"tagline": "Peaceful shores under swaying coastal palms.",
+"tags": [
+"Beaches",
+"Romantic",
+"Nature",
+"Hidden Gem",
+"Weekend Getaway"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 92
+}
+},
+{
+"title": "Tarkarli",
+"tagline": "Pristine waters perfect for thrilling scuba dives.",
+"tags": [
+"Beaches",
+"Adventure",
+"Hidden Gem",
+"Nature"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Puri Beach",
+"tagline": "Golden sands by the sacred eastern sea.",
+"tags": [
+"Beaches",
+"Spiritual",
+"Family",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 68
+}
+},
+{
+"title": "Gopalpur",
+"tagline": "Quiet coastal charm and colonial port heritage.",
+"tags": [
+"Beaches",
+"Heritage",
+"Scenic",
+"Hidden Gem"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 71
+}
+},
+{
+"title": "Copacabana",
+"tagline": "Vibrant energy on iconic Brazilian sandy shores.",
+"tags": [
+"Beaches",
+"Nightlife",
+"Culture",
+"Scenic",
+"Food"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 96
+}
+},
+{
+"title": "Whitehaven Beach",
+"tagline": "Swirling silica sands in a tropical paradise.",
+"tags": [
+"Beaches",
+"Nature",
+"Photography",
+"Scenic",
+"Luxury"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Shillong",
+"tagline": "The beautiful rolling hills of the east.",
+"tags": [
+"Mountains",
+"Scenic",
+"Culture",
+"Nature"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 90
+}
+},
+{
+"title": "Pelling",
+"tagline": "Majestic views of the sacred Kanchenjunga peak.",
+"tags": [
+"Mountains",
+"Photography",
+"Spiritual",
+"Scenic"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Kalpa",
+"tagline": "Apple orchards against dramatic snowy mountain backdrops.",
+"tags": [
+"Mountains",
+"Hidden Gem",
+"Scenic",
+"Nature"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 77
+}
+},
+{
+"title": "Chopta",
+"tagline": "The mini Switzerland hidden in the Himalayas.",
+"tags": [
+"Mountains",
+"Hiking",
+"Camping",
+"Nature"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 81
+}
+},
+{
+"title": "Cusco",
+"tagline": "Gateway to ancient high-altitude Incan empires.",
+"tags": [
+"Mountains",
+"Heritage",
+"Culture",
+"Photography"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 95
+}
+},
+{
+"title": "Mount Kilimanjaro",
+"tagline": "The spectacular roof of the African continent.",
+"tags": [
+"Mountains",
+"Adventure",
+"Hiking",
+"Photography",
+"Nature"
+],
+"bestSeason": "Jun-Aug, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Hyderabad",
+"tagline": "Royal palaces meet bustling modern tech hubs.",
+"tags": [
+"Cities",
+"Food",
+"Architecture",
+"Heritage",
+"Shopping"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Ahmedabad",
+"tagline": "A beautiful blend of heritage and textile.",
+"tags": [
+"Cities",
+"Heritage",
+"Culture",
+"Food"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Chandigarh",
+"tagline": "Stunning urban planning meets modernist architectural design.",
+"tags": [
+"Cities",
+"Architecture",
+"Culture",
+"Family"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 76
+}
+},
+{
+"title": "London",
+"tagline": "Timeless elegance across a vibrant historic metropolis.",
+"tags": [
+"Cities",
+"Architecture",
+"Culture",
+"Shopping",
+"Nightlife"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 99
+}
+},
+{
+"title": "Singapore",
+"tagline": "Futuristic skyline bursting with lush green spaces.",
+"tags": [
+"Cities",
+"Family",
+"Shopping",
+"Food",
+"Luxury"
+],
+"bestSeason": "Year Round",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Kadmat",
+"tagline": "Serene coral island with vibrant marine life.",
+"tags": [
+"Islands",
+"Nature",
+"Hidden Gem",
+"Adventure"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 74
+}
+},
+{
+"title": "Chorao",
+"tagline": "A peaceful river island sheltering exotic birds.",
+"tags": [
+"Islands",
+"Nature",
+"Hidden Gem",
+"Photography"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 69
+}
+},
+{
+"title": "Netrani",
+"tagline": "Heart-shaped island offering incredible scuba diving.",
+"tags": [
+"Islands",
+"Adventure",
+"Nature",
+"Hidden Gem"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 72
+}
+},
+{
+"title": "Palawan",
+"tagline": "Emerald waters winding through striking limestone cliffs.",
+"tags": [
+"Islands",
+"Nature",
+"Scenic",
+"Adventure",
+"Romantic"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 97
+}
+},
+{
+"title": "Mauritius",
+"tagline": "Volcanic island paradise with endless sugarcane fields.",
+"tags": [
+"Islands",
+"Luxury",
+"Romantic",
+"Family",
+"Scenic"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 87
+}
+},
+{
+"title": "Dandeli",
+"tagline": "Deep forests offering thrilling white water rapids.",
+"tags": [
+"Forests",
+"Adventure",
+"Camping",
+"Nature"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 79
+}
+},
+{
+"title": "Simlipal",
+"tagline": "Pristine biosphere reserve protecting vibrant Bengal tigers.",
+"tags": [
+"Forests",
+"Nature",
+"Photography",
+"Hidden Gem"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 71
+}
+},
+{
+"title": "BR Hills",
+"tagline": "Where eastern and western ghats beautifully meet.",
+"tags": [
+"Forests",
+"Nature",
+"Scenic",
+"Weekend Getaway"
+],
+"bestSeason": "Sep-Nov, Dec-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Monteverde",
+"tagline": "Walk above the clouds in lush canopies.",
+"tags": [
+"Forests",
+"Nature",
+"Adventure",
+"Photography",
+"Hiking"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 94
+}
+},
+{
+"title": "Arashiyama",
+"tagline": "Stroll through towering, ethereal green bamboo stalks.",
+"tags": [
+"Forests",
+"Photography",
+"Scenic",
+"Culture"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Mandawa",
+"tagline": "An open art gallery in the desert.",
+"tags": [
+"Deserts",
+"Heritage",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Khimsar",
+"tagline": "Sand dunes surrounding an ancient royal fortress.",
+"tags": [
+"Deserts",
+"Heritage",
+"Luxury",
+"Scenic"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Hunder",
+"tagline": "High altitude dunes with unique Bactrian camels.",
+"tags": [
+"Deserts",
+"Adventure",
+"Road Trip",
+"Scenic"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Wadi Rum",
+"tagline": "Sleep under the stars in Martian landscapes.",
+"tags": [
+"Deserts",
+"Adventure",
+"Camping",
+"Photography",
+"Scenic"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 96
+}
+},
+{
+"title": "Gobi Desert",
+"tagline": "A vast, silent expanse of dinosaur history.",
+"tags": [
+"Deserts",
+"Adventure",
+"Heritage",
+"Nature"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 84
+}
+},
+{
+"title": "Gurudongmar",
+"tagline": "Sacricted high altitude lake frozen in winter.",
+"tags": [
+"Lakes",
+"Scenic",
+"Spiritual",
+"Road Trip",
+"Nature"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 93
+}
+},
+{
+"title": "Wular",
+"tagline": "Asia's largest freshwater lake surrounded by mountains.",
+"tags": [
+"Lakes",
+"Nature",
+"Scenic",
+"Hidden Gem"
+],
+"bestSeason": "Jun-Aug, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 76
+}
+},
+{
+"title": "Tsomgo",
+"tagline": "Glacial lake mirroring the steep surrounding peaks.",
+"tags": [
+"Lakes",
+"Photography",
+"Scenic",
+"Nature"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Sela Lake",
+"tagline": "A pristine alpine lake near the pass.",
+"tags": [
+"Lakes",
+"Road Trip",
+"Scenic",
+"Photography"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 81
+}
+},
+{
+"title": "Lake Bled",
+"tagline": "A fairytale island church on glacial waters.",
+"tags": [
+"Lakes",
+"Romantic",
+"Scenic",
+"Photography",
+"Architecture"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 95
+}
+},
+{
+"title": "Lake Titicaca",
+"tagline": "Floating villages on the highest navigable lake.",
+"tags": [
+"Lakes",
+"Culture",
+"Heritage",
+"Scenic"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 87
+}
+},
+{
+"title": "Zanskar",
+"tagline": "Thrilling ice treks over a frozen river.",
+"tags": [
+"Rivers",
+"Adventure",
+"Hiking",
+"Scenic"
+],
+"bestSeason": "Jan-Mar",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Teesta",
+"tagline": "Rapid emerald waters carving through Himalayan valleys.",
+"tags": [
+"Rivers",
+"Adventure",
+"Scenic",
+"Nature"
+],
+"bestSeason": "Mar-May, Oct-Dec",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Mandovi",
+"tagline": "Sunset cruises along a lively coastal river.",
+"tags": [
+"Rivers",
+"Family",
+"Nightlife",
+"Scenic"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Danube",
+"tagline": "A grand river linking historic European capitals.",
+"tags": [
+"Rivers",
+"Culture",
+"Architecture",
+"Heritage"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 92
+}
+},
+{
+"title": "Mekong",
+"tagline": "Lifeblood of Southeast Asia winding past temples.",
+"tags": [
+"Rivers",
+"Culture",
+"Heritage",
+"Scenic"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Hogenakkal",
+"tagline": "The roaring, misty Niagara of southern India.",
+"tags": [
+"Waterfalls",
+"Nature",
+"Scenic",
+"Photography"
+],
+"bestSeason": "Aug-Oct, Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": true,
+"priority": 91
+}
+},
+{
+"title": "Bhagsu",
+"tagline": "Serene mountain waterfall near a spiritual town.",
+"tags": [
+"Waterfalls",
+"Hiking",
+"Spiritual",
+"Nature"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Barehipani",
+"tagline": "A spectacular two-tiered waterfall deep in forests.",
+"tags": [
+"Waterfalls",
+"Hidden Gem",
+"Nature",
+"Scenic"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 72
+}
+},
+{
+"title": "Plitvice",
+"tagline": "Terraced lakes connected by stunning cascading waterfalls.",
+"tags": [
+"Waterfalls",
+"Nature",
+"Photography",
+"Scenic"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Gullfoss",
+"tagline": "The immense golden waterfall of rugged Iceland.",
+"tags": [
+"Waterfalls",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Jun-Aug, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 86
+}
+},
+{
+"title": "Kufri",
+"tagline": "Playful winter slopes and panoramic Himalayan views.",
+"tags": [
+"Snow Destinations",
+"Family",
+"Adventure",
+"Scenic"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 77
+}
+},
+{
+"title": "Patnitop",
+"tagline": "Peaceful hilltop blanketed by thick winter snow.",
+"tags": [
+"Snow Destinations",
+"Scenic",
+"Nature",
+"Romantic"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 74
+}
+},
+{
+"title": "Aru Valley",
+"tagline": "Pristine snowy meadows perfect for quiet retreats.",
+"tags": [
+"Snow Destinations",
+"Hidden Gem",
+"Scenic",
+"Nature"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Yumthang",
+"tagline": "Valley of flowers transforming into snowy wonderland.",
+"tags": [
+"Snow Destinations",
+"Scenic",
+"Photography",
+"Nature"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Tromso",
+"tagline": "Watch the northern lights over snowy fjords.",
+"tags": [
+"Snow Destinations",
+"Photography",
+"Adventure",
+"Nature"
+],
+"bestSeason": "Nov-Feb, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 98
+}
+},
+{
+"title": "Cortina d'Ampezzo",
+"tagline": "Stylish ski resort in the dramatic Dolomites.",
+"tags": [
+"Snow Destinations",
+"Luxury",
+"Adventure",
+"Scenic"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Eravikulam",
+"tagline": "Green hills protecting the endangered Nilgiri Tahr.",
+"tags": [
+"National Parks",
+"Nature",
+"Photography",
+"Scenic"
+],
+"bestSeason": "Sep-Nov, Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 83
+}
+},
+{
+"title": "Keoladeo",
+"tagline": "A magnificent haven for global migratory birds.",
+"tags": [
+"National Parks",
+"Photography",
+"Nature",
+"Family"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Manas",
+"tagline": "Lush biodiversity spanning a gorgeous river border.",
+"tags": [
+"National Parks",
+"Nature",
+"Hidden Gem",
+"Adventure"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Nanda Devi",
+"tagline": "Spectacular alpine wilderness around India's second peak.",
+"tags": [
+"National Parks",
+"Hiking",
+"Adventure",
+"Nature"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 87
+}
+},
+{
+"title": "Torres del Paine",
+"tagline": "Soaring granite horns over vivid blue glaciers.",
+"tags": [
+"National Parks",
+"Hiking",
+"Adventure",
+"Photography",
+"Nature"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 97
+}
+},
+{
+"title": "Gwalior",
+"tagline": "A majestic hilltop fort defining royal history.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": true,
+"priority": 92
+}
+},
+{
+"title": "Nalanda",
+"tagline": "Ruins of an ancient, grand monastic university.",
+"tags": [
+"Historical",
+"Heritage",
+"Culture",
+"Spiritual"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 81
+}
+},
+{
+"title": "Konark",
+"tagline": "A colossal chariot carved as a stone temple.",
+"tags": [
+"Historical",
+"Architecture",
+"Heritage",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Alhambra",
+"tagline": "A magnificent Moorish palace of intricate design.",
+"tags": [
+"Historical",
+"Architecture",
+"Heritage",
+"Photography"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 90
+}
+},
+{
+"title": "Pyramids of Giza",
+"tagline": "The last standing ancient wonders of the world.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Photography"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 99
+}
+},
+{
+"title": "Rameswaram",
+"tagline": "Island temple town steeped in epic legends.",
+"tags": [
+"Religious",
+"Spiritual",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": true,
+"priority": 91
+}
+},
+{
+"title": "Vaishno Devi",
+"tagline": "A revered pilgrimage carved into high mountains.",
+"tags": [
+"Religious",
+"Spiritual",
+"Hiking",
+"Family"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 86
+}
+},
+{
+"title": "Ujjain",
+"tagline": "Ancient city celebrating the grand Kumbh Mela.",
+"tags": [
+"Religious",
+"Spiritual",
+"Heritage",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Somnath",
+"tagline": "A resilient seaside temple of eternal devotion.",
+"tags": [
+"Religious",
+"Spiritual",
+"Architecture",
+"Heritage"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 84
+}
+},
+{
+"title": "Jerusalem",
+"tagline": "The deeply sacred epicenter of three faiths.",
+"tags": [
+"Religious",
+"Spiritual",
+"Heritage",
+"Architecture"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 96
+}
+},
+{
+"title": "Kabini",
+"tagline": "See elusive black panthers in dense woodlands.",
+"tags": [
+"Wildlife",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 95
+}
+},
+{
+"title": "Velavadar",
+"tagline": "Golden grasslands protecting the graceful blackbuck herds.",
+"tags": [
+"Wildlife",
+"Nature",
+"Photography",
+"Hidden Gem"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Bhitarkanika",
+"tagline": "Mangrove creeks hosting massive saltwater giant crocodiles.",
+"tags": [
+"Wildlife",
+"Nature",
+"Adventure",
+"Hidden Gem"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Valmiki",
+"tagline": "Pristine terai wilderness hiding the royal tiger.",
+"tags": [
+"Wildlife",
+"Nature",
+"Hidden Gem",
+"Adventure"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Bwindi Impenetrable",
+"tagline": "Trek deep to meet majestic mountain gorillas.",
+"tags": [
+"Wildlife",
+"Adventure",
+"Hiking",
+"Nature"
+],
+"bestSeason": "Jun-Aug, Dec-Feb",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Etosha",
+"tagline": "Extraordinary desert wildlife gathering around a pan.",
+"tags": [
+"Wildlife",
+"Photography",
+"Nature",
+"Adventure"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 94
+}
+},
+{
+"title": "Malpe",
+"tagline": "Golden sands alongside a vibrant fishing harbor.",
+"tags": [
+"Beaches",
+"Family",
+"Scenic",
+"Weekend Getaway",
+"Hidden Gem"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 60
+}
+},
+{
+"title": "Yarada",
+"tagline": "A serene stretch surrounded by lush hills.",
+"tags": [
+"Beaches",
+"Nature",
+"Scenic",
+"Hidden Gem",
+"Photography"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 55
+}
+},
+{
+"title": "Kashid",
+"tagline": "White sand waves meeting lush green landscapes.",
+"tags": [
+"Beaches",
+"Weekend Getaway",
+"Romantic",
+"Scenic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 65
+}
+},
+{
+"title": "Waikiki",
+"tagline": "Surfing paradise nestled beneath a volcanic crater.",
+"tags": [
+"Beaches",
+"Luxury",
+"Nightlife",
+"Shopping",
+"Family"
+],
+"bestSeason": "Year Round",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Navagio",
+"tagline": "A stunning shipwreck resting on pristine sands.",
+"tags": [
+"Beaches",
+"Photography",
+"Scenic",
+"Nature",
+"Adventure"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 95
+}
+},
+{
+"title": "Mount Abu",
+"tagline": "A cool oasis surrounded by arid landscapes.",
+"tags": [
+"Mountains",
+"Heritage",
+"Spiritual",
+"Weekend Getaway"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 70
+}
+},
+{
+"title": "Kasauli",
+"tagline": "Cobbled paths and quiet colonial mountain charm.",
+"tags": [
+"Mountains",
+"Romantic",
+"Scenic",
+"Weekend Getaway",
+"Nature"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 68
+}
+},
+{
+"title": "Lansdowne",
+"tagline": "An unspoiled cantonment town wrapped in pines.",
+"tags": [
+"Mountains",
+"Weekend Getaway",
+"Nature",
+"Scenic",
+"Hidden Gem"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Dharamshala",
+"tagline": "Spiritual mountain retreat echoing with Tibetan chants.",
+"tags": [
+"Mountains",
+"Spiritual",
+"Culture",
+"Backpacking",
+"Nature"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 92
+}
+},
+{
+"title": "Table Mountain",
+"tagline": "A majestic flat-topped peak overlooking the ocean.",
+"tags": [
+"Mountains",
+"Adventure",
+"Hiking",
+"Photography",
+"Nature"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Mount Cook",
+"tagline": "Rugged alpine peaks towering above glacial lakes.",
+"tags": [
+"Mountains",
+"Adventure",
+"Hiking",
+"Scenic",
+"Photography"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 94
+}
+},
+{
+"title": "Lucknow",
+"tagline": "The city of majestic nawabs and kebabs.",
+"tags": [
+"Cities",
+"Food",
+"Heritage",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 77
+}
+},
+{
+"title": "Pune",
+"tagline": "Vibrant youthful energy meets rich Maratha history.",
+"tags": [
+"Cities",
+"Food",
+"Nightlife",
+"Culture",
+"Weekend Getaway"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 72
+}
+},
+{
+"title": "Bhubaneswar",
+"tagline": "The magnificent temple city of the east.",
+"tags": [
+"Cities",
+"Heritage",
+"Architecture",
+"Spiritual"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 68
+}
+},
+{
+"title": "Barcelona",
+"tagline": "A masterpiece of whimsical architecture and art.",
+"tags": [
+"Cities",
+"Architecture",
+"Food",
+"Nightlife",
+"Culture"
+],
+"bestSeason": "May-Jul, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 98
+}
+},
+{
+"title": "Seoul",
+"tagline": "Dynamic metropolis blending grand palaces and pop.",
+"tags": [
+"Cities",
+"Shopping",
+"Food",
+"Nightlife",
+"Culture"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 96
+}
+},
+{
+"title": "Minicoy",
+"tagline": "A secluded tropical gem wrapped in coral.",
+"tags": [
+"Islands",
+"Nature",
+"Hidden Gem",
+"Scenic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Elephanta Island",
+"tagline": "Ancient rock-cut caves surrounded by the sea.",
+"tags": [
+"Islands",
+"Heritage",
+"Architecture",
+"Weekend Getaway"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 64
+}
+},
+{
+"title": "Divar Island",
+"tagline": "A sleepy river island steeped in nostalgia.",
+"tags": [
+"Islands",
+"Culture",
+"Scenic",
+"Hidden Gem",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 71
+}
+},
+{
+"title": "Mykonos",
+"tagline": "Whitewashed alleys leading to epic beach parties.",
+"tags": [
+"Islands",
+"Nightlife",
+"Luxury",
+"Romantic",
+"Architecture"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 97
+}
+},
+{
+"title": "Koh Samui",
+"tagline": "Lush palm groves meeting upscale island luxury.",
+"tags": [
+"Islands",
+"Luxury",
+"Romantic",
+"Nature",
+"Family"
+],
+"bestSeason": "Dec-Feb, Jul-Sep",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 91
+}
+},
+{
+"title": "Matheran",
+"tagline": "Asia's only automobile-free hill station sanctuary.",
+"tags": [
+"Forests",
+"Weekend Getaway",
+"Nature",
+"Scenic",
+"Hiking"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Amarkantak",
+"tagline": "Mystic woods at the origin of rivers.",
+"tags": [
+"Forests",
+"Spiritual",
+"Nature",
+"Heritage"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 66
+}
+},
+{
+"title": "Saputara",
+"tagline": "A verdant tribal retreat in the hills.",
+"tags": [
+"Forests",
+"Family",
+"Scenic",
+"Nature"
+],
+"bestSeason": "Jul-Sep, Oct-Dec",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 69
+}
+},
+{
+"title": "Pachmarhi",
+"tagline": "Caves and cascades nestled in ancient woods.",
+"tags": [
+"Forests",
+"Family",
+"Nature",
+"Adventure",
+"Scenic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 79
+}
+},
+{
+"title": "Jiuzhaigou",
+"tagline": "Fairy-tale valleys of colorful lakes and woods.",
+"tags": [
+"Forests",
+"Photography",
+"Nature",
+"Scenic"
+],
+"bestSeason": "Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 93
+}
+},
+{
+"title": "Tongass",
+"tagline": "Vast temperate rainforests teeming with wild beauty.",
+"tags": [
+"Forests",
+"Adventure",
+"Nature",
+"Photography",
+"Hiking"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 84
+}
+},
+{
+"title": "Osian",
+"tagline": "An ancient oasis rising from the sands.",
+"tags": [
+"Deserts",
+"Heritage",
+"Culture",
+"Camping"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 67
+}
+},
+{
+"title": "Khuri",
+"tagline": "Experience authentic rural charm on shifting dunes.",
+"tags": [
+"Deserts",
+"Camping",
+"Culture",
+"Scenic",
+"Hidden Gem"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 74
+}
+},
+{
+"title": "Phalodi",
+"tagline": "The fascinating salt town of the desert.",
+"tags": [
+"Deserts",
+"Heritage",
+"Culture",
+"Photography"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 62
+}
+},
+{
+"title": "Mojave Desert",
+"tagline": "Stark landscapes defined by twisted Joshua trees.",
+"tags": [
+"Deserts",
+"Road Trip",
+"Adventure",
+"Photography"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Namib Desert",
+"tagline": "Towering red dunes meeting the wild ocean.",
+"tags": [
+"Deserts",
+"Photography",
+"Scenic",
+"Nature",
+"Adventure"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 95
+}
+},
+{
+"title": "Tarsar Lake",
+"tagline": "An almond-shaped alpine marvel in the mountains.",
+"tags": [
+"Lakes",
+"Hiking",
+"Camping",
+"Nature",
+"Scenic"
+],
+"bestSeason": "Jul-Sep",
+"difficulty": "Challenging",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 81
+}
+},
+{
+"title": "Sattal",
+"tagline": "Interconnected serene lakes tucked inside thick forests.",
+"tags": [
+"Lakes",
+"Nature",
+"Photography",
+"Weekend Getaway",
+"Hidden Gem"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 73
+}
+},
+{
+"title": "Chandratal",
+"tagline": "A crescent moon reflecting the starry cosmos.",
+"tags": [
+"Lakes",
+"Camping",
+"Adventure",
+"Photography",
+"Road Trip"
+],
+"bestSeason": "Jun-Aug, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 86
+}
+},
+{
+"title": "Suraj Tal",
+"tagline": "The crystal clear lake of the sun.",
+"tags": [
+"Lakes",
+"Road Trip",
+"Scenic",
+"Nature"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Lake Louise",
+"tagline": "Brilliant turquoise waters framed by majestic glaciers.",
+"tags": [
+"Lakes",
+"Nature",
+"Photography",
+"Luxury",
+"Romantic"
+],
+"bestSeason": "Jun-Aug, Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 97
+}
+},
+{
+"title": "Lake Victoria",
+"tagline": "The vast jewel of the African rift.",
+"tags": [
+"Lakes",
+"Nature",
+"Adventure",
+"Culture"
+],
+"bestSeason": "Jun-Aug, Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 83
+}
+},
+{
+"title": "Maheshwar",
+"tagline": "Historic ghats beside the holy winding Narmada.",
+"tags": [
+"Rivers",
+"Heritage",
+"Culture",
+"Spiritual",
+"Scenic"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Kolad",
+"tagline": "Roaring river rapids surrounded by pristine nature.",
+"tags": [
+"Rivers",
+"Adventure",
+"Weekend Getaway",
+"Camping"
+],
+"bestSeason": "Jun-Aug, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 71
+}
+},
+{
+"title": "Barot",
+"tagline": "A secluded river valley perfect for trout.",
+"tags": [
+"Rivers",
+"Hidden Gem",
+"Camping",
+"Nature"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 68
+}
+},
+{
+"title": "Thames River",
+"tagline": "Flowing through the heart of British history.",
+"tags": [
+"Rivers",
+"Architecture",
+"Culture",
+"Scenic"
+],
+"bestSeason": "May-Jul, Aug-Oct",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Seine River",
+"tagline": "A highly romantic sail past global landmarks.",
+"tags": [
+"Rivers",
+"Romantic",
+"Architecture",
+"Culture",
+"Photography"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 99
+}
+},
+{
+"title": "Kune Falls",
+"tagline": "A magnificent three-tiered cascade cutting through valleys.",
+"tags": [
+"Waterfalls",
+"Nature",
+"Scenic",
+"Weekend Getaway"
+],
+"bestSeason": "Jul-Sep, Oct-Dec",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 70
+}
+},
+{
+"title": "Meenmutty Falls",
+"tagline": "A thrilling jungle trek to tumbling waters.",
+"tags": [
+"Waterfalls",
+"Hiking",
+"Nature",
+"Adventure"
+],
+"bestSeason": "Sep-Nov, Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 76
+}
+},
+{
+"title": "Thoseghar Falls",
+"tagline": "Stunning seasonal plunges amidst deep emerald gorges.",
+"tags": [
+"Waterfalls",
+"Scenic",
+"Nature",
+"Weekend Getaway"
+],
+"bestSeason": "Jul-Sep",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 72
+}
+},
+{
+"title": "Sutherland Falls",
+"tagline": "A colossal drop deep in remote wilderness.",
+"tags": [
+"Waterfalls",
+"Hiking",
+"Nature",
+"Scenic",
+"Adventure"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 84
+}
+},
+{
+"title": "Ban Gioc Falls",
+"tagline": "Majestic border waterfalls flanked by towering karst.",
+"tags": [
+"Waterfalls",
+"Photography",
+"Nature",
+"Scenic",
+"Culture"
+],
+"bestSeason": "Aug-Oct",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 92
+}
+},
+{
+"title": "Dhanaulti",
+"tagline": "Quiet winter wonderland amidst tall alpine forests.",
+"tags": [
+"Snow Destinations",
+"Weekend Getaway",
+"Nature",
+"Scenic",
+"Camping"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Rohtang Pass",
+"tagline": "Thrilling high-altitude gateway to the stark north.",
+"tags": [
+"Snow Destinations",
+"Adventure",
+"Road Trip",
+"Scenic"
+],
+"bestSeason": "May-Jul, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 85
+}
+},
+{
+"title": "Solang Valley",
+"tagline": "A high-octane hub for dynamic winter sports.",
+"tags": [
+"Snow Destinations",
+"Adventure",
+"Family",
+"Scenic"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 91
+}
+},
+{
+"title": "Aspen",
+"tagline": "Exclusive alpine skiing merged with elite nightlife.",
+"tags": [
+"Snow Destinations",
+"Luxury",
+"Adventure",
+"Nightlife"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 96
+}
+},
+{
+"title": "Niseko",
+"tagline": "The legendary deep powder capital of Japan.",
+"tags": [
+"Snow Destinations",
+"Adventure",
+"Food",
+"Luxury"
+],
+"bestSeason": "Dec-Feb",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 94
+}
+},
+{
+"title": "Bandipur National Park",
+"tagline": "Lush woodlands providing a perfect elephant safari.",
+"tags": [
+"National Parks",
+"Nature",
+"Photography",
+"Family"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 81
+}
+},
+{
+"title": "Sariska",
+"tagline": "Spot big cats amid fascinating ruined forts.",
+"tags": [
+"National Parks",
+"Heritage",
+"Nature",
+"Weekend Getaway"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 74
+}
+},
+{
+"title": "Rajaji National Park",
+"tagline": "Pristine elephant reserve at the Himalayan foothills.",
+"tags": [
+"National Parks",
+"Nature",
+"Adventure",
+"Photography"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 69
+}
+},
+{
+"title": "Namdapha National Park",
+"tagline": "Untouched rainforests hiding the elusive snow leopard.",
+"tags": [
+"National Parks",
+"Hidden Gem",
+"Nature",
+"Hiking"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Challenging",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 77
+}
+},
+{
+"title": "Fiordland National Park",
+"tagline": "Carved by ice into spectacular deep sounds.",
+"tags": [
+"National Parks",
+"Adventure",
+"Hiking",
+"Nature",
+"Scenic"
+],
+"bestSeason": "Dec-Feb, Mar-May",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 95
+}
+},
+{
+"title": "Jasper National Park",
+"tagline": "Vast pristine wilderness of peaks and pines.",
+"tags": [
+"National Parks",
+"Nature",
+"Camping",
+"Photography",
+"Scenic"
+],
+"bestSeason": "Jun-Aug, Sep-Nov",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 93
+}
+},
+{
+"title": "Orchha",
+"tagline": "Frozen in time along the Betwa river.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": true,
+"priority": 90
+}
+},
+{
+"title": "Jhansi",
+"tagline": "A powerful testament to India's brave queens.",
+"tags": [
+"Historical",
+"Heritage",
+"Culture",
+"Architecture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 72
+}
+},
+{
+"title": "Sanchi",
+"tagline": "The grandest ancient stupa of early Buddhism.",
+"tags": [
+"Historical",
+"Spiritual",
+"Heritage",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 83
+}
+},
+{
+"title": "Chittorgarh",
+"tagline": "The largest and most imposing Rajput fortress.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 79
+}
+},
+{
+"title": "Great Wall of China",
+"tagline": "The legendary dragon winding across ancient hills.",
+"tags": [
+"Historical",
+"Adventure",
+"Architecture",
+"Heritage"
+],
+"bestSeason": "Mar-May, Sep-Nov",
+"difficulty": "Challenging",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": true,
+"priority": 98
+}
+},
+{
+"title": "Teotihuacan",
+"tagline": "Climb the massive pyramids of the sun.",
+"tags": [
+"Historical",
+"Heritage",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 87
+}
+},
+{
+"title": "Mathura",
+"tagline": "The joyous birthplace radiating eternal divine love.",
+"tags": [
+"Religious",
+"Spiritual",
+"Culture",
+"Heritage"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 76
+}
+},
+{
+"title": "Kanyakumari",
+"tagline": "Where three mighty oceans and devotion unite.",
+"tags": [
+"Religious",
+"Spiritual",
+"Scenic",
+"Culture",
+"Photography"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 82
+}
+},
+{
+"title": "Dwarka",
+"tagline": "The sacred ancient kingdom beside the sea.",
+"tags": [
+"Religious",
+"Spiritual",
+"Heritage",
+"Architecture"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 78
+}
+},
+{
+"title": "Mecca",
+"tagline": "The intensely reverent heart of the Islamic world.",
+"tags": [
+"Religious",
+"Spiritual",
+"Architecture",
+"Culture"
+],
+"bestSeason": "Nov-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 88
+}
+},
+{
+"title": "Lourdes",
+"tagline": "A serene sanctuary of profound miraculous healing.",
+"tags": [
+"Religious",
+"Spiritual",
+"Heritage",
+"Culture"
+],
+"bestSeason": "Apr-Jun, Sep-Nov",
+"difficulty": "Easy",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 80
+}
+},
+{
+"title": "Panna National Park",
+"tagline": "Beautiful gorges hiding vibrant striped wild cats.",
+"tags": [
+"Wildlife",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Oct-Dec, Jan-Mar",
+"difficulty": "Moderate",
+"estimatedBudget": "Mid-range",
+"discover": {
+"featured": false,
+"priority": 75
+}
+},
+{
+"title": "Dudhwa",
+"tagline": "Untamed marshlands perfect for quiet wildlife spotting.",
+"tags": [
+"Wildlife",
+"Nature",
+"Hidden Gem",
+"Photography"
+],
+"bestSeason": "Nov-Feb, Mar-May",
+"difficulty": "Moderate",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 70
+}
+},
+{
+"title": "Jaldapara",
+"tagline": "Dense riverine forests protecting the majestic rhino.",
+"tags": [
+"Wildlife",
+"Nature",
+"Adventure",
+"Family"
+],
+"bestSeason": "Oct-Dec, Mar-May",
+"difficulty": "Easy",
+"estimatedBudget": "Budget",
+"discover": {
+"featured": false,
+"priority": 68
+}
+},
+{
+"title": "Pantanal",
+"tagline": "The largest unbroken tropical wetland on Earth.",
+"tags": [
+"Wildlife",
+"Nature",
+"Photography",
+"Adventure"
+],
+"bestSeason": "Jul-Sep",
+"difficulty": "Challenging",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": false,
+"priority": 89
+}
+},
+{
+"title": "Ngorongoro Crater",
+"tagline": "A spectacular collapsed volcano packed with wildlife.",
+"tags": [
+"Wildlife",
+"Nature",
+"Photography",
+"Adventure",
+"Luxury"
+],
+"bestSeason": "Jun-Aug, Dec-Feb",
+"difficulty": "Moderate",
+"estimatedBudget": "Luxury",
+"discover": {
+"featured": true,
+"priority": 99
+}
+}
+]

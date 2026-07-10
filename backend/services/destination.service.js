@@ -3,15 +3,8 @@ const { getDestinationImages } = require("./unsplash.service");
 const { getWikipediaAttraction, getWikipediaSummary } = require("./wikipedia.service");
 const { getWeather } = require("./weather.service");
 const {getDestinationTags, getDestinationTagline} = require("./ai.service");
-const DestinationMetadata = require("../models/destinationMetadata.model");
+const Destination = require("../models/Destination.model");
 const { getNearbyPlaces } = require("./nearby.service");
-
-const typeMap = {
-    relation: "R",
-    way: "W",
-    node: "N"
-};
-
 const allowedCategories = new Set([
     "boundary",
     "place",
@@ -19,113 +12,76 @@ const allowedCategories = new Set([
     "tourism"
 ]);
 
-const NOMINATIM_MIN_INTERVAL_MS = Number(process.env.NOMINATIM_MIN_INTERVAL_MS || 1200);
-const NOMINATIM_CACHE_TTL_MS = Number(process.env.NOMINATIM_CACHE_TTL_MS || 60 * 60 * 1000);
-const nominatimCache = new Map();
-const destinationDetailsCache = new Map();
-
-let nominatimQueue = Promise.resolve();
-let lastNominatimRequestAt = 0;
-
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const cacheKey = (url, params = {}) => {
-    const orderedParams = Object.keys(params)
-        .sort()
-        .reduce((acc, key) => {
-            acc[key] = params[key];
-            return acc;
-        }, {});
-
-    return `${url}:${JSON.stringify(orderedParams)}`;
-};
-
-const getCachedNominatimResponse = (key) => {
-    const cached = nominatimCache.get(key);
-
-    if (!cached) return null;
-
-    if (Date.now() - cached.createdAt > NOMINATIM_CACHE_TTL_MS) {
-        nominatimCache.delete(key);
-        return null;
-    }
-
-    return cached.data;
-};
-
-const getCachedDestinationResponse = (key) => {
-    const cached = destinationDetailsCache.get(key);
-
-    if (!cached) return null;
-
-    if (Date.now() - cached.createdAt > NOMINATIM_CACHE_TTL_MS) {
-        destinationDetailsCache.delete(key);
-        return null;
-    }
-
-    return cached.data;
-};
-
-const createRateLimitError = () => {
-    const err = new Error("Map provider rate limit reached. Please wait a few seconds and try again.");
-    err.statusCode = 429;
-    return err;
-};
-
-const safeCall = async (fn, fallback) => {
-    try {
-        const value = await fn();
-        return value ?? fallback;
-    } catch (err) {
-        console.warn(err.message);
-        return fallback;
-    }
-};
-
-const nominatimGet = async (url, options) => {
-    const key = cacheKey(url, options.params);
-    const cached = getCachedNominatimResponse(key);
-
-    if (cached) return cached;
-
-    const runRequest = async () => {
-        const waitFor = NOMINATIM_MIN_INTERVAL_MS - (Date.now() - lastNominatimRequestAt);
-
-        if (waitFor > 0) {
-            await sleep(waitFor);
-        }
-
-        lastNominatimRequestAt = Date.now();
-
-        try {
-            const { data } = await axios.get(url, {
-                timeout: 10000,
-                ...options
-            });
-
-            nominatimCache.set(key, {
-                data,
-                createdAt: Date.now()
-            });
-
-            return data;
-        } catch (err) {
-            if (err.response?.status === 429) {
-                throw createRateLimitError();
-            }
-
-            throw err;
-        }
-    };
-
-    const queuedRequest = nominatimQueue.then(runRequest, runRequest);
-    nominatimQueue = queuedRequest.catch(() => {});
-
-    return queuedRequest;
+const typeMap = {
+    relation: "R",
+    way: "W",
+    node: "N"
 };
 
 const searchDestination = async (query) => {
-    const data = await nominatimGet(
+
+    const search = query.trim().toLowerCase();
+
+    const cachedResults = await Destination.find({
+        $or: [
+            {
+                title: {
+                    $regex: search,
+                    $options: "i"
+                }
+            },
+            {
+                subtitle: {
+                    $regex: search,
+                    $options: "i"
+                }
+            }
+        ]
+    }).lean();
+
+    if (cachedResults.length) {
+
+        const ranked = cachedResults
+            .map(place => {
+
+                let score = 0;
+
+                const title = place.title.toLowerCase();
+                const subtitle = place.subtitle.toLowerCase();
+
+                if (title === search) score += 100;
+                else if (title.startsWith(search)) score += 80;
+                else if (title.includes(search)) score += 60;
+
+                if (subtitle.startsWith(search)) score += 40;
+                else if (subtitle.includes(search)) score += 20;
+
+                return {
+                    ...place,
+                    score
+                };
+
+            })
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 10);
+
+        return ranked.map(place => ({
+            placeId: place.placeId,
+
+            title: place.title,
+
+            subtitle: place.subtitle,
+
+            coordinates: place.coordinates,
+
+            heroImage: place.heroImage.url,
+
+            tags: place.tags
+        }));
+
+    }
+
+    const { data } = await axios.get(
         "https://nominatim.openstreetmap.org/search",
         {
             params: {
@@ -145,43 +101,108 @@ const searchDestination = async (query) => {
     return data
         .filter(place => allowedCategories.has(place.category))
         .sort((a, b) => {
-            const search = query.toLowerCase();
 
-            const aStarts = a.display_name.toLowerCase().startsWith(search);
-            const bStarts = b.display_name.toLowerCase().startsWith(search);
+            const aTitle =
+                a.namedetails?.["name:en"] ||
+                a.namedetails?.name ||
+                a.display_name;
 
-            if (aStarts && !bStarts) return -1;
-            if (!aStarts && bStarts) return 1;
+            const bTitle =
+                b.namedetails?.["name:en"] ||
+                b.namedetails?.name ||
+                b.display_name;
 
-            return 0;
+            let scoreA = 0;
+            let scoreB = 0;
+
+            const titleA = aTitle.toLowerCase();
+            const titleB = bTitle.toLowerCase();
+
+            if (titleA === search) scoreA += 100;
+            else if (titleA.startsWith(search)) scoreA += 80;
+            else if (titleA.includes(search)) scoreA += 60;
+
+            if (titleB === search) scoreB += 100;
+            else if (titleB.startsWith(search)) scoreB += 80;
+            else if (titleB.includes(search)) scoreB += 60;
+
+            return scoreB - scoreA;
+
         })
         .map(place => ({
+
             placeId: `${typeMap[place.osm_type]}${place.osm_id}`,
 
             title:
                 place.namedetails?.["name:en"] ||
-                place.namedetails?.int_name ||
                 place.namedetails?.name ||
+                place.name ||
                 place.display_name.split(",")[0],
 
-
-            subtitle:  place.display_name,
+            subtitle: [
+                place.address?.city ||
+                place.address?.town ||
+                place.address?.village,
+                place.address?.state,
+                place.address?.country
+            ]
+                .filter(Boolean)
+                .join(", "),
 
             coordinates: {
                 latitude: Number(place.lat),
                 longitude: Number(place.lon)
             },
 
-            category: place.category,
-            type: place.type
+            heroImage: null,
+
+            tags: []
+
         }));
 };
 
 const getDestinationDetails = async (placeId) => {
-    const cachedDestination = getCachedDestinationResponse(`destination:${placeId}`);
+
+    const cachedDestination = await Destination.findOne({ placeId }).lean();
+    const weather = await getWeather(cachedDestination?.coordinates?.latitude, cachedDestination?.coordinates?.longitude);
 
     if (cachedDestination) {
-        return cachedDestination;
+        return {
+            placeId: cachedDestination.placeId,
+
+            basicInfo: {
+                title: cachedDestination.title,
+                subtitle: cachedDestination.subtitle,
+                coordinates: cachedDestination.coordinates,
+                location: cachedDestination.location,
+                tagline: cachedDestination.tagline,
+                tags: cachedDestination.tags
+            },
+
+            gallery: {
+                heroImage: {
+                    title: cachedDestination.heroImage.title,
+                    description: cachedDestination.heroImage.description,
+                    heroImage: cachedDestination.heroImage.imageUrl
+                },
+                images: cachedDestination.gallery
+            },
+
+            stats: {
+                rating: cachedDestination.stats.rating,
+                reviewCount: cachedDestination.stats.reviewCount,
+                bestSeason: cachedDestination.stats.bestSeason,
+                estimatedBudget: cachedDestination.estimatedBudget,
+                difficulty: cachedDestination.difficulty
+            },
+
+            weather,
+
+            nearby: {
+                attractions: cachedDestination.nearby
+            },
+            discover: cachedDestination.discover
+        };
     }
 
     const typePrefix = placeId[0];
@@ -238,64 +259,79 @@ const getDestinationDetails = async (placeId) => {
     .filter(Boolean)
     .join(", ");
 
-    const [images, heroImage, weather, nearbyAttractions] = await Promise.all([
-        safeCall(() => getDestinationImages(imageQuery), []),
-        safeCall(() => getWikipediaSummary(title), {
-            title,
-            description: place.display_name,
-            heroImage: null
-        }),
-        safeCall(() => getWeather(Number(place.lat), Number(place.lon)), null),
-        safeCall(() => getNearbyPlaces(Number(place.lat), Number(place.lon)), [])
+    const [images, heroImage, nearbyAttractions] = await Promise.all([
+        getDestinationImages(imageQuery),
+        getWikipediaSummary(title),
+        getNearbyPlaces(Number(place.lat), Number(place.lon))
     ]);
 
-    let metadata = await safeCall(
-        () => DestinationMetadata.findOne({ placeId }),
-        null
-    );
+    const [tags, tagline] = await Promise.all([
+        getDestinationTags(
+            heroImage.title,
+            heroImage.description
+        ),
+        getDestinationTagline(
+            heroImage.title,
+            heroImage.description
+        )
+    ]);
 
-    if (!metadata) {
-        metadata = await safeCall(
-            () => DestinationMetadata.create({ placeId }),
-            {
-                placeId,
-                title,
-                tags: [],
-                tagline: ""
-            }
-        );
-    }
+    await Destination.create({
+        placeId,
 
-    if (!metadata.title) {
+        title,
 
-        metadata.title = heroImage.title || title;
+        subtitle: [city, state, country]
+            .filter(Boolean)
+            .join(", "),
 
-        await safeCall(() => metadata.save?.(), null);
-    }
+        location: {
+            city,
+            state,
+            country,
+            countryCode:
+                place.address?.country_code?.toUpperCase() || null
+        },
 
-    if (!metadata.tags || metadata.tags.length === 0) {
+        coordinates: {
+            latitude: Number(place.lat),
+            longitude: Number(place.lon)
+        },
 
-        metadata.tags = await safeCall(
-            () => getDestinationTags(
-                heroImage.title || title,
-                heroImage.description || place.display_name
-            ),
-            ["Cities", "Culture", "Food", "Nature", "Travel"]
-        );
+        tagline,
 
-        await safeCall(() => metadata.save?.(), null);
-    }
+        tags,
 
-    if (!metadata.tagline) {
-        metadata.tagline = await safeCall(
-            () => getDestinationTagline(
-                heroImage.title || title,
-                heroImage.description || place.display_name
-            ),
-            `Discover ${title}`
-        );
-        await safeCall(() => metadata.save?.(), null);
-    }
+        heroImage: {
+            title: heroImage.title,
+            description: heroImage.description,
+            imageUrl: heroImage.heroImage
+        },
+
+        gallery: images,
+
+        stats: {
+            rating: 0,
+            reviewCount: 0,
+            priceFrom: null,
+        },
+
+        difficulty: null,
+
+        bestSeason: null,
+
+        estimatedBudget: null,
+
+        weather,
+
+        nearby: nearbyAttractions,
+
+        discover: {
+            featured: false,
+            categories: [],
+            priority: 0
+        }
+    });
 
     const destination = {
         placeId,
@@ -331,14 +367,16 @@ const getDestinationDetails = async (placeId) => {
         stats: {
             rating: null,
             reviewCount: 0,
-            priceFrom: null,
-            bestSeason: null
+            bestSeason: null,
+            estimatedBudget: null,
+            difficulty: null
         },
 
         weather,
         nearby: {
             attractions: nearbyAttractions
-        }
+        },
+        discover
     };
 
     destinationDetailsCache.set(`destination:${placeId}`, {
