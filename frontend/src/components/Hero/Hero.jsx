@@ -1,21 +1,16 @@
 //this is new toggle added hero section -AJINKYA
 
-import { lazy, Suspense, useRef, useState } from "react";
+import { lazy, Suspense, useRef } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { fadeUp, staggerContainer } from "../../animations/variants";
-import Client, { SetModeOfView } from "../../model/ClientSettings";
+import { useModeOfView } from "../../hooks/useModeOfView";
 import HeroToggle from "./HeroToggle";
 const HeroCesium = lazy(() => import("./HeroCesium"));
 const HeroThree = lazy(() => import("./HeroThree"));
 
 export default function Hero() {
   const sectionRef = useRef(null);
-  const [modeOfView, setModeOfView] = useState(Client.modeOfView);
-
-  const handleModeChange = (nextMode) => {
-    SetModeOfView(Client, nextMode);
-    setModeOfView(Client.modeOfView);
-  };
+  const { modeOfView, setModeOfView } = useModeOfView();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -79,7 +74,7 @@ export default function Hero() {
       />
 
       <div className="absolute right-4 top-24 z-[45] md:right-8 md:top-28">
-        <HeroToggle mode={modeOfView} onChange={handleModeChange} />
+        <HeroToggle mode={modeOfView} onChange={setModeOfView} />
       </div>
 
       <motion.div

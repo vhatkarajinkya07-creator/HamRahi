@@ -19,8 +19,113 @@ const allowedCategories = new Set([
     "tourism"
 ]);
 
+const NOMINATIM_MIN_INTERVAL_MS = Number(process.env.NOMINATIM_MIN_INTERVAL_MS || 1200);
+const NOMINATIM_CACHE_TTL_MS = Number(process.env.NOMINATIM_CACHE_TTL_MS || 60 * 60 * 1000);
+const nominatimCache = new Map();
+const destinationDetailsCache = new Map();
+
+let nominatimQueue = Promise.resolve();
+let lastNominatimRequestAt = 0;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const cacheKey = (url, params = {}) => {
+    const orderedParams = Object.keys(params)
+        .sort()
+        .reduce((acc, key) => {
+            acc[key] = params[key];
+            return acc;
+        }, {});
+
+    return `${url}:${JSON.stringify(orderedParams)}`;
+};
+
+const getCachedNominatimResponse = (key) => {
+    const cached = nominatimCache.get(key);
+
+    if (!cached) return null;
+
+    if (Date.now() - cached.createdAt > NOMINATIM_CACHE_TTL_MS) {
+        nominatimCache.delete(key);
+        return null;
+    }
+
+    return cached.data;
+};
+
+const getCachedDestinationResponse = (key) => {
+    const cached = destinationDetailsCache.get(key);
+
+    if (!cached) return null;
+
+    if (Date.now() - cached.createdAt > NOMINATIM_CACHE_TTL_MS) {
+        destinationDetailsCache.delete(key);
+        return null;
+    }
+
+    return cached.data;
+};
+
+const createRateLimitError = () => {
+    const err = new Error("Map provider rate limit reached. Please wait a few seconds and try again.");
+    err.statusCode = 429;
+    return err;
+};
+
+const safeCall = async (fn, fallback) => {
+    try {
+        const value = await fn();
+        return value ?? fallback;
+    } catch (err) {
+        console.warn(err.message);
+        return fallback;
+    }
+};
+
+const nominatimGet = async (url, options) => {
+    const key = cacheKey(url, options.params);
+    const cached = getCachedNominatimResponse(key);
+
+    if (cached) return cached;
+
+    const runRequest = async () => {
+        const waitFor = NOMINATIM_MIN_INTERVAL_MS - (Date.now() - lastNominatimRequestAt);
+
+        if (waitFor > 0) {
+            await sleep(waitFor);
+        }
+
+        lastNominatimRequestAt = Date.now();
+
+        try {
+            const { data } = await axios.get(url, {
+                timeout: 10000,
+                ...options
+            });
+
+            nominatimCache.set(key, {
+                data,
+                createdAt: Date.now()
+            });
+
+            return data;
+        } catch (err) {
+            if (err.response?.status === 429) {
+                throw createRateLimitError();
+            }
+
+            throw err;
+        }
+    };
+
+    const queuedRequest = nominatimQueue.then(runRequest, runRequest);
+    nominatimQueue = queuedRequest.catch(() => {});
+
+    return queuedRequest;
+};
+
 const searchDestination = async (query) => {
-    const { data } = await axios.get(
+    const data = await nominatimGet(
         "https://nominatim.openstreetmap.org/search",
         {
             params: {
@@ -73,6 +178,12 @@ const searchDestination = async (query) => {
 };
 
 const getDestinationDetails = async (placeId) => {
+    const cachedDestination = getCachedDestinationResponse(`destination:${placeId}`);
+
+    if (cachedDestination) {
+        return cachedDestination;
+    }
+
     const typePrefix = placeId[0];
     const osmId = placeId.slice(1);
 
@@ -80,7 +191,7 @@ const getDestinationDetails = async (placeId) => {
         throw new Error("Invalid Place ID");
     }
 
-    const { data } = await axios.get(
+    const data = await nominatimGet(
         "https://nominatim.openstreetmap.org/lookup",
         {
             params: {
@@ -128,46 +239,65 @@ const getDestinationDetails = async (placeId) => {
     .join(", ");
 
     const [images, heroImage, weather, nearbyAttractions] = await Promise.all([
-        getDestinationImages(imageQuery),
-        getWikipediaSummary(title),
-        getWeather(Number(place.lat), Number(place.lon)),
-        getNearbyPlaces(Number(place.lat), Number(place.lon))
+        safeCall(() => getDestinationImages(imageQuery), []),
+        safeCall(() => getWikipediaSummary(title), {
+            title,
+            description: place.display_name,
+            heroImage: null
+        }),
+        safeCall(() => getWeather(Number(place.lat), Number(place.lon)), null),
+        safeCall(() => getNearbyPlaces(Number(place.lat), Number(place.lon)), [])
     ]);
 
-    let metadata = await DestinationMetadata.findOne({ placeId });
+    let metadata = await safeCall(
+        () => DestinationMetadata.findOne({ placeId }),
+        null
+    );
 
     if (!metadata) {
-        metadata = await DestinationMetadata.create({
-            placeId
-        });
+        metadata = await safeCall(
+            () => DestinationMetadata.create({ placeId }),
+            {
+                placeId,
+                title,
+                tags: [],
+                tagline: ""
+            }
+        );
     }
 
     if (!metadata.title) {
 
-        metadata.title = heroImage.title;
+        metadata.title = heroImage.title || title;
 
-        await metadata.save();
+        await safeCall(() => metadata.save?.(), null);
     }
 
-    if (metadata.tags.length === 0) {
+    if (!metadata.tags || metadata.tags.length === 0) {
 
-        metadata.tags = await getDestinationTags(
-            heroImage.title,
-            heroImage.description
+        metadata.tags = await safeCall(
+            () => getDestinationTags(
+                heroImage.title || title,
+                heroImage.description || place.display_name
+            ),
+            ["Cities", "Culture", "Food", "Nature", "Travel"]
         );
 
-        await metadata.save();
+        await safeCall(() => metadata.save?.(), null);
     }
 
     if (!metadata.tagline) {
-        metadata.tagline = await getDestinationTagline(
-            heroImage.title,
-            heroImage.description
+        metadata.tagline = await safeCall(
+            () => getDestinationTagline(
+                heroImage.title || title,
+                heroImage.description || place.display_name
+            ),
+            `Discover ${title}`
         );
-        await metadata.save();
+        await safeCall(() => metadata.save?.(), null);
     }
 
-    return {
+    const destination = {
         placeId,
 
         basicInfo: {
@@ -210,6 +340,13 @@ const getDestinationDetails = async (placeId) => {
             attractions: nearbyAttractions
         }
     };
+
+    destinationDetailsCache.set(`destination:${placeId}`, {
+        data: destination,
+        createdAt: Date.now()
+    });
+
+    return destination;
 };
 
 module.exports = {

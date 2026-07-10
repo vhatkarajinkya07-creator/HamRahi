@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import "primeicons/primeicons.css";
 import { useScrollPosition } from "../../hooks/useScrollPosition";
@@ -9,10 +10,13 @@ import { useScrollPosition } from "../../hooks/useScrollPosition";
 const links = [
   { to: "/", label: "Home", icon: "pi-home" },
   { to: "/#destinations", label: "Explore", icon: "pi-compass" },
+  { to: "/wishlist", label: "Wishlist", icon: "pi-heart" },
+  { to: "/itinerary", label: "Itinerary", icon: "pi-sparkles" },
 ];
 
 export default function Navbar() {
   const scrollY = useScrollPosition();
+  const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const solid = scrollY > 50;
 
@@ -72,7 +76,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <nav className="hidden items-center space-x-20 md:flex">
+          <nav className="hidden items-center gap-10 md:flex">
             {links.map((l) => (
               <NavLink
                 key={l.label}
@@ -91,13 +95,23 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-4">
-            <Link
-              to="/login"
-              onClick={closeDrawer}
-              className="text-[14px] font-medium text-white transition-opacity duration-300 hover:opacity-70 active:scale-95"
-            >
-              Login
-            </Link>
+            {user ? (
+              <button
+                type="button"
+                onClick={() => { logout(); closeDrawer(); }}
+                className="text-[14px] font-medium text-white transition-opacity duration-300 hover:opacity-70 active:scale-95"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                onClick={closeDrawer}
+                className="text-[14px] font-medium text-white transition-opacity duration-300 hover:opacity-70 active:scale-95"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </motion.header>
@@ -161,16 +175,26 @@ export default function Navbar() {
             <div className="mt-auto border-t border-white/10 pt-6">
               <div className="rounded-xl bg-white/5 p-4">
                 <p className="mb-2 text-[12px] font-semibold text-white/50">
-                  Member of HUMRAHI?
+                  {user ? user.name : "Member of HUMRAHI?"}
                 </p>
 
-                <Link
-                  to="/login"
-                  onClick={closeDrawer}
-                  className="block w-full rounded-full bg-white py-3 text-center text-[14px] font-medium text-[#0A0A0A] transition-all hover:bg-white/90 active:scale-95"
-                >
-                  Sign In
-                </Link>
+                {user ? (
+                  <button
+                    type="button"
+                    onClick={() => { logout(); closeDrawer(); }}
+                    className="block w-full rounded-full bg-white py-3 text-center text-[14px] font-medium text-[#0A0A0A] transition-all hover:bg-white/90 active:scale-95"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link
+                    to="/login"
+                    onClick={closeDrawer}
+                    className="block w-full rounded-full bg-white py-3 text-center text-[14px] font-medium text-[#0A0A0A] transition-all hover:bg-white/90 active:scale-95"
+                  >
+                    Sign In
+                  </Link>
+                )}
               </div>
             </div>
           </motion.aside>

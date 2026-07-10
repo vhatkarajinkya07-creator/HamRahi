@@ -1,31 +1,28 @@
-
-import { useCallback, useEffect, useState } from "react";
-import Client, { ChangeModeOfView, SetModeOfView } from "../model/ClientSettings";
+import { useSyncExternalStore, useCallback } from "react";
+import Client, { SetModeOfView } from "../model/ClientSettings";
 
 const listeners = new Set();
 
+function subscribe(listener) {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function getSnapshot() {
+  return Client.modeOfView;
+}
+
 function notify() {
-  for (const listener of listeners) listener(Client.modeOfView);
+  listeners.forEach((listener) => listener());
 }
 
 export function useModeOfView() {
-  const [modeOfView, setModeOfViewState] = useState(Client.modeOfView);
+  const modeOfView = useSyncExternalStore(subscribe, getSnapshot);
 
-  useEffect(() => {
-    const listener = (mode) => setModeOfViewState(mode);
-    listeners.add(listener);
-    return () => listeners.delete(listener);
-  }, []);
-
-  const setMode = useCallback((mode) => {
-    SetModeOfView(Client, mode);
+  const setModeOfView = useCallback((nextMode) => {
+    SetModeOfView(Client, nextMode);
     notify();
   }, []);
 
-  const toggleMode = useCallback(() => {
-    ChangeModeOfView(Client);
-    notify();
-  }, []);
-
-  return { modeOfView, setMode, toggleMode };
+  return { modeOfView, setModeOfView };
 }

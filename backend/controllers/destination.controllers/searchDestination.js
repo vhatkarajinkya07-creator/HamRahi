@@ -21,6 +21,12 @@ const searchDestinations = async (req, res) => {
         return res.status(200).json(destinations);
 
     } catch (err) {
+        if (err.statusCode === 429) {
+            return res.status(429).json({
+                message: err.message
+            });
+        }
+
         console.error(err);
 
         return res.status(500).json({

@@ -1,4 +1,3 @@
-
 import { lazy, Suspense } from "react";
 import { useModeOfView } from "../../hooks/useModeOfView";
 
@@ -7,7 +6,6 @@ const GlobeSectionNormal = lazy(() => import("./GlobeSectionNormal"));
 
 export default function GlobeSection() {
   const { modeOfView } = useModeOfView();
-
 
   return (
     <Suspense fallback={null}>

@@ -1,17 +1,18 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { searchDestination } = require("./destination.service");
 const DestinationMetaData = require("../models/destinationMetadata.model");
+const { GEMINI_MODEL } = require("../config/gemini.config");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash"
+    model: GEMINI_MODEL
 });
 
 const getTrendingDestinations = async () => {
 
     const prompt = `
-Return ONLY a valid JSON array of exactly 40 travel destination names.
+Return ONLY a valid JSON array of exactly 12 travel destination names.
 
 Rules:
 - Include a mix of cities, beaches, islands, mountains, historical places and nature destinations.
@@ -78,7 +79,7 @@ The user likes these destinations:
 
 ${metadataText}
 
-Recommend EXACTLY 40 travel destinations.
+Recommend EXACTLY 12 travel destinations.
 
 Rules:
 
@@ -88,7 +89,7 @@ Rules:
 4. Diversify recommendations across countries and continents.
 5. Recommend places with similar experiences and vibes.
 6. Use internationally recognized English destination names.
-7. Return EXACTLY 40 destinations.
+7. Return EXACTLY 12 destinations.
 8. Return ONLY a valid JSON array.
 9. Do NOT use markdown.
 10. Do NOT number the list.

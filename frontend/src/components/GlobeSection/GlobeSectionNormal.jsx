@@ -5,17 +5,18 @@
 // camera-flight sequence for a responsive card grid, a lightweight Three.js
 // decorative globe, and a details modal — all considerably cheaper to run.
 
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer } from "../../animations/variants";
-import { destinations } from "../../data/destinations";
+import { useDiscoverDestinations } from "../../hooks/useDiscoverDestinations";
 import NormalDestinationGrid from "./NormalDestinationGrid";
 import NormalDestinationPanel from "./NormalDestinationPanel";
 
 const NormalHeroScene = lazy(() => import("./NormalHeroScene"));
 
 export default function GlobeSectionNormal() {
-  const [activeId, setActiveId] = useState(destinations[0].id);
+  const { destinations, status } = useDiscoverDestinations();
+  const [activeId, setActiveId] = useState(destinations[0]?.id);
   const [panelOpen, setPanelOpen] = useState(false);
 
   const activeDestination =
@@ -25,6 +26,12 @@ export default function GlobeSectionNormal() {
     setActiveId(id);
     setPanelOpen(true);
   };
+
+  useEffect(() => {
+    if (!activeId && destinations[0]?.id) {
+      setActiveId(destinations[0].id);
+    }
+  }, [activeId, destinations]);
 
   return (
     <section
@@ -64,7 +71,7 @@ export default function GlobeSectionNormal() {
         >
           <span className="h-2 w-2 rounded-full bg-white shadow-[0_0_16px_rgba(255,255,255,0.65)]" />
           <span className="text-xs font-semibold uppercase">
-            {destinations.length} destinations, one browser
+            {status === "loading" ? "Loading live destinations" : `${destinations.length} destinations, one browser`}
           </span>
         </motion.div>
 

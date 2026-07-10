@@ -8,7 +8,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Cesium from "cesium";
-import { destinations, CATEGORY_THEME } from "../../data/destinations";
+import { CATEGORY_THEME } from "../../data/destinations";
+import { useDiscoverDestinations } from "../../hooks/useDiscoverDestinations";
 import { useCesiumViewer } from "../../hooks/useCesiumViewer";
 import { useActiveSection } from "../../hooks/useActiveSection";
 import { useIsMobile } from "../../hooks/useIsMobile";
@@ -20,6 +21,7 @@ export default function GlobeSection3D() {
   const glowEntityRef = useRef(null);
   const markerEntitiesRef = useRef([]);
   const panelRevealTimeoutRef = useRef(null);
+  const { destinations } = useDiscoverDestinations();
   const { activeIndex, registerRef } = useActiveSection(destinations.length);
   const isMobile = useIsMobile(900);
   const navigate = useNavigate();
