@@ -67,4 +67,5 @@ Unnecessary files push mat karna
 _______________________________________________________________________________________________
 
 frontend guys, email verification page bnana haii!!!
-detailed INFO of All APIs is available in /backend/info.md
+
+## detailed INFO of All APIs is available in /backend/info.md
