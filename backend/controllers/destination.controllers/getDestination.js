@@ -15,8 +15,6 @@ const getDestination = async (req, res) => {
         return res.status(200).json(destination);
 
     } catch (err) {
-        console.error(err);
-
         if (err.message === "Invalid Place ID") {
             return res.status(400).json({
                 message: err.message
@@ -28,6 +26,14 @@ const getDestination = async (req, res) => {
                 message: err.message
             });
         }
+
+        if (err.statusCode === 429) {
+            return res.status(429).json({
+                message: err.message
+            });
+        }
+
+        console.error(err);
 
         return res.status(500).json({
             message: err.message || "Server error"

@@ -212,7 +212,7 @@ const getDestinationDetails = async (placeId) => {
         throw new Error("Invalid Place ID");
     }
 
-    const { data } = await axios.get(
+    const data = await nominatimGet(
         "https://nominatim.openstreetmap.org/lookup",
         {
             params: {
@@ -333,7 +333,7 @@ const getDestinationDetails = async (placeId) => {
         }
     });
 
-    return {
+    const destination = {
         placeId,
 
         basicInfo: {
@@ -378,6 +378,13 @@ const getDestinationDetails = async (placeId) => {
         },
         discover
     };
+
+    destinationDetailsCache.set(`destination:${placeId}`, {
+        data: destination,
+        createdAt: Date.now()
+    });
+
+    return destination;
 };
 
 module.exports = {

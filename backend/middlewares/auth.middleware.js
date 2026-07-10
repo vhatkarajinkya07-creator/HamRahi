@@ -17,7 +17,6 @@ const authMiddleware = async (req, res, next) => {
         );
 
         req.user = decoded;
-        console.log("Authenticated user:", req.user);
 
         next();
 

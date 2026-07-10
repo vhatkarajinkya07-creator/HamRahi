@@ -309,3 +309,449 @@ Backend clears the authentication cookie.
 Redirect user to the Login page.
 
 ---
+---
+
+# HamRahi Backend API Documentation
+
+---
+
+# Authentication
+
+The following APIs require authentication (JWT stored in cookies):
+
+- Wishlist APIs
+- Itinerary API
+
+No Authorization header is required. Cookies are automatically sent using:
+
+```js
+axios.defaults.withCredentials = true;
+```
+
+---
+
+# 1. Search Destination
+
+### Endpoint
+
+```http
+GET /destination/search?q=<search_query>
+```
+
+### Example
+
+```http
+GET /destination/search?q=tokyo
+```
+
+### Response
+
+```json
+[
+    {
+        "placeId": "R1543125",
+        "title": "Tokyo",
+        "subtitle": "Tokyo, Japan",
+        "coordinates": {
+            "latitude": 35.67,
+            "longitude": 139.76
+        },
+        "category": "boundary",
+        "type": "administrative"
+    }
+]
+```
+
+---
+
+# 2. Destination Details
+
+### Endpoint
+
+```http
+GET /destination/:placeId
+```
+
+Example
+
+```http
+GET /destination/R1543125
+```
+
+---
+
+### Response
+
+```json
+{
+    "placeId": "R1543125",
+
+    "basicInfo": {
+        "title": "Tokyo",
+        "subtitle": "Japan",
+
+        "coordinates": {
+            "latitude": 35.67,
+            "longitude": 139.76
+        },
+
+        "location": {
+            "city": null,
+            "state": null,
+            "country": "Japan",
+            "countryCode": "JP"
+        },
+
+        "tagline": "Rajasthan's Royal Reflection.",
+
+        "tags": [
+            "Cities",
+            "Food",
+            "Shopping",
+            "Nightlife",
+            "Culture"
+        ]
+    },
+
+    "gallery": {
+
+        "heroImage": {
+            "title": "...",
+            "description": "...",
+            "heroImage": "..."
+        },
+
+        "images": [
+            {
+                "id": "...",
+                "imageUrl": "...",
+                "thumbnail": "...",
+                "photographer": "...",
+                "photographerProfile": "...",
+                "alt": "..."
+            }
+        ]
+    },
+
+    "weather": {
+        "temperature": 26.3,
+        "windSpeed": 15.3,
+        "condition": "Cloudy",
+        "icon": "cloudy"
+    },
+
+    "nearby": [
+        {
+            "placeId": "...",
+            "title": "...",
+            "coordinates": {
+                "latitude": 0,
+                "longitude": 0
+            }
+        }
+    ],
+
+    "stats": {
+        "rating": null,
+        "reviewCount": 0
+    }
+}
+```
+
+---
+
+# 3. Discover Feed
+
+Used for homepage swipe cards.
+
+Supports both:
+
+- Guest users
+- Logged in users
+
+Guest
+
+- Returns trending destinations.
+
+Logged In
+
+- Returns AI personalized destinations.
+
+---
+
+### Endpoint
+
+```http
+GET /destination/discover
+```
+
+---
+
+### Response
+
+```json
+[
+    {
+        "placeId": "R1543125",
+        "title": "Tokyo",
+        "subtitle": "Japan",
+        "coordinates": {
+            "latitude": 35.67,
+            "longitude": 139.76
+        }
+    }
+]
+```
+
+Frontend should call
+
+```http
+GET /destination/:placeId
+```
+
+after user opens a card to fetch complete details.
+
+---
+
+# Wishlist APIs
+
+Requires Login.
+
+---
+
+# 1. Add to Wishlist
+
+```http
+POST /wishlist/:placeId
+```
+
+Example
+
+```http
+POST /wishlist/R1543125
+```
+
+Response
+
+```json
+{
+    "message": "Added to wishlist"
+}
+```
+
+---
+
+# 2. Remove from Wishlist
+
+```http
+DELETE /wishlist/:placeId
+```
+
+Example
+
+```http
+DELETE /wishlist/R1543125
+```
+
+Response
+
+```json
+{
+    "message": "Removed from wishlist"
+}
+```
+
+---
+
+# 3. Get Wishlist
+
+```http
+GET /wishlist
+```
+
+Returns complete destination objects.
+
+Response
+
+```json
+[
+    {
+        "placeId": "R1543125",
+
+        "basicInfo": {
+            "title": "Tokyo"
+        },
+
+        "gallery": {
+            "heroImage": {
+                "heroImage": "..."
+            }
+        },
+
+        "weather": {
+            "temperature": 27,
+            "condition": "Sunny"
+        }
+    }
+]
+```
+
+No extra API calls are required by frontend.
+
+---
+
+# AI Itinerary
+
+Requires Login.
+
+---
+
+### Endpoint
+
+```http
+POST /itinerary/generate
+```
+
+### Body
+
+```json
+{
+    "placeId": "R1543125",
+    "days": 5,
+    "budget": "Medium",
+    "travelStyle": "Friends",
+    "interests": [
+        "Food",
+        "Shopping",
+        "Nightlife"
+    ]
+}
+```
+
+---
+
+### Response
+
+```json
+{
+    "destination": "Tokyo",
+
+    "tripSummary": "...",
+
+    "estimatedBudget": "...",
+
+    "bestTimeToVisit": "...",
+
+    "packingEssentials": [
+        "...",
+        "..."
+    ],
+
+    "localTips": [
+        "...",
+        "..."
+    ],
+
+    "days": [
+        {
+            "day": 1,
+
+            "title": "Historic Tokyo",
+
+            "activities": [
+                {
+                    "time": "Morning",
+
+                    "activity": "Visit Senso-ji Temple",
+
+                    "description": "Explore Tokyo's oldest Buddhist temple."
+                },
+                {
+                    "time": "Afternoon",
+
+                    "activity": "Street Food at Nakamise",
+
+                    "description": "Taste authentic Japanese snacks."
+                }
+            ]
+        }
+    ]
+}
+```
+
+---
+
+# Frontend Flow
+
+## Homepage
+
+```
+GET /destination/discover
+        ↓
+Swipe Cards
+        ↓
+Click Card
+        ↓
+GET /destination/:placeId
+```
+
+---
+
+## Search
+
+```
+GET /destination/search?q=...
+        ↓
+User selects destination
+        ↓
+GET /destination/:placeId
+```
+
+---
+
+## Wishlist
+
+```
+POST /wishlist/:placeId
+
+↓
+
+GET /wishlist
+
+↓
+
+DELETE /wishlist/:placeId
+```
+
+---
+
+## AI Itinerary
+
+```
+User fills form
+
+↓
+
+POST /itinerary/generate
+
+↓
+
+Display itinerary
+```
+
+---
+
+# Notes for Frontend
+
+- Always use `placeId` as the unique identifier.
+- Destination Details API returns everything required to render the destination page.
+- Discover API returns lightweight destination cards.
+- Wishlist APIs require authentication.
+- AI Itinerary API requires authentication.
+- Axios should use:
+
+```js
+axios.defaults.withCredentials = true;
+```
+
+for authenticated requests.

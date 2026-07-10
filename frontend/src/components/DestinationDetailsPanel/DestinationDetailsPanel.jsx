@@ -36,14 +36,14 @@ function IsolatedDestinationView({ id }) {
   useEffect(() => {
     if (!mountRef.current) return;
 
-    rootRef.current = createRoot(mountRef.current);
+    const mountNode = mountRef.current;
+    rootRef.current = mountNode.__destinationRoot || createRoot(mountNode);
+    mountNode.__destinationRoot = rootRef.current;
 
     return () => {
-      const root = rootRef.current;
-
-      if (root) {
-        queueMicrotask(() => root.unmount());
-      }
+      mountNode.__destinationRoot?.unmount();
+      delete mountNode.__destinationRoot;
+      rootRef.current = null;
     };
   }, []);
 

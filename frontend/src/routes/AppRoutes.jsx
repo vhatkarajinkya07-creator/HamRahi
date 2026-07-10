@@ -1,13 +1,13 @@
-
-//sirf aapna aapna path dalna dusro ka mat change mat kr dena aur ... sidha AI se copy paste mat krna orginal code ko change mat krna
-//                                                                                                  -AJINKYA VHATKAR
-
-
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Destination from "../pages/Destination/Destination";
 import About from "../pages/About/About";
 import Login from "../pages/Login/Login";
+import Register from "../pages/Register/Register";
+import VerifyEmail from "../pages/VerifyEmail/VerifyEmail";
+import Wishlist from "../pages/Wishlist/Wishlist";
+import Itinerary from "../pages/Itinerary/Itinerary";
+import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 
 export default function AppRoutes() {
   return (
@@ -16,6 +16,11 @@ export default function AppRoutes() {
       <Route path="/destination/:id" element={<Destination />} />
       <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/verify-email/:token" element={<VerifyEmail />} />
+      <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
+      <Route path="/itinerary" element={<ProtectedRoute><Itinerary /></ProtectedRoute>} />
     </Routes>
   );
 }

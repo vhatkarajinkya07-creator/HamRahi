@@ -17,7 +17,7 @@ Node.js install kar lena
 
 Step 2
 
-Repository clone kar lena
+Repository clone kar lena  
 
 ```bash
 git clone https://github.com/vhatkarajinkya07-creator/HamRahi
@@ -66,6 +66,5 @@ Commit messages samajhne layak rakhna
 Unnecessary files push mat karna
 _______________________________________________________________________________________________
 
-SHIVANSH ->
-
-frontend guys : email verification page bnana haii!!!
+frontend guys, email verification page bnana haii!!!
+detailed INFO of All APIs is available in /backend/info.md
