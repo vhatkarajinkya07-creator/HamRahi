@@ -388,7 +388,7 @@ GET /destination/R1543125
 
     "basicInfo": {
         "title": "Tokyo",
-        "subtitle": "Japan",
+        "subtitle": "Tokyo, Japan",
 
         "coordinates": {
             "latitude": 35.67,
@@ -396,13 +396,13 @@ GET /destination/R1543125
         },
 
         "location": {
-            "city": null,
+            "city": "Tokyo",
             "state": null,
             "country": "Japan",
             "countryCode": "JP"
         },
 
-        "tagline": "Rajasthan's Royal Reflection.",
+        "tagline": "Where tradition meets tomorrow.",
 
         "tags": [
             "Cities",
@@ -414,11 +414,10 @@ GET /destination/R1543125
     },
 
     "gallery": {
-
         "heroImage": {
-            "title": "...",
+            "title": "Tokyo",
             "description": "...",
-            "heroImage": "..."
+            "heroImage": "https://..."
         },
 
         "images": [
@@ -433,6 +432,14 @@ GET /destination/R1543125
         ]
     },
 
+    "stats": {
+        "rating": 4.8,
+        "reviewCount": 1240,
+        "bestSeason": "Mar-May, Sep-Nov",
+        "estimatedBudget": "Mid-range",
+        "difficulty": "Easy"
+    },
+
     "weather": {
         "temperature": 26.3,
         "windSpeed": 15.3,
@@ -440,24 +447,28 @@ GET /destination/R1543125
         "icon": "cloudy"
     },
 
-    "nearby": [
-        {
-            "placeId": "...",
-            "title": "...",
-            "coordinates": {
-                "latitude": 0,
-                "longitude": 0
-            }
-        }
-    ],
+    "nearby": {
+        "attractions": [
+            {
+                "placeId": "N12345",
+                "title": "Tokyo Tower",
 
-    "stats": {
-        "rating": null,
-        "reviewCount": 0
+                "coordinates": {
+                    "latitude": 35.6586,
+                    "longitude": 139.7454
+                },
+
+                "metadata": {
+                    "category": "attraction",
+                    "wikipedia": "en:Tokyo Tower",
+                    "wikidata": "Q17754",
+                    "website": null
+                }
+            }
+        ]
     }
 }
 ```
-
 ---
 
 # 3. Discover Feed
@@ -494,22 +505,24 @@ GET /destination/discover
     {
         "placeId": "R1543125",
         "title": "Tokyo",
-        "subtitle": "Japan",
+        "subtitle": "Tokyo, Japan",
         "coordinates": {
             "latitude": 35.67,
             "longitude": 139.76
-        }
+        },
+        "heroImage": {
+            "imageUrl": "..."
+        },
+        "tags": [
+            "Cities",
+            "Food",
+            "Culture"
+        ]
     }
 ]
 ```
 
-Frontend should call
-
-```http
-GET /destination/:placeId
-```
-
-after user opens a card to fetch complete details.
+Response already contains complete destination objects. Frontend can render cards directly without making an additional `GET /destination/:placeId` request unless it explicitly wants refreshed destination details.
 
 ---
 
