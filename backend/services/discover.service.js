@@ -1,136 +1,302 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { searchDestination } = require("./destination.service");
-const DestinationMetaData = require("../models/destinationMetadata.model");
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash"
-});
+const Destination = require("../models/Destination.model");
 
 const getTrendingDestinations = async () => {
 
-    const prompt = `
-Return ONLY a valid JSON array of exactly 40 travel destination names.
+    const places = await Destination.find({
+        "discover.featured": true
+    })
+        .sort({
+            "discover.priority": -1
+        })
+        .select("-_id -__v")
+        .lean();
 
-Rules:
-- Include a mix of cities, beaches, islands, mountains, historical places and nature destinations.
-- Avoid duplicates.
-- Use internationally recognized names.
-- Return ONLY JSON.
-- No markdown.
-- No explanation.
+    // Group by category (tags[0])
+    const buckets = {};
 
-Example:
+    places.forEach(place => {
 
-[
-    "Tokyo",
-    "Paris",
-    "Bali"
-]
-`;
+        const category = place.tags?.[0] || "Other";
 
-    const result = await model.generateContent(prompt);
+        if (!buckets[category]) {
+            buckets[category] = [];
+        }
 
-    const text = result.response
-        .text()
-        .replace(/```json|```/g, "")
-        .trim();
+        buckets[category].push(place);
+    });
 
-    const destinationNames = JSON.parse(text);
+    // Each bucket is already priority-sorted (inherited from the query sort)
+    const categories = Object.keys(buckets);
 
-    const destinations = (
-        await Promise.all(
-            destinationNames.map(async (name) => {
-                try {
-                    const results = await searchDestination(name);
-                    return results[0] || null;
-                } catch {
-                    return null;
-                }
-            })
-        )
-    ).filter(Boolean);
+    const result = [];
 
-    return destinations;
+    let index = 0;
+
+    // Round-robin across categories until we hit 40 or run out
+    while (result.length < 40 && categories.some(cat => buckets[cat].length > index)) {
+
+        for (const category of categories) {
+
+            if (result.length >= 40) {
+                break;
+            }
+
+            const place = buckets[category][index];
+
+            if (place) {
+                result.push(place);
+            }
+        }
+
+        index++;
+    }
+
+    return result;
 };
 
 const getRecommendedDestinations = async (wishlist = []) => {
 
-    const metadata = await DestinationMetaData.find({
+    if (!wishlist.length) {
+        return getTrendingDestinations();
+    }
+
+    const wishlistDestinations = await Destination.find({
         placeId: { $in: wishlist }
-    }).select("title tags tagline");
+    })
+        .select("tags location.country location.state")
+        .lean();
 
-    const metadataText = metadata
-        .map(
-            (place) => `
-Destination: ${place.title}
-Tags: ${place.tags.join(", ")}
-Tagline: ${place.tagline}
-`
-        )
-        .join("\n");
+    const tagFrequency = {};
 
-    const prompt = `
-You are an expert travel recommendation system.
+    const countries = new Set();
+    const states = new Set();
 
-The user likes these destinations:
+    wishlistDestinations.forEach(place => {
 
-${metadataText}
+        place.tags.forEach(tag => {
+            tagFrequency[tag] = (tagFrequency[tag] || 0) + 1;
+        });
 
-Recommend EXACTLY 40 travel destinations.
+        if (place.location?.country) {
+            countries.add(place.location.country);
+        }
 
-Rules:
+        if (place.location?.state) {
+            states.add(place.location.state);
+        }
+    });
 
-1. Recommend destinations similar to the user's interests.
-2. Never recommend destinations already present in the wishlist.
-3. Include a mix of famous and underrated destinations.
-4. Diversify recommendations across countries and continents.
-5. Recommend places with similar experiences and vibes.
-6. Use internationally recognized English destination names.
-7. Return EXACTLY 40 destinations.
-8. Return ONLY a valid JSON array.
-9. Do NOT use markdown.
-10. Do NOT number the list.
-11. Do NOT include any explanation.
+    const topTags = Object.entries(tagFrequency)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([tag]) => tag);
 
-Example:
+    const candidates = await Destination.find({
+        placeId: {
+            $nin: wishlist
+        }
+    })
+        .select("-_id -__v")
+        .lean();
 
-[
-    "Seoul",
-    "Bangkok",
-    "Prague",
-    "Hallstatt",
-    "Interlaken"
-]
-`;
+    const scored = candidates.map(place => {
 
-    const result = await model.generateContent(prompt);
+        let score = 0;
 
-    const destinationNames = JSON.parse(
-        result.response
-            .text()
-            .replace(/```json|```/g, "")
-            .trim()
+        // Tag score
+        place.tags.forEach(tag => {
+            if (topTags.includes(tag)) {
+                score += 3;
+            }
+        });
+
+        // Same country
+        if (countries.has(place.location.country)) {
+            score += 2;
+        }
+
+        // Same state
+        if (
+            place.location.state &&
+            states.has(place.location.state)
+        ) {
+            score += 1;
+        }
+
+        // Featured destinations get a small boost
+        if (place.discover?.featured) {
+            score += 1;
+        }
+
+        return {
+            ...place,
+            score
+        };
+    });
+
+    // Group scored candidates by category before sorting,
+    // so recommendations don't collapse into one dominant category
+    const scoredBuckets = {};
+
+    scored.forEach(place => {
+
+        const category = place.tags?.[0] || "Other";
+
+        if (!scoredBuckets[category]) {
+            scoredBuckets[category] = [];
+        }
+
+        scoredBuckets[category].push(place);
+    });
+
+    Object.values(scoredBuckets).forEach(bucket => {
+        bucket.sort((a, b) => b.score - a.score);
+    });
+
+    const scoredCategories = Object.keys(scoredBuckets);
+
+    const recommended = [];
+
+    let sIndex = 0;
+
+    while (recommended.length < 25 && scoredCategories.some(cat => scoredBuckets[cat].length > sIndex)) {
+
+        for (const category of scoredCategories) {
+
+            if (recommended.length >= 25) {
+                break;
+            }
+
+            const place = scoredBuckets[category][sIndex];
+
+            // Only include if it actually scored something relevant,
+            // otherwise fall through to trending fill below
+            if (place && place.score > 0) {
+                recommended.push(place);
+            }
+        }
+
+        sIndex++;
+    }
+
+    const recommendedIds = new Set(
+        recommended.map(place => place.placeId)
     );
 
-    const destinations = (
-        await Promise.all(
-            destinationNames.map(async (name) => {
-                try {
-                    const results = await searchDestination(name);
-                    return results[0] || null;
-                } catch {
-                    return null;
-                }
-            })
-        )
-    ).filter(Boolean);
+    const trendingPool = candidates.filter(place =>
+        place.discover?.featured &&
+        !recommendedIds.has(place.placeId)
+    );
 
-    return destinations;
+    const trendingBuckets = {};
+
+    trendingPool.forEach(place => {
+
+        const category = place.tags?.[0] || "Other";
+
+        if (!trendingBuckets[category]) {
+            trendingBuckets[category] = [];
+        }
+
+        trendingBuckets[category].push(place);
+    });
+
+    Object.values(trendingBuckets).forEach(bucket => {
+        bucket.sort(
+            (a, b) =>
+                (b.discover?.priority || 0) -
+                (a.discover?.priority || 0)
+        );
+    });
+
+    const trendingCategories = Object.keys(trendingBuckets);
+
+    const trending = [];
+
+    let tIndex = 0;
+
+    while (trending.length < 40 && trendingCategories.some(cat => trendingBuckets[cat].length > tIndex)) {
+
+        for (const category of trendingCategories) {
+
+            if (trending.length >= 40) {
+                break;
+            }
+
+            const place = trendingBuckets[category][tIndex];
+
+            if (place) {
+                trending.push(place);
+            }
+        }
+
+        tIndex++;
+    }
+
+    const result = [...recommended, ...trending];
+
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+
+    return result;
+};
+
+const getSuggestionsByTag = async (tag, limit = 40) => {
+
+    const places = await Destination
+        .find({
+                tags: { $regex: new RegExp(`^${tag}$`, "i") }
+            })
+        .sort({
+            "discover.priority": -1
+        })
+        .select("-_id -__v")
+        .lean();
+
+    const buckets = {};
+
+    places.forEach(place => {
+
+        const country = place.location?.country || "Other";
+
+        if (!buckets[country]) {
+            buckets[country] = [];
+        }
+
+        buckets[country].push(place);
+    });
+
+    const countries = Object.keys(buckets);
+
+    const result = [];
+
+    let index = 0;
+
+    while (result.length < limit && countries.some(c => buckets[c].length > index)) {
+
+        for (const country of countries) {
+
+            if (result.length >= limit) {
+                break;
+            }
+
+            const place = buckets[country][index];
+
+            if (place) {
+                result.push(place);
+            }
+        }
+
+        index++;
+    }
+
+    return result;
 };
 
 module.exports = {
     getTrendingDestinations,
-    getRecommendedDestinations
+    getRecommendedDestinations,
+    getSuggestionsByTag
 };
