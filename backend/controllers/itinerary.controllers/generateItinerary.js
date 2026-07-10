@@ -37,7 +37,7 @@ const generate = async (req, res) => {
 
     } catch (err) {
 
-        console.error(err);
+        console.log(err.message);
 
         return res.status(500).json({
             message: "Failed to generate itinerary"
