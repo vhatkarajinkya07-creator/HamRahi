@@ -6,16 +6,28 @@ import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Message } from "primereact/message";
 import { useAuth } from "../../context/AuthContext";
+import GoogleAuthButton from "../../components/GoogleAuthButton/GoogleAuthButton";
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { login, googleLogin } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   const from = location.state?.from?.pathname || "/";
+
+  const handleGoogleSuccess = async (credential) => {
+    setError("");
+
+    try {
+      await googleLogin(credential);
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError(err.response?.data?.message || "Google login failed. Please try again.");
+    }
+  };
 
   const updateField = (field, value) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -103,6 +115,14 @@ export default function Login() {
             loading={submitting}
             className="mt-7 w-full justify-center"
           />
+
+          <div className="mt-6 flex items-center gap-4 text-xs uppercase text-white/38">
+            <span className="h-px flex-1 bg-white/12" />
+            or
+            <span className="h-px flex-1 bg-white/12" />
+          </div>
+
+          <GoogleAuthButton className="mt-6" onSuccess={handleGoogleSuccess} onError={setError} />
 
           <p className="mt-5 text-center text-sm text-white/54">
             New here? <Link className="font-semibold text-white" to="/register">Create account</Link>

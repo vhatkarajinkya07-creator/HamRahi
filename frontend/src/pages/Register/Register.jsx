@@ -5,13 +5,25 @@ import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Message } from "primereact/message";
 import { useAuth } from "../../context/AuthContext";
+import GoogleAuthButton from "../../components/GoogleAuthButton/GoogleAuthButton";
 
 export default function Register() {
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { register, googleLogin } = useAuth();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+
+  const handleGoogleSuccess = async (credential) => {
+    setError("");
+
+    try {
+      await googleLogin(credential);
+      navigate("/", { replace: true });
+    } catch (err) {
+      setError(err.response?.data?.message || "Google login failed. Please try again.");
+    }
+  };
 
   const updateField = (field, value) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -60,6 +72,14 @@ export default function Register() {
         {error && <Message severity="error" text={error} className="mt-5 w-full" />}
 
         <Button type="submit" label="Send verification email" icon="pi pi-envelope" loading={submitting} className="mt-7 w-full justify-center" />
+
+        <div className="mt-6 flex items-center gap-4 text-xs uppercase text-white/38">
+          <span className="h-px flex-1 bg-white/12" />
+          or
+          <span className="h-px flex-1 bg-white/12" />
+        </div>
+
+        <GoogleAuthButton className="mt-6" onSuccess={handleGoogleSuccess} onError={setError} />
 
         <p className="mt-5 text-center text-sm text-white/54">
           Already registered? <Link className="font-semibold text-white" to="/login">Login</Link>
