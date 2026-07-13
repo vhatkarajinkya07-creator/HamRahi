@@ -8,6 +8,7 @@ import VerifyEmail from "../pages/VerifyEmail/VerifyEmail";
 import Wishlist from "../pages/Wishlist/Wishlist";
 import Itinerary from "../pages/Itinerary/Itinerary";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+import Test1 from "../pages/test/test1";
 
 export default function AppRoutes() {
   return (
@@ -19,6 +20,7 @@ export default function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/verify-email/:token" element={<VerifyEmail />} />
+      <Route path="/test1" element={<Test1 />} />
       <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
       <Route path="/itinerary" element={<ProtectedRoute><Itinerary /></ProtectedRoute>} />
     </Routes>

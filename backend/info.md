@@ -164,7 +164,7 @@ The verification email redirects the user to:
 
 Frontend should call:
 
-### GET `/api/auth/verify-email/:token`
+### POST `/api/auth/verify-email/:token`
 
 Success:
 

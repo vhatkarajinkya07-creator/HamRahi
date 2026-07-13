@@ -39,13 +39,13 @@ export default function DestinationCard({
 
   return (
     <motion.article
-      className="mr-auto w-full max-w-[520px]"
+      className="mr-auto w-full max-w-130"
       variants={cardEmerge}
       initial="hidden"
       animate={isActive ? "visible" : "hidden"}
     >
       <motion.div
-        className={`relative isolate flex min-h-[840px] flex-col overflow-hidden rounded-2xl border border-white/12 bg-black text-white shadow-[0_34px_110px_-54px_rgba(0,0,0,1)] backdrop-blur-3xl transition-[filter] duration-700 ease-out ${
+        className={`relative isolate flex min-h-210 flex-col overflow-hidden rounded-2xl border border-white/12 bg-black text-white shadow-[0_34px_110px_-54px_rgba(0,0,0,1)] backdrop-blur-3xl transition-[filter] duration-700 ease-out ${
           isDimmed ? "brightness-[0.55] saturate-[0.7] blur-[1px]" : ""
         }`}
         variants={staggerContainer(0.055, 0.12)}
@@ -58,11 +58,11 @@ export default function DestinationCard({
         />
 
         <div
-          className="pointer-events-none absolute inset-px -z-10 rounded-[15px] border border-white/8 bg-white/[0.025]"
+          className="pointer-events-none absolute inset-px -z-10 rounded-[15px] border border-white/8 bg-white/2.5"
           aria-hidden="true"
         />
 
-        <div className="relative h-[470px] overflow-hidden">
+        <div className="relative h-117.5 overflow-hidden">
           <img
             src={heroImage}
             alt={`${name}, ${country}`}
@@ -123,7 +123,7 @@ export default function DestinationCard({
           </motion.p>
 
           <motion.div className="mt-7 grid grid-cols-3 gap-3" variants={fadeUp}>
-            <div className="rounded-xl border border-white/12 bg-white/[0.06] p-4 backdrop-blur-xl">
+            <div className="rounded-xl border border-white/12 bg-white/6 p-4 backdrop-blur-xl">
               <span className="flex items-center gap-1.5 text-base font-semibold text-white">
                 <i className="pi pi-star-fill text-[0.7rem]" aria-hidden="true" />
                 {rating}
@@ -133,7 +133,7 @@ export default function DestinationCard({
               </span>
             </div>
 
-            <div className="rounded-xl border border-white/12 bg-white/[0.06] p-4 backdrop-blur-xl">
+            <div className="rounded-xl border border-white/12 bg-white/6 p-4 backdrop-blur-xl">
               <span className="text-base font-semibold text-white">
                 ${priceFrom}
               </span>
@@ -142,7 +142,7 @@ export default function DestinationCard({
               </span>
             </div>
 
-            <div className="rounded-xl border border-white/12 bg-white/[0.06] p-4 backdrop-blur-xl">
+            <div className="rounded-xl border border-white/12 bg-white/6 p-4 backdrop-blur-xl">
               <span className="text-base font-semibold text-white">
                 {bestSeason}
               </span>
@@ -156,7 +156,7 @@ export default function DestinationCard({
             {reviews.toLocaleString()} traveler reviews
           </motion.div>
 
-          <motion.div className="mt-auto pt-6 min-h-[56px]" variants={fadeUp}>
+          <motion.div className="mt-auto pt-6 min-h-14" variants={fadeUp}>
             {isMobile ? (
               // Mobile: no globe, no cinematic sequence — one button, direct nav.
               <Link
