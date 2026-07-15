@@ -1,5 +1,5 @@
 // Profile.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Message } from "primereact/message";
@@ -8,21 +8,13 @@ import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import api from "../../services/api";
 
-const MOCK_BADGES = [
-  { id: "beach-bum", name: "Beach Bum", description: "Saved or visited 3 beach destinations", icon: "pi-sun", color: "text-amber-400 border-amber-400/20 bg-amber-400/5", unlocked: true },
-  { id: "alpine-king", name: "Alpine King", description: "Saved or visited 3 mountain destinations", icon: "pi-compass", color: "text-emerald-400 border-emerald-400/20 bg-emerald-400/5", unlocked: false },
-  { id: "urban-legend", name: "Urban Legend", description: "Saved or visited 3 urban cities", icon: "pi-building", color: "text-violet-400 border-violet-400/20 bg-violet-400/5", unlocked: true },
-  { id: "globetrotter", name: "Globetrotter", description: "Generate 5 AI itineraries", icon: "pi-globe", color: "text-sky-400 border-sky-400/20 bg-sky-400/5", unlocked: false },
-  { id: "travel-writer", name: "Travel Writer", description: "Write 3 travel diary logs", icon: "pi-pencil", color: "text-coral-400 border-coral-400/20 bg-coral-400/5", unlocked: true },
-  { id: "first-stamp", name: "First Stamp", description: "Complete your first trip", icon: "pi-verified", color: "text-teal-400 border-teal-400/20 bg-teal-400/5", unlocked: false },
-];
-
 export default function Profile() {
   const { user, logout, refreshUser } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   const [activeTab, setActiveTab] = useState("dna"); // dna | settings | badges
   const [wishlist, setWishlist] = useState([]);
+  const [trips, setTrips] = useState([]);
   const [dna, setDna] = useState([]);
   const [settingsForm, setSettingsForm] = useState({ name: user?.name || "", email: user?.email || "" });
   const [passwordForm, setPasswordForm] = useState({ oldPassword: "", newPassword: "", confirmPassword: "" });
@@ -36,15 +28,18 @@ export default function Profile() {
   }, [user]);
 
   useEffect(() => {
-    async function fetchDNAData() {
+    async function fetchProfileData() {
       try {
-        const { data } = await api.get("/wishlist");
-        setWishlist(data);
+        const { data: wishlistData } = await api.get("/wishlist");
+        setWishlist(wishlistData);
+
+        const { data: tripsData } = await api.get("/trips");
+        setTrips(tripsData);
 
         // Count occurrences of tags
         const counts = {};
         let total = 0;
-        data.forEach((item) => {
+        wishlistData.forEach((item) => {
           const tags = item.basicInfo?.tags || [];
           tags.forEach((tag) => {
             counts[tag] = (counts[tag] || 0) + 1;
@@ -63,11 +58,211 @@ export default function Profile() {
 
         setDna(computedDna);
       } catch (err) {
-        console.error("Could not compute Travel DNA:", err);
+        console.error("Could not fetch profile dashboard data:", err);
       }
     }
-    fetchDNAData();
+    fetchProfileData();
   }, []);
+
+  const badges = useMemo(() => {
+    // Collect all unique placeIds the user has interacted with (wishlist or trips)
+    const wishlistPlaceIds = new Set(wishlist.map(w => w.placeId || w.id));
+    const tripPlaceIds = new Set(trips.map(t => t.placeId));
+    
+    // Combine placeIds
+    const allPlaceIds = new Set([...wishlistPlaceIds, ...tripPlaceIds]);
+    
+    // Combine destination tags
+    const placeTags = {};
+    wishlist.forEach(w => {
+      const tags = w.basicInfo?.tags || [];
+      placeTags[w.placeId || w.id] = tags.map(t => t.toLowerCase());
+    });
+    
+    trips.forEach(t => {
+      if (!placeTags[t.placeId]) {
+        // Safe defaults for trips tag guessing
+        placeTags[t.placeId] = [t.destination.toLowerCase(), t.country?.toLowerCase() || ""].filter(Boolean);
+      }
+    });
+
+    const countByTag = (tagPattern) => {
+      let count = 0;
+      allPlaceIds.forEach(placeId => {
+        const tags = placeTags[placeId] || [];
+        if (tags.some(tag => tag.includes(tagPattern.toLowerCase()))) {
+          count++;
+        }
+      });
+      return count;
+    };
+
+    const beachCount = countByTag("beach") || countByTag("island");
+    const mountainCount = countByTag("mountain");
+    const cityCount = countByTag("cit") || countByTag("urban");
+    const forestCount = countByTag("forest") || countByTag("lake") || countByTag("river") || countByTag("waterfall") || countByTag("park");
+    const snowCount = countByTag("snow") || countByTag("winter");
+    
+    // Custom tag count helpers for extra achievements
+    const cultureCount = countByTag("histor") + countByTag("relig") + countByTag("templ") + countByTag("spirit") + countByTag("culture");
+    const natureCount = countByTag("wildlife") + countByTag("animal") + countByTag("nature");
+
+    const totalDiaryLogs = trips.reduce((sum, t) => sum + (t.diary?.length || 0), 0);
+    const completedTripsCount = trips.filter(t => t.status === "completed").length;
+    const activeTripsCount = trips.filter(t => t.status === "active").length;
+    
+    const highBudgetCount = trips.filter(t => t.budget === "High").length;
+    const lowBudgetCount = trips.filter(t => t.budget === "Low").length;
+    const soloTravelCount = trips.filter(t => t.travelStyle === "Solo").length;
+    const socialTravelCount = trips.filter(t => ["Friends", "Couple", "Family"].includes(t.travelStyle)).length;
+
+    return [
+      {
+        id: "beach-bum",
+        name: "Beach Bum",
+        description: `Saved or planned ${beachCount}/3 beach destinations`,
+        icon: "pi-sun",
+        color: "text-amber-400 border-amber-400/20 bg-amber-400/5",
+        unlocked: beachCount >= 3
+      },
+      {
+        id: "alpine-king",
+        name: "Alpine King",
+        description: `Saved or planned ${mountainCount}/3 mountain destinations`,
+        icon: "pi-compass",
+        color: "text-emerald-400 border-emerald-400/20 bg-emerald-400/5",
+        unlocked: mountainCount >= 3
+      },
+      {
+        id: "urban-legend",
+        name: "Urban Legend",
+        description: `Saved or planned ${cityCount}/3 urban cities`,
+        icon: "pi-building",
+        color: "text-violet-400 border-violet-400/20 bg-violet-400/5",
+        unlocked: cityCount >= 3
+      },
+      {
+        id: "deep-forest",
+        name: "Deep Forest",
+        description: `Saved or planned ${forestCount}/3 nature & forest spots`,
+        icon: "pi-palette",
+        color: "text-teal-400 border-teal-400/20 bg-teal-400/5",
+        unlocked: forestCount >= 3
+      },
+      {
+        id: "snow-tracker",
+        name: "Snow Tracker",
+        description: `Saved or planned ${snowCount}/3 snow destinations`,
+        icon: "pi-cloud",
+        color: "text-sky-400 border-sky-400/20 bg-sky-400/5",
+        unlocked: snowCount >= 3
+      },
+      {
+        id: "cultural-aficionado",
+        name: "Culture Aficionado",
+        description: `Saved or planned ${cultureCount}/3 historic or spiritual spots`,
+        icon: "pi-images",
+        color: "text-fuchsia-400 border-fuchsia-400/20 bg-fuchsia-400/5",
+        unlocked: cultureCount >= 3
+      },
+      {
+        id: "nature-lover",
+        name: "Nature Lover",
+        description: `Saved or planned ${natureCount}/3 wildlife or nature sanctuaries`,
+        icon: "pi-heart-fill",
+        color: "text-green-400 border-green-400/20 bg-green-400/5",
+        unlocked: natureCount >= 3
+      },
+      {
+        id: "globetrotter",
+        name: "Globetrotter",
+        description: `Plan ${trips.length}/5 AI itineraries`,
+        icon: "pi-globe",
+        color: "text-sky-400 border-sky-400/20 bg-sky-400/5",
+        unlocked: trips.length >= 5
+      },
+      {
+        id: "travel-writer",
+        name: "Travel Writer",
+        description: `Write ${totalDiaryLogs}/3 travel diary logs`,
+        icon: "pi-pencil",
+        color: "text-rose-400 border-rose-400/20 bg-rose-400/5",
+        unlocked: totalDiaryLogs >= 3
+      },
+      {
+        id: "prolific-writer",
+        name: "Prolific Writer",
+        description: `Write ${totalDiaryLogs}/5 travel diary logs`,
+        icon: "pi-file-edit",
+        color: "text-rose-500 border-rose-500/20 bg-rose-500/5",
+        unlocked: totalDiaryLogs >= 5
+      },
+      {
+        id: "first-stamp",
+        name: "First Stamp",
+        description: "Complete your first trip",
+        icon: "pi-check",
+        color: "text-teal-400 border-teal-400/20 bg-teal-400/5",
+        unlocked: completedTripsCount >= 1
+      },
+      {
+        id: "active-explorer",
+        name: "Active Explorer",
+        description: "Have at least 1 active trip in progress",
+        icon: "pi-play",
+        color: "text-red-400 border-red-400/20 bg-red-400/5",
+        unlocked: activeTripsCount >= 1
+      },
+      {
+        id: "elite-voyageur",
+        name: "Elite Voyageur",
+        description: `Complete ${completedTripsCount}/3 travel journeys`,
+        icon: "pi-star",
+        color: "text-yellow-400 border-yellow-400/20 bg-yellow-400/5",
+        unlocked: completedTripsCount >= 3
+      },
+      {
+        id: "mega-voyager",
+        name: "Mega Voyager",
+        description: `Complete ${completedTripsCount}/5 travel journeys`,
+        icon: "pi-sparkles",
+        color: "text-indigo-400 border-indigo-400/20 bg-indigo-400/5",
+        unlocked: completedTripsCount >= 5
+      },
+      {
+        id: "big-spender",
+        name: "Big Spender",
+        description: "Plan a High-Budget trip",
+        icon: "pi-wallet",
+        color: "text-yellow-500 border-yellow-500/20 bg-yellow-500/5",
+        unlocked: highBudgetCount >= 1
+      },
+      {
+        id: "budget-backpacker",
+        name: "Budget Backpacker",
+        description: "Plan a Low-Budget trip",
+        icon: "pi-percentage",
+        color: "text-orange-400 border-orange-400/20 bg-orange-400/5",
+        unlocked: lowBudgetCount >= 1
+      },
+      {
+        id: "solo-nomad",
+        name: "Solo Nomad",
+        description: "Plan a Solo travel style journey",
+        icon: "pi-user",
+        color: "text-purple-400 border-purple-400/20 bg-purple-400/5",
+        unlocked: soloTravelCount >= 1
+      },
+      {
+        id: "social-traveler",
+        name: "Social Traveler",
+        description: "Plan a trip with Friends, Couple, or Family",
+        icon: "pi-users",
+        color: "text-blue-400 border-blue-400/20 bg-blue-400/5",
+        unlocked: socialTravelCount >= 1
+      }
+    ];
+  }, [wishlist, trips]);
 
   const handleSettingsUpdate = async (e) => {
     e.preventDefault();
@@ -226,7 +421,7 @@ export default function Profile() {
               </p>
 
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {MOCK_BADGES.map((badge) => (
+                {badges.map((badge) => (
                   <div
                     key={badge.id}
                     className={`rounded-2xl border p-5 flex items-start gap-4 transition-all ${
