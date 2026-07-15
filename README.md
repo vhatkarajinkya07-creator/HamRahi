@@ -16,7 +16,7 @@
 - 👤 **Profile & Settings** — Update name, change password, view stats
 - 🌙 **Dark / Light Mode** — Theme-adaptive UI; 3D mode forces dark
 - 🔐 **Auth** — Email verification + Google OAuth
-
+a
 ---
 
 ## 🗂️ Project Structure
@@ -29,7 +29,7 @@ HamRahi/
 │   │   ├── pages/
 │   │   ├── context/   # AuthContext, ThemeContext
 │   │   ├── hooks/
-│   │   ├── services/  # axios api.js
+│   │   ├── services/  # axios api.js   
 │   │   └── data/
 │   └── .env           # see frontend/.env.example
 │
