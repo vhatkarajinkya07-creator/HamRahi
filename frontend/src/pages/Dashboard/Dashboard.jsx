@@ -4,6 +4,7 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Message } from "primereact/message";
+import api from "../../services/api";
 
 const INITIAL_TRIPS = [
   {
@@ -62,11 +63,9 @@ const INITIAL_TRIPS = [
 ];
 
 export default function Dashboard() {
-  const [trips, setTrips] = useState(() => {
-    const saved = localStorage.getItem("hamrahi_trips");
-    return saved ? JSON.parse(saved) : INITIAL_TRIPS;
-  });
-  
+  const [trips, setTrips] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("upcoming"); // upcoming | active | completed
   
   // Diary Add Entry Form State
@@ -79,9 +78,55 @@ export default function Dashboard() {
   const coverCanvasRef = useRef(null);
   const routeCanvasRef = useRef(null);
   
+  const loadTrips = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const { data } = await api.get("/trips");
+      // If user has no trips in DB, seed with initial mock trips for a beautiful initial experience
+      if (Array.isArray(data) && data.length === 0) {
+        // Save initial trips to DB so they become real entries for this user
+        const seededTrips = [];
+        for (const trip of INITIAL_TRIPS) {
+          try {
+            const { data: seeded } = await api.post("/trips", {
+              placeId: trip.placeId,
+              name: trip.name,
+              startDate: trip.startDate,
+              endDate: trip.endDate,
+              daysCount: trip.days,
+              budget: trip.budget,
+              travelStyle: trip.travelStyle,
+              itinerarySummary: trip.itinerarySummary,
+              days: []
+            });
+            // Update seeded trip with initial diary entries if they exist
+            if (trip.diary && trip.diary.length > 0) {
+              const { data: updated } = await api.put(`/trips/${seeded._id}`, { diary: trip.diary });
+              seededTrips.push(updated);
+            } else {
+              seededTrips.push(seeded);
+            }
+          } catch (err) {
+            console.error("Failed to seed initial trip:", err);
+          }
+        }
+        setTrips(seededTrips.length ? seededTrips : INITIAL_TRIPS);
+      } else {
+        setTrips(data);
+      }
+    } catch (err) {
+      console.error("Failed to load trips:", err);
+      setError("Failed to load trips from database.");
+      setTrips(INITIAL_TRIPS);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    localStorage.setItem("hamrahi_trips", JSON.stringify(trips));
-  }, [trips]);
+    loadTrips();
+  }, []);
 
   const activeTrip = trips.find((t) => t.status === "active");
   const upcomingTrips = trips.filter((t) => t.status === "upcoming");
@@ -97,68 +142,82 @@ export default function Dashboard() {
   };
 
   // Active Trip Diary CRUD
-  const handleAddDiaryEntry = (e) => {
+  const handleAddDiaryEntry = async (e) => {
     e.preventDefault();
     if (!activeTrip) return;
 
+    let updatedDiary;
     if (editingEntryId) {
       // Edit
-      setTrips((prevTrips) =>
-        prevTrips.map((t) => {
-          if (t.status === "active") {
-            return {
-              ...t,
-              diary: t.diary.map((entry) =>
-                entry.id === editingEntryId
-                  ? { ...entry, text: diaryText, date: diaryDate, photo: diaryPhoto || entry.photo }
-                  : entry
-              )
-            };
-          }
-          return t;
-        })
+      updatedDiary = activeTrip.diary.map((entry) =>
+        (entry.id === editingEntryId || entry._id === editingEntryId)
+          ? { ...entry, text: diaryText, date: diaryDate, photo: diaryPhoto || entry.photo }
+          : entry
       );
       setEditingEntryId(null);
     } else {
       // Create
       const newEntry = {
-        id: `e-${Date.now()}`,
         date: diaryDate || new Date().toISOString().split("T")[0],
         text: diaryText,
         photo: diaryPhoto || `https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80`
       };
-
-      setTrips((prevTrips) =>
-        prevTrips.map((t) => {
-          if (t.status === "active") {
-            return { ...t, diary: [...(t.diary || []), newEntry] };
-          }
-          return t;
-        })
-      );
+      updatedDiary = [...(activeTrip.diary || []), newEntry];
     }
 
-    setDiaryText("");
-    setDiaryDate("");
-    setDiaryPhoto("");
+    try {
+      const { data } = await api.put(`/trips/${activeTrip._id}`, { diary: updatedDiary });
+      setTrips((prevTrips) =>
+        prevTrips.map((t) => (t._id === activeTrip._id ? data : t))
+      );
+      setDiaryText("");
+      setDiaryDate("");
+      setDiaryPhoto("");
+    } catch (err) {
+      setError("Failed to update diary in database.");
+    }
   };
 
   const handleEditDiaryEntry = (entry) => {
-    setEditingEntryId(entry.id);
+    setEditingEntryId(entry._id || entry.id);
     setDiaryText(entry.text);
     setDiaryDate(entry.date);
     setDiaryPhoto(entry.photo);
   };
 
-  const handleDeleteDiaryEntry = (id) => {
-    setTrips((prevTrips) =>
-      prevTrips.map((t) => {
-        if (t.status === "active") {
-          return { ...t, diary: t.diary.filter((entry) => entry.id !== id) };
-        }
-        return t;
-      })
-    );
+  const handleDeleteDiaryEntry = async (id) => {
+    if (!activeTrip) return;
+    const updatedDiary = activeTrip.diary.filter((entry) => entry.id !== id && entry._id !== id);
+    try {
+      const { data } = await api.put(`/trips/${activeTrip._id}`, { diary: updatedDiary });
+      setTrips((prevTrips) =>
+        prevTrips.map((t) => (t._id === activeTrip._id ? data : t))
+      );
+    } catch (err) {
+      setError("Failed to delete diary entry from database.");
+    }
+  };
+
+  const handleUpdateStatus = async (tripId, newStatus) => {
+    setError("");
+    try {
+      const { data } = await api.put(`/trips/${tripId}`, { status: newStatus });
+      setTrips((prevTrips) =>
+        prevTrips.map((t) => (t._id === tripId ? data : t))
+      );
+    } catch (err) {
+      setError(`Failed to update status to ${newStatus}.`);
+    }
+  };
+
+  const handleDeleteTrip = async (tripId) => {
+    setError("");
+    try {
+      await api.delete(`/trips/${tripId}`);
+      setTrips((prevTrips) => prevTrips.filter((t) => t._id !== tripId && t.id !== tripId));
+    } catch (err) {
+      setError("Failed to delete trip from database.");
+    }
   };
 
   // Export Cards to Image
@@ -258,6 +317,17 @@ export default function Dashboard() {
     link.click();
   };
 
+  if (loading) {
+    return (
+      <section className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] px-5 pb-20 pt-[120px] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <i className="pi pi-spin pi-spinner text-4xl text-[var(--theme-primary)] animate-spin" />
+          <p className="text-sm font-semibold text-[var(--text-secondary)]">Loading your travel dashboard...</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] px-5 pb-20 pt-[120px] transition-colors duration-300">
       <div className="mx-auto max-w-[1180px]">
@@ -301,6 +371,8 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {error && <Message severity="error" text={error} className="mb-6 w-full" />}
+
         {/* Tab content screens */}
         <div className="min-h-[400px]">
           
@@ -316,9 +388,10 @@ export default function Dashboard() {
               ) : (
                 upcomingTrips.map((trip) => {
                   const countdown = getDaysCountdown(trip.startDate);
+                  const tripId = trip._id || trip.id;
                   return (
                     <div
-                      key={trip.id}
+                      key={tripId}
                       className="grid gap-6 rounded-[28px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-sm md:grid-cols-[280px_1fr] md:p-8 hover:shadow-md transition-shadow"
                     >
                       <img src={trip.heroImage} alt={trip.destination} className="h-44 w-full rounded-[var(--radius-md)] object-cover shadow-sm" />
@@ -338,10 +411,27 @@ export default function Dashboard() {
                           </div>
                           <p className="text-sm text-[var(--text-secondary)] mt-4 leading-6 max-w-[620px]">{trip.itinerarySummary}</p>
                         </div>
-                        <div className="flex flex-wrap items-center gap-6 mt-6 border-t border-[var(--border-subtle)] pt-4 text-xs font-semibold text-[var(--text-secondary)]">
-                          <span>Starts: {trip.startDate}</span>
-                          <span>Budget: {trip.budget}</span>
-                          <span>Style: {trip.travelStyle}</span>
+                        <div className="flex flex-wrap items-center justify-between gap-4 mt-6 border-t border-[var(--border-subtle)] pt-4">
+                          <div className="flex flex-wrap items-center gap-6 text-xs font-semibold text-[var(--text-secondary)]">
+                            <span>Starts: {trip.startDate}</span>
+                            <span>Budget: {trip.budget}</span>
+                            <span>Style: {trip.travelStyle}</span>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              label="Start Journey"
+                              icon="pi pi-play"
+                              className="text-xs px-3 py-1.5 rounded-xl font-bold bg-[var(--theme-primary)] border-none text-white hover:bg-[var(--theme-primary)]/90"
+                              onClick={() => handleUpdateStatus(tripId, "active")}
+                            />
+                            <Button
+                              label="Delete"
+                              icon="pi pi-trash"
+                              className="text-xs px-3 py-1.5 rounded-xl font-bold border-red-200 text-red-500 hover:bg-red-500/10"
+                              outlined
+                              onClick={() => handleDeleteTrip(tripId)}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -366,7 +456,15 @@ export default function Dashboard() {
                   {/* Diary log editor */}
                   <div className="space-y-6">
                     <div className="rounded-[28px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-sm md:p-8">
-                      <h2 className="text-2xl font-extrabold tracking-tight mb-2">Active Trip: {activeTrip.destination}</h2>
+                      <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                        <h2 className="text-2xl font-extrabold tracking-tight">Active Trip: {activeTrip.destination}</h2>
+                        <Button
+                          label="Finish Journey"
+                          icon="pi pi-check"
+                          className="text-xs px-4 py-2 rounded-xl font-bold bg-emerald-600 border-none text-white hover:bg-emerald-500"
+                          onClick={() => handleUpdateStatus(activeTrip._id || activeTrip.id, "completed")}
+                        />
+                      </div>
                       <p className="text-sm text-[var(--text-secondary)] leading-6 mb-6">
                         Write down your memories, locations, food tastes, and logs live. Your records will compile into your permanent Memory Vault once completed.
                       </p>
@@ -412,25 +510,28 @@ export default function Dashboard() {
                       {(!activeTrip.diary || activeTrip.diary.length === 0) ? (
                         <p className="text-sm text-[var(--text-secondary)] px-2">No diary entries logged yet. Write your first memory above!</p>
                       ) : (
-                        activeTrip.diary.map((entry) => (
-                          <div key={entry.id} className="grid gap-5 p-5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] md:grid-cols-[180px_1fr]">
-                            <img src={entry.photo} alt="Diary spot" className="h-28 w-full rounded-xl object-cover shadow-sm" />
-                            <div className="flex flex-col justify-between">
-                              <div>
-                                <span className="font-mono text-xs text-[var(--text-secondary)]">{entry.date}</span>
-                                <p className="text-sm text-[var(--text-primary)] leading-6 mt-2">{entry.text}</p>
-                              </div>
-                              <div className="flex gap-4 mt-3 justify-end text-xs font-bold">
-                                <button type="button" onClick={() => handleEditDiaryEntry(entry)} className="text-[var(--color-violet)] hover:underline">
-                                  Edit
-                                </button>
-                                <button type="button" onClick={() => handleDeleteDiaryEntry(entry.id)} className="text-red-400 hover:underline">
-                                  Delete
-                                </button>
+                        activeTrip.diary.map((entry) => {
+                          const entryId = entry._id || entry.id;
+                          return (
+                            <div key={entryId} className="grid gap-5 p-5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] md:grid-cols-[180px_1fr]">
+                              <img src={entry.photo} alt="Diary spot" className="h-28 w-full rounded-xl object-cover shadow-sm" />
+                              <div className="flex flex-col justify-between">
+                                <div>
+                                  <span className="font-mono text-xs text-[var(--text-secondary)]">{entry.date}</span>
+                                  <p className="text-sm text-[var(--text-primary)] leading-6 mt-2">{entry.text}</p>
+                                </div>
+                                <div className="flex gap-4 mt-3 justify-end text-xs font-bold">
+                                  <button type="button" onClick={() => handleEditDiaryEntry(entry)} className="text-[var(--color-violet)] hover:underline">
+                                    Edit
+                                  </button>
+                                  <button type="button" onClick={() => handleDeleteDiaryEntry(entryId)} className="text-red-400 hover:underline">
+                                    Delete
+                                  </button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))
+                          );
+                        })
                       )}
                     </div>
                   </div>
@@ -457,82 +558,94 @@ export default function Dashboard() {
                   <p className="text-sm text-[var(--text-secondary)] mt-2">Finish your active trips to lock them in your Memory Vault.</p>
                 </div>
               ) : (
-                completedTrips.map((trip) => (
-                  <div key={trip.id} className="rounded-[28px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-sm md:p-8">
-                    
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between border-b border-[var(--border-subtle)] pb-6 mb-6">
-                      <div>
-                        <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-teal)]">
-                          Completed Trip
-                        </span>
-                        <h2 className="text-3xl font-extrabold tracking-tight mt-1">{trip.name}</h2>
-                        <p className="text-xs text-[var(--text-secondary)] mt-1.5">{trip.startDate} to {trip.endDate}</p>
-                      </div>
+                completedTrips.map((trip) => {
+                  const tripId = trip._id || trip.id;
+                  return (
+                    <div key={tripId} className="rounded-[28px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-sm md:p-8">
                       
-                      {/* Card exporters */}
-                      <div className="flex gap-2 flex-wrap">
-                        <Button
-                          label="Cover Card"
-                          icon="pi pi-image"
-                          className="p-button-outlined text-xs border-[var(--border-subtle)] text-[var(--text-primary)]"
-                          onClick={() => generateCoverCard(trip)}
-                        />
-                        <Button
-                          label="Route Card"
-                          icon="pi pi-map"
-                          className="p-button-outlined text-xs border-[var(--border-subtle)] text-[var(--text-primary)]"
-                          onClick={() => generateRouteCard(trip)}
-                        />
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between border-b border-[var(--border-subtle)] pb-6 mb-6">
+                        <div>
+                          <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-teal)]">
+                            Completed Trip
+                          </span>
+                          <h2 className="text-3xl font-extrabold tracking-tight mt-1">{trip.name}</h2>
+                          <p className="text-xs text-[var(--text-secondary)] mt-1.5">{trip.startDate} to {trip.endDate}</p>
+                        </div>
+                        
+                        {/* Card exporters */}
+                        <div className="flex gap-2 flex-wrap">
+                          <Button
+                            label="Cover Card"
+                            icon="pi pi-image"
+                            className="p-button-outlined text-xs border-[var(--border-subtle)] text-[var(--text-primary)]"
+                            onClick={() => generateCoverCard(trip)}
+                          />
+                          <Button
+                            label="Route Card"
+                            icon="pi pi-map"
+                            className="p-button-outlined text-xs border-[var(--border-subtle)] text-[var(--text-primary)]"
+                            onClick={() => generateRouteCard(trip)}
+                          />
+                          <Button
+                            label="Delete Record"
+                            icon="pi pi-trash"
+                            className="p-button-outlined text-xs border-red-200 text-red-500 hover:bg-red-500/10"
+                            onClick={() => handleDeleteTrip(tripId)}
+                          />
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="grid gap-8 md:grid-cols-[1fr_320px]">
-                      {/* Vault diary log summary */}
-                      <div>
-                        <h3 className="text-lg font-bold tracking-tight mb-4">Memory Vault Records</h3>
-                        {(!trip.diary || trip.diary.length === 0) ? (
-                          <p className="text-sm text-[var(--text-secondary)]">No logs were recorded during this trip.</p>
-                        ) : (
-                          <div className="space-y-4">
-                            {trip.diary.map((entry) => (
-                              <div key={entry.id} className="flex gap-4 p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)]/30">
-                                <img src={entry.photo} alt="Vault spot" className="h-16 w-16 rounded-lg object-cover shrink-0 shadow-sm" />
-                                <div>
-                                  <span className="font-mono text-[10px] text-[var(--text-secondary)]">{entry.date}</span>
-                                  <p className="text-sm text-[var(--text-primary)] mt-1 leading-6">{entry.text}</p>
-                                </div>
-                              </div>
-                            ))}
+                      <div className="grid gap-8 md:grid-cols-[1fr_320px]">
+                        {/* Vault diary log summary */}
+                        <div>
+                          <h3 className="text-lg font-bold tracking-tight mb-4">Memory Vault Records</h3>
+                          {(!trip.diary || trip.diary.length === 0) ? (
+                            <p className="text-sm text-[var(--text-secondary)]">No logs were recorded during this trip.</p>
+                          ) : (
+                            <div className="space-y-4">
+                              {trip.diary.map((entry) => {
+                                const entryId = entry._id || entry.id;
+                                return (
+                                  <div key={entryId} className="flex gap-4 p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)]/30">
+                                    <img src={entry.photo} alt="Vault spot" className="h-16 w-16 rounded-lg object-cover shrink-0 shadow-sm" />
+                                    <div>
+                                      <span className="font-mono text-[10px] text-[var(--text-secondary)]">{entry.date}</span>
+                                      <p className="text-sm text-[var(--text-primary)] mt-1 leading-6">{entry.text}</p>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Completed summary details */}
+                        <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)]/20 p-5 self-start space-y-4">
+                          <h4 className="font-bold text-sm tracking-tight border-b border-[var(--border-subtle)] pb-2">Trip Summary</h4>
+                          
+                          <div className="flex justify-between text-xs">
+                            <span className="text-[var(--text-secondary)]">Total Days</span>
+                            <span className="font-bold">{trip.daysCount || trip.days}</span>
                           </div>
-                        )}
+                          <div className="flex justify-between text-xs">
+                            <span className="text-[var(--text-secondary)]">Style</span>
+                            <span className="font-bold">{trip.travelStyle}</span>
+                          </div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-[var(--text-secondary)]">Budget</span>
+                            <span className="font-bold">{trip.budget}</span>
+                          </div>
+                          
+                          <div className="text-[11px] leading-5 text-[var(--text-secondary)] border-t border-[var(--border-subtle)] pt-3">
+                            <i className="pi pi-info-circle mr-1" />
+                            Earned achievements evaluated. Visit your profile to view unlocked passport badges.
+                          </div>
+                        </div>
                       </div>
 
-                      {/* Completed summary details */}
-                      <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)]/20 p-5 self-start space-y-4">
-                        <h4 className="font-bold text-sm tracking-tight border-b border-[var(--border-subtle)] pb-2">Trip Summary</h4>
-                        
-                        <div className="flex justify-between text-xs">
-                          <span className="text-[var(--text-secondary)]">Total Days</span>
-                          <span className="font-bold">{trip.days}</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span className="text-[var(--text-secondary)]">Style</span>
-                          <span className="font-bold">{trip.travelStyle}</span>
-                        </div>
-                        <div className="flex justify-between text-xs">
-                          <span className="text-[var(--text-secondary)]">Budget</span>
-                          <span className="font-bold">{trip.budget}</span>
-                        </div>
-                        
-                        <div className="text-[11px] leading-5 text-[var(--text-secondary)] border-t border-[var(--border-subtle)] pt-3">
-                          <i className="pi pi-info-circle mr-1" />
-                          Earned achievements evaluated. Visit your profile to view unlocked passport badges.
-                        </div>
-                      </div>
                     </div>
-
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           )}

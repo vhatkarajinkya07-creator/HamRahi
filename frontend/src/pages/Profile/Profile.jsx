@@ -18,7 +18,7 @@ const MOCK_BADGES = [
 ];
 
 export default function Profile() {
-  const { user, logout } = useAuth();
+  const { user, logout, refreshUser } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   const [activeTab, setActiveTab] = useState("dna"); // dna | settings | badges
@@ -28,6 +28,12 @@ export default function Profile() {
   const [passwordForm, setPasswordForm] = useState({ oldPassword: "", newPassword: "", confirmPassword: "" });
   const [message, setMessage] = useState({ type: "", text: "" });
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setSettingsForm({ name: user.name || "", email: user.email || "" });
+    }
+  }, [user]);
 
   useEffect(() => {
     async function fetchDNAData() {
@@ -63,23 +69,46 @@ export default function Profile() {
     fetchDNAData();
   }, []);
 
-  const handleSettingsUpdate = (e) => {
+  const handleSettingsUpdate = async (e) => {
     e.preventDefault();
     setSaving(true);
-    setMessage({ type: "success", text: "Profile details updated successfully (Mock Endpoint)." });
-    setTimeout(() => setSaving(false), 800);
+    setMessage({ type: "", text: "" });
+    try {
+      const { data } = await api.put("/auth/profile", {
+        name: settingsForm.name,
+        email: settingsForm.email
+      });
+      await refreshUser();
+      setMessage({ type: "success", text: data.message || "Profile details updated successfully." });
+    } catch (err) {
+      console.error(err);
+      setMessage({ type: "error", text: err.response?.data?.message || "Failed to update profile details." });
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handlePasswordUpdate = (e) => {
+  const handlePasswordUpdate = async (e) => {
     e.preventDefault();
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      setMessage({ type: "error", text: "Passwords do not match." });
+      setMessage({ type: "error", text: "New passwords do not match." });
       return;
     }
     setSaving(true);
-    setMessage({ type: "success", text: "Password changed successfully (Mock Endpoint)." });
-    setPasswordForm({ oldPassword: "", newPassword: "", confirmPassword: "" });
-    setTimeout(() => setSaving(false), 800);
+    setMessage({ type: "", text: "" });
+    try {
+      const { data } = await api.put("/auth/password", {
+        oldPassword: passwordForm.oldPassword,
+        newPassword: passwordForm.newPassword
+      });
+      setMessage({ type: "success", text: data.message || "Password changed successfully." });
+      setPasswordForm({ oldPassword: "", newPassword: "", confirmPassword: "" });
+    } catch (err) {
+      console.error(err);
+      setMessage({ type: "error", text: err.response?.data?.message || "Failed to change password." });
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (

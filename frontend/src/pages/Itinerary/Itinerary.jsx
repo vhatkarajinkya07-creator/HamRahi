@@ -50,11 +50,43 @@ export default function Itinerary() {
     updateField("interests", form.interests.filter((t) => t !== tag));
   };
 
+  const [saveStatus, setSaveStatus] = useState("idle"); // idle | saving | saved | error
+  const [startDate, setStartDate] = useState(new Date().toISOString().split("T")[0]);
+
+  const handleSaveTrip = async () => {
+    setSaveStatus("saving");
+    try {
+      const start = new Date(startDate);
+      const end = new Date(start);
+      end.setDate(start.getDate() + form.days);
+      const endDateString = end.toISOString().split("T")[0];
+
+      await api.post("/trips", {
+        placeId: form.placeId,
+        name: `${prefilledDestinationName || "Custom"} Trip`,
+        startDate: startDate,
+        endDate: endDateString,
+        daysCount: form.days,
+        budget: form.budget,
+        travelStyle: form.travelStyle,
+        itinerarySummary: itinerary.tripSummary,
+        packingEssentials: itinerary.packingEssentials,
+        localTips: itinerary.localTips,
+        days: itinerary.days
+      });
+      setSaveStatus("saved");
+    } catch (err) {
+      console.error("Failed to save trip:", err);
+      setSaveStatus("error");
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     setError("");
     setItinerary(null);
+    setSaveStatus("idle");
 
     try {
       const { data } = await api.post("/itinerary/generate", form);
@@ -264,13 +296,35 @@ export default function Itinerary() {
                   </span>
                   <h2 className="mt-2 text-3xl font-extrabold tracking-tight">{itinerary.tripSummary}</h2>
                 </div>
-                <button
-                  onClick={() => window.print()}
-                  className="no-print flex items-center gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)] px-4 py-2.5 text-xs font-bold text-[var(--text-primary)] transition-all hover:bg-[var(--border-subtle)]/30 active:scale-95 shadow-sm"
-                >
-                  <i className="pi pi-file-pdf text-sm text-red-500" />
-                  Export PDF
-                </button>
+                <div className="no-print flex flex-wrap items-end gap-3">
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-secondary)]">Start Date</span>
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)] px-3 py-2 text-xs font-bold text-[var(--text-primary)] focus:outline-none focus:border-[var(--theme-primary)]"
+                    />
+                  </div>
+                  <button
+                    onClick={handleSaveTrip}
+                    disabled={saveStatus === "saving" || saveStatus === "saved"}
+                    className="flex items-center gap-2 rounded-xl bg-[var(--theme-primary)] px-4 py-2.5 text-xs font-bold text-white transition-all hover:bg-[var(--theme-primary)]/90 active:scale-95 shadow-sm disabled:opacity-50"
+                  >
+                    <i className={`pi ${saveStatus === "saved" ? "pi-check" : "pi-save"} text-[13px]`} />
+                    {saveStatus === "saving" && "Saving..."}
+                    {saveStatus === "saved" && "Saved!"}
+                    {saveStatus === "idle" && "Save to Trips"}
+                    {saveStatus === "error" && "Error Saving!"}
+                  </button>
+                  <button
+                    onClick={() => window.print()}
+                    className="flex items-center gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)] px-4 py-2.5 text-xs font-bold text-[var(--text-primary)] transition-all hover:bg-[var(--border-subtle)]/30 active:scale-95 shadow-sm"
+                  >
+                    <i className="pi pi-file-pdf text-sm text-red-500" />
+                    Export PDF
+                  </button>
+                </div>
               </div>
 
               <div className="mt-6 grid gap-4 md:grid-cols-2 no-print">

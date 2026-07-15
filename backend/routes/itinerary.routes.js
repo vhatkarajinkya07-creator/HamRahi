@@ -1,5 +1,5 @@
 const express = require("express");
- auth = require("../middlewares/auth.middleware");
+const auth = require("../middlewares/auth.middleware");
 
 const generateItinerary = require("../controllers/itinerary.controllers/generateItinerary");
 
