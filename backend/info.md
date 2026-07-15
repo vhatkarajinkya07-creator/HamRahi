@@ -35,8 +35,10 @@ http://localhost:5000/api
 4. [AI Itinerary API](#ai-itinerary-api)
 5. [Trip (Dashboard) APIs](#trip-dashboard-apis)
 6. [Upload API](#upload-api)
-7. [Frontend Flow Diagrams](#frontend-flow-diagrams)
-8. [Environment Variables](#environment-variables)
+7. [Reviews & Ratings APIs](#reviews-ratings-apis)
+8. [Test APIs](#test-apis)
+9. [Frontend Flow Diagrams](#frontend-flow-diagrams)
+10. [Environment Variables](#environment-variables)
 
 ---
 
@@ -302,6 +304,32 @@ Homepage swipe cards. Personalized for logged-in users, trending for guests.
 
 ---
 
+### GET `/api/destination/discover/tag/:tag?limit=<limit>`
+
+Get trending and personalized destination suggestions that match a specific tag name.
+
+**Example:** `GET /api/destination/discover/tag/historic?limit=5`
+
+**Response 200**
+```json
+{
+  "tag": "historic",
+  "count": 1,
+  "suggestions": [
+    {
+      "placeId": "R1543125",
+      "title": "Tokyo",
+      "subtitle": "Tokyo, Japan",
+      "coordinates": { "latitude": 35.67, "longitude": 139.76 },
+      "heroImage": { "imageUrl": "https://..." },
+      "tags": ["Cities", "Food", "Culture"]
+    }
+  ]
+}
+```
+
+---
+
 ## Wishlist APIs
 
 All endpoints require authentication.
@@ -496,6 +524,100 @@ const { data } = await api.post("/upload/photo", formData, {
 ```
 
 Images are auto-optimized (`quality: auto:good`, max 1200×900).
+
+---
+
+## Reviews & Ratings APIs
+
+### GET `/api/destination/:placeId/reviews`
+
+Fetch all reviews/ratings submitted for a specific destination.
+
+**Response 200**
+```json
+[
+  {
+    "_id": "603f9f4a1a6b0c2394c1a2d1",
+    "user": {
+      "_id": "603f9b2c1a6b0c2394c1a12a",
+      "name": "Jane Doe",
+      "email": "jane@example.com"
+    },
+    "destination": "R1543125",
+    "rating": 5,
+    "comment": "An absolute masterpiece of nature and culture!",
+    "createdAt": "2026-07-15T13:36:00Z",
+    "updatedAt": "2026-07-15T13:36:00Z"
+  }
+]
+```
+
+---
+
+### POST `/api/destination/:placeId/reviews` *(requires auth)*
+
+Add a new review/rating, or update an existing review for the destination. Submitting a review automatically updates the destination's average rating and total review count stats dynamically inside MongoDB.
+
+**Request**
+```json
+{
+  "rating": 5,
+  "comment": "Stunning views! Definitely recommend hiking early in the morning."
+}
+```
+
+**Response 200**
+```json
+{
+  "message": "Review submitted successfully",
+  "review": {
+    "_id": "603f9f4a1a6b0c2394c1a2d1",
+    "user": {
+      "_id": "603f9b2c1a6b0c2394c1a12a",
+      "name": "Jane Doe",
+      "email": "jane@example.com"
+    },
+    "destination": "R1543125",
+    "rating": 5,
+    "comment": "Stunning views! Definitely recommend hiking early in the morning.",
+    "createdAt": "2026-07-15T13:36:00.000Z",
+    "updatedAt": "2026-07-15T13:36:00.000Z"
+  }
+}
+```
+
+---
+
+### DELETE `/api/destination/:placeId/reviews/:reviewId` *(requires auth)*
+
+Delete the logged-in user's own review for a specific destination. Deleting a review automatically reverts the destination's average rating and count stats dynamically.
+
+**Response 200**
+```json
+{
+  "message": "Review deleted successfully"
+}
+```
+
+---
+
+## Test APIs
+
+### POST `/api/test/seed-destinations`
+
+Seeds default destinations from `backend/data/destinations.json` into the MongoDB database. Skips already existing records unless properties (like `bestSeason`) need to be backfilled/updated.
+
+**Response 200**
+```json
+{
+  "total": 15,
+  "success": 2,
+  "skipped": 13,
+  "backfilled": 0,
+  "failedCount": 0,
+  "failed": []
+}
+```
 
 ---
 
