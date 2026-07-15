@@ -183,16 +183,15 @@ export default function GlobeSection3D() {
   return (
     <section
       id="destinations"
-      className={`relative bg-black transition-[background] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        isMobile ? "" : activeTheme
-      }`}
+      className={`relative bg-black transition-[background] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isMobile ? "" : activeTheme
+        }`}
       style={
         isMobile
           ? undefined
           : {
-              background:
-                "linear-gradient(180deg, #050505 0%, #0a0a0a 46%, #000000 100%)",
-            }
+            background:
+              "linear-gradient(180deg, #050505 0%, #0a0a0a 46%, #000000 100%)",
+          }
       }
     >
       {!isMobile && (

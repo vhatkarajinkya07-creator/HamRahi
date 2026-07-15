@@ -14,7 +14,8 @@ const createTrip = async (req, res) => {
       itinerarySummary,
       packingEssentials,
       localTips,
-      days
+      days,
+      status
     } = req.body;
 
     if (!placeId || !name || !startDate || !endDate) {
@@ -43,7 +44,7 @@ const createTrip = async (req, res) => {
       destination: destination || name,
       country,
       heroImage: heroImage || "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80",
-      status: "upcoming",
+      status: status || "upcoming",
       startDate,
       endDate,
       daysCount: daysCount || 1,
