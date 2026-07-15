@@ -147,7 +147,7 @@ export default function Destination({ destinationId }) {
               alt={destination.name}
               className="absolute inset-0 h-full w-full object-cover scale-102"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-base)] via-black/30 to-black/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             <motion.div
               className="relative z-[1] flex h-full flex-col justify-end px-[6vw] pb-[50px] text-white"
               variants={staggerContainer(0.1)}
