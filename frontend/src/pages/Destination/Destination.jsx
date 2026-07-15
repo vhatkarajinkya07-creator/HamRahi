@@ -41,6 +41,66 @@ export default function Destination({ destinationId }) {
   const [error, setError] = useState("");
   const [wishlistBusy, setWishlistBusy] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
+  const [showFlightModal, setShowFlightModal] = useState(false);
+
+  const flightOptions = [
+    {
+      name: "Google Flights",
+      logo: "pi-globe",
+      color: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+      description: "Search and track airfares directly from Google. Best for date range comparison.",
+      url: `https://www.google.com/travel/flights?q=flights+to+${encodeURIComponent(destination?.name || "")}`
+    },
+    {
+      name: "Kayak",
+      logo: "pi-send",
+      color: "text-orange-500 bg-orange-500/10 border-orange-500/20",
+      description: "Compare hundreds of travel sites at once. Offers robust email price alerts.",
+      url: `https://www.kayak.com/flights/Anywhere-${encodeURIComponent(destination?.name || "")}`
+    },
+    {
+      name: "Skyscanner",
+      logo: "pi-compass",
+      color: "text-teal-500 bg-teal-500/10 border-teal-500/20",
+      description: "Find cheap flights using flexible date tools. Industry standard search format.",
+      url: `https://www.skyscanner.com/transport/flights/anywhere/${encodeURIComponent(destination?.name || "")}`
+    },
+    {
+      name: "Expedia",
+      logo: "pi-briefcase",
+      color: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+      description: "Earn points and package your flights with hotel bookings for bundle discounts.",
+      url: `https://www.expedia.com/Flights-Search?destination=${encodeURIComponent(destination?.name || "")}`
+    },
+    {
+      name: "Kiwi.com",
+      logo: "pi-map",
+      color: "text-cyan-500 bg-cyan-500/10 border-cyan-500/20",
+      description: "Virtual interlining searches unique flight combinations across separate airlines.",
+      url: `https://www.kiwi.com/en/search/results/anywhere/${encodeURIComponent(destination?.name || "")}`
+    },
+    {
+      name: "Momondo",
+      logo: "pi-ticket",
+      color: "text-pink-500 bg-pink-500/10 border-pink-500/20",
+      description: "Aggregates fares with colorful charts representing cheap, quick, and best options.",
+      url: `https://www.momondo.com/flight-search/Anywhere-${encodeURIComponent(destination?.name || "")}`
+    },
+    {
+      name: "TripAdvisor Flights",
+      logo: "pi-bookmark",
+      color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
+      description: "Check traveler reviews and compare flight search engines with confidence.",
+      url: `https://www.tripadvisor.com/CheapFlights?geo=0&destination=${encodeURIComponent(destination?.name || "")}`
+    },
+    {
+      name: "Skiplagged",
+      logo: "pi-exclamation-triangle",
+      color: "text-red-500 bg-red-500/10 border-red-500/20",
+      description: "Exposes hidden-city ticketing options where the destination is a layover stop.",
+      url: `https://skiplagged.com/flights/anywhere/${encodeURIComponent(destination?.name || "")}`
+    }
+  ];
 
   useEffect(() => {
     let active = true;
@@ -214,16 +274,15 @@ export default function Destination({ destinationId }) {
                   Compare flight options, reserve hotels, and secure dynamic local activities in {destination.name}.
                 </p>
                 <div className="grid gap-4 sm:grid-cols-3">
-                  <a
-                    href={`https://www.skyscanner.net/g/referrals/v1/flights?dest=${encodeURIComponent(destination.name)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    type="button"
+                    onClick={() => setShowFlightModal(true)}
                     className="flex flex-col items-center justify-center gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)] p-5 text-center transition-all duration-300 hover:border-sky-400 hover:bg-sky-400/5 group shadow-sm pointer-events-auto cursor-pointer z-10"
                   >
                     <i className="pi pi-plane text-2xl text-sky-400 group-hover:scale-110 transition-transform" />
                     <span className="font-semibold text-sm">Find Flights</span>
-                    <span className="text-[10px] text-[var(--text-secondary)]">Skyscanner</span>
-                  </a>
+                    <span className="text-[10px] text-[var(--text-secondary)]">8 Options Available</span>
+                  </button>
                   <a
                     href={`https://www.booking.com/searchresults.html?ss=${encodeURIComponent(destination.name)}`}
                     target="_blank"
@@ -313,6 +372,70 @@ export default function Destination({ destinationId }) {
               </Link>
             </motion.aside>
           </section>
+
+          {/* Flights Modal Overlay */}
+          {showFlightModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                className="relative w-full max-w-[760px] rounded-[28px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-2xl md:p-8 text-[var(--text-primary)] max-h-[85vh] overflow-y-auto"
+              >
+                
+                {/* Header */}
+                <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-5">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-secondary)]">
+                      Compare Airfares to {destination?.name}
+                    </span>
+                    <h3 className="mt-1 text-2xl font-extrabold tracking-tight">Select Flight Provider</h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowFlightModal(false)}
+                    className="grid h-10 w-10 place-items-center rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)] text-[var(--text-primary)] hover:bg-[var(--border-subtle)]/30 active:scale-95 transition-all shadow-sm"
+                  >
+                    <i className="pi pi-times text-sm" />
+                  </button>
+                </div>
+
+                {/* Providers Grid */}
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {flightOptions.map((opt) => (
+                    <a
+                      key={opt.name}
+                      href={opt.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-start gap-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)]/30 p-4 transition-all duration-300 hover:border-[var(--theme-primary)] hover:bg-[var(--bg-surface-raised)] shadow-sm hover:scale-[1.01] group"
+                    >
+                      <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border text-lg transition-transform group-hover:scale-110 duration-300 ${opt.color}`}>
+                        <i className={`pi ${opt.logo}`} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm text-[var(--text-primary)] flex items-center gap-1.5 font-sans">
+                          {opt.name}
+                          <i className="pi pi-external-link text-[10px] opacity-50" />
+                        </h4>
+                        <p className="text-xs text-[var(--text-secondary)] mt-1.5 leading-5">{opt.description}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+
+                {/* Footer Tip */}
+                <div className="mt-6 border-t border-[var(--border-subtle)] pt-4 text-center">
+                  <p className="text-[11px] leading-5 text-[var(--text-secondary)]">
+                    <i className="pi pi-info-circle mr-1 text-[var(--theme-primary)]" />
+                    All search links are pre-populated with <strong>{destination?.name}</strong>. Rates will calculate based on your current departure location.
+                  </p>
+                </div>
+                
+              </motion.div>
+            </div>
+          )}
         </>
       )}
     </div>
