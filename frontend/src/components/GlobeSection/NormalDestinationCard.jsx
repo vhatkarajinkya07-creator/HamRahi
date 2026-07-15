@@ -116,7 +116,7 @@ export default function NormalDestinationCard({ destination, isActive, onSelect 
             <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-base)] px-2 py-2 text-center shadow-sm">
               <span className="text-sm font-bold text-[var(--text-primary)]">${priceFrom}</span>
               <span className="mt-0.5 block text-[9px] uppercase font-bold text-[var(--text-secondary)]/50">
-                from
+                price
               </span>
             </div>
             <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-base)] px-2 py-2 text-center shadow-sm">

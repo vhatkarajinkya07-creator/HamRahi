@@ -138,7 +138,7 @@ export default function DestinationCard({
                 ${priceFrom}
               </span>
               <span className="mt-1 block text-[10px] uppercase text-white/42">
-                from
+                price
               </span>
             </div>
 
