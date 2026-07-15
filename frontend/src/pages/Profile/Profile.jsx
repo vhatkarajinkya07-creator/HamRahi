@@ -723,16 +723,17 @@ export default function Profile() {
               </form>
 
               {/* Danger Zone */}
-              <div className="md:col-span-2 rounded-[28px] border border-red-400/20 bg-red-400/5 p-6 md:p-8">
-                <h3 className="text-lg font-bold text-red-400 mb-2">Session</h3>
-                <p className="text-sm text-[var(--text-secondary)] mb-4">Sign out of your account on this device.</p>
-                <Button
-                  label="Sign Out"
-                  icon="pi pi-sign-out"
-                  severity="danger"
-                  outlined
+              <div className="md:col-span-2 rounded-[28px] border border-red-400/30 bg-red-50 dark:bg-red-400/5 p-6 md:p-8">
+                <h3 className="text-lg font-bold text-red-500 mb-2">Session</h3>
+                <p className="text-sm text-[var(--text-secondary)] mb-5">Sign out of your account on this device.</p>
+                <button
+                  type="button"
                   onClick={logout}
-                />
+                  className="flex items-center gap-2 rounded-xl border-2 border-red-400 bg-transparent px-5 py-2.5 text-sm font-bold text-red-500 hover:bg-red-500 hover:text-white transition-all duration-200"
+                >
+                  <i className="pi pi-sign-out" />
+                  Sign Out
+                </button>
               </div>
             </div>
           )}
