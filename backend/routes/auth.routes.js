@@ -11,5 +11,7 @@ router.get('/verification-status', require('../controllers/auth.controllers/veri
 router.post('/finalise-registration', require('../controllers/auth.controllers/finaliseRegistration'));
 router.post('/google-login', require('../controllers/auth.controllers/googleLogin'));
 router.get('/me', auth, require('../controllers/auth.controllers/getCurrentUser'));
+router.put('/profile', auth, require('../controllers/auth.controllers/updateProfile'));
+router.put('/password', auth, require('../controllers/auth.controllers/updatePassword'));
 
 module.exports = router;

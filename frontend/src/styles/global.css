@@ -34,8 +34,22 @@
 }
 
 :root {
-  --grad-sunrise: linear-gradient(120deg, #ff6a4d 0%, #ffc93c 55%, #4fa9ff 100%);
-  --grad-brand: linear-gradient(120deg, #00c2a8 0%, #4fa9ff 60%, #7c6cf6 100%);
+  /* ---------- Light Theme Tokens (Default) ---------- */
+  --bg-base: #FFFAF3;
+  --bg-surface: #FFF3E6;
+  --bg-surface-raised: #FFFFFF;
+  --text-primary: #101A33;
+  --text-secondary: #45507A;
+  --border-subtle: rgba(16, 26, 51, 0.08);
+
+  --color-coral: #FF6A4D;
+  --color-teal: #00C2A8;
+  --color-gold: #FFC93C;
+  --color-violet: #7C6CF6;
+  --color-sky: #4FA9FF;
+
+  --grad-sunrise: linear-gradient(120deg, var(--color-coral) 0%, var(--color-gold) 55%, var(--color-sky) 100%);
+  --grad-brand: linear-gradient(120deg, var(--color-teal) 0%, var(--color-sky) 60%, var(--color-violet) 100%);
   --grad-glass: linear-gradient(160deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.12) 100%);
 
   /* ---------- Category theme defaults (overridden inline / per class per destination) ---------- */
@@ -50,6 +64,27 @@
   --glass-border: 1px solid rgba(255, 255, 255, 0.4);
   --glass-bg: rgba(255, 255, 255, 0.22);
   --glass-blur: blur(18px);
+}
+
+.dark {
+  /* ---------- Dark Theme Tokens ---------- */
+  --bg-base: #0D0F1C;
+  --bg-surface: #161A2E;
+  --bg-surface-raised: #1F2438;
+  --text-primary: #F5F0E6;
+  --text-secondary: #9CA3C4;
+  --border-subtle: rgba(255, 246, 224, 0.08);
+
+  /* Shared accents brightened by ~6-8% */
+  --color-coral: #FF8870;
+  --color-teal: #00E5C6;
+  --color-gold: #FFD563;
+  --color-violet: #988CFA;
+  --color-sky: #75BCFF;
+
+  --shadow-soft: 0 20px 60px -20px rgba(5, 5, 10, 0.65);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.05);
 }
 
 /* ---------- Category palettes (toggled via className, referenced by CSS vars in Tailwind arbitrary values) ---------- */
@@ -89,6 +124,54 @@
   --theme-accent: #2fe0d0;
   --theme-glow: #7c6cf6;
 }
+.theme-island {
+  --theme-primary: #1fa8a0;
+  --theme-secondary: #ffd27a;
+  --theme-accent: #f0fff9;
+  --theme-glow: #2fe0d0;
+}
+.theme-lake {
+  --theme-primary: #2e7da6;
+  --theme-secondary: #a8d8e8;
+  --theme-accent: #eaf7fb;
+  --theme-glow: #4fa9ff;
+}
+.theme-river {
+  --theme-primary: #3c8ca6;
+  --theme-secondary: #7fc4c9;
+  --theme-accent: #e4f5f2;
+  --theme-glow: #4fd1c5;
+}
+.theme-waterfall {
+  --theme-primary: #1e90a6;
+  --theme-secondary: #b8e8f0;
+  --theme-accent: #ffffff;
+  --theme-glow: #5fd4e8;
+}
+.theme-national-park {
+  --theme-primary: #3e7a3f;
+  --theme-secondary: #a8c97f;
+  --theme-accent: #f4ebd0;
+  --theme-glow: #6fcb6f;
+}
+.theme-historical {
+  --theme-primary: #8a6a3a;
+  --theme-secondary: #c9a876;
+  --theme-accent: #f4e9d8;
+  --theme-glow: #d9b36c;
+}
+.theme-religious {
+  --theme-primary: #b0862f;
+  --theme-secondary: #e8c97a;
+  --theme-accent: #fff7e0;
+  --theme-glow: #ffc93c;
+}
+.theme-wildlife {
+  --theme-primary: #6b7a3a;
+  --theme-secondary: #c4a85a;
+  --theme-accent: #f0ead6;
+  --theme-glow: #9ab84a;
+}
 
 @layer base {
   * {
@@ -103,10 +186,11 @@
 
   body {
     font-family: var(--font-body);
-    background: var(--color-cream);
-    color: var(--color-ink);
+    background: var(--bg-base);
+    color: var(--text-primary);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4 {
@@ -211,5 +295,95 @@
 
   .p-dropdown-item {
     color: #ffffff;
+  }
+
+  /* ---------- Global PrimeReact Input & Button Taller Sizes ---------- */
+  .p-inputtext,
+  .p-inputnumber-input,
+  .p-password-input {
+    padding: 14px 18px !important;
+    font-size: 15px !important;
+    border-radius: 14px !important;
+    border: 1px solid var(--border-subtle) !important;
+    background-color: var(--bg-surface-raised) !important;
+    color: var(--text-primary) !important;
+    transition: all 0.2s ease-in-out !important;
+  }
+
+  .p-inputtext:focus,
+  .p-inputnumber-input:focus,
+  .p-password-input:focus {
+    border-color: var(--theme-primary) !important;
+  }
+
+  .p-dropdown {
+    border-radius: 14px !important;
+    border: 1px solid var(--border-subtle) !important;
+    background-color: var(--bg-surface-raised) !important;
+    transition: all 0.2s ease-in-out !important;
+  }
+
+  .p-dropdown .p-dropdown-label {
+    padding: 14px 18px !important;
+    font-size: 15px !important;
+    color: var(--text-primary) !important;
+  }
+
+  .p-chips .p-chips-multiple-container {
+    padding: 8px 14px !important;
+    font-size: 15px !important;
+    border-radius: 14px !important;
+    border: 1px solid var(--border-subtle) !important;
+    background-color: var(--bg-surface-raised) !important;
+  }
+
+  .p-button {
+    padding: 14px 28px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    border-radius: 14px !important;
+    transition: all 0.2s ease-in-out !important;
+  }
+}
+
+/* ---------- PDF Export Print Styles ---------- */
+@media print {
+  header,
+  footer,
+  form,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #101A33 !important;
+  }
+
+  main {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  section {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .print-full {
+    width: 100% !important;
+    max-width: 100% !important;
+    border: none !important;
+    background: transparent !important;
+    color: #101A33 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .print-full * {
+    color: #101A33 !important;
+    border-color: rgba(16, 26, 51, 0.12) !important;
+    background-color: transparent !important;
+    background-image: none !important;
   }
 }

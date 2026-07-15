@@ -20,9 +20,11 @@ import NormalDestinationCard from "../GlobeSection/NormalDestinationCard";
 
 const DEBOUNCE_MS = 350;
 
-export default function DestinationSearch() {
+export default function DestinationSearch({ query, setQuery }) {
   const navigate = useNavigate();
-  const [query, setQuery] = useState("");
+  const [localQuery, setLocalQuery] = useState("");
+  const activeQuery = query !== undefined ? query : localQuery;
+  const activeSetQuery = setQuery !== undefined ? setQuery : setLocalQuery;
   const [results, setResults] = useState([]);
   const [status, setStatus] = useState("idle"); // idle | loading | ready | error
   const [error, setError] = useState("");
@@ -32,7 +34,7 @@ export default function DestinationSearch() {
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    const trimmed = query.trim();
+    const trimmed = activeQuery.trim();
 
     if (!trimmed) {
       setResults([]);
@@ -62,24 +64,23 @@ export default function DestinationSearch() {
     }, DEBOUNCE_MS);
 
     return () => clearTimeout(debounceRef.current);
-  }, [query]);
+  }, [activeQuery]);
 
   const showEmpty = status === "ready" && results.length === 0;
 
   return (
     <section
       id="search"
-      className="relative bg-[#050505] px-[6vw] pb-6 pt-16 md:pt-20"
+      className="relative bg-[var(--bg-base)] text-[var(--text-primary)] px-[6vw] pb-6 pt-16 md:pt-20 transition-colors duration-300"
     >
       <motion.div
         className="mx-auto max-w-[1400px]"
         variants={staggerContainer(0.08, 0.05)}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        animate="visible"
       >
         <motion.span
-          className="inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/[0.08] px-4 py-2 text-xs font-semibold uppercase text-white/60 backdrop-blur-2xl"
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2 text-xs font-semibold uppercase text-[var(--text-secondary)] shadow-sm"
           variants={fadeUp}
         >
           <i className="pi pi-search text-[11px]" aria-hidden="true" />
@@ -87,22 +88,22 @@ export default function DestinationSearch() {
         </motion.span>
 
         <motion.h2
-          className="mt-5 max-w-[640px] text-3xl font-semibold leading-tight text-white md:text-5xl"
+          className="mt-5 max-w-[640px] text-3xl font-extrabold leading-tight text-[var(--text-primary)] md:text-5xl"
           variants={fadeUp}
         >
           Know where you're headed? Look it up.
         </motion.h2>
 
         <motion.div className="relative mt-7 max-w-[560px]" variants={fadeUp}>
-          <span className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-white/40">
+          <span className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]/50">
             <i className="pi pi-search" aria-hidden="true" />
           </span>
           <InputText
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            value={activeQuery}
+            onChange={(event) => activeSetQuery(event.target.value)}
             placeholder="Search a city, region, or landmark..."
             aria-label="Search destinations"
-            className="w-full rounded-full border border-white/14 bg-white/[0.06] py-4 pl-12 pr-5 text-white placeholder:text-white/38 backdrop-blur-2xl"
+            className="w-full rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] py-4 pl-12 pr-5 text-[var(--text-primary)] placeholder:text-[var(--text-secondary)]/40 shadow-sm"
           />
           {status === "loading" && (
             <span className="absolute right-4 top-1/2 -translate-y-1/2">
@@ -114,8 +115,8 @@ export default function DestinationSearch() {
         {error && <Message severity="error" text={error} className="mt-5 w-full max-w-[560px]" />}
 
         {showEmpty && (
-          <div className="mt-5 max-w-[560px] rounded-2xl border border-white/12 bg-white/[0.05] px-5 py-4 text-sm text-white/56">
-            No destinations matched "{query.trim()}". Try a different spelling or a nearby city.
+          <div className="mt-5 max-w-[560px] rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-5 py-4 text-sm text-[var(--text-secondary)] shadow-sm">
+            No destinations matched "{activeQuery.trim()}". Try a different spelling or a nearby city.
           </div>
         )}
 

@@ -1,18 +1,9 @@
 // GlobeSection/NormalHeroScene.jsx
-//
-// Purely decorative accent for the Normal Experience — a small low-poly
-// wireframe globe with a couple of orbit rings and a light scatter of
-// particles. It is NOT a replacement for the Cesium globe: no terrain, no
-// camera flights, no per-destination street-view. A handful of destination
-// markers are placed on the sphere for flavor only.
-//
-// Kept intentionally cheap: low segment counts, no shadows/postprocessing,
-// capped devicePixelRatio, and everything is pointer-events-none.
-
 import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Sparkles } from "@react-three/drei";
 import * as THREE from "three";
+import { useTheme } from "../../context/ThemeContext";
 
 function latLonToVector3(lat, lon, radius) {
   const phi = THREE.MathUtils.degToRad(90 - lat);
@@ -25,7 +16,7 @@ function latLonToVector3(lat, lon, radius) {
   );
 }
 
-function WireGlobe({ markers }) {
+function WireGlobe({ markers, isLight }) {
   const globeRef = useRef(null);
   const ringGroupRef = useRef(null);
 
@@ -40,27 +31,35 @@ function WireGlobe({ markers }) {
     if (ringGroupRef.current) ringGroupRef.current.rotation.z += delta * 0.035;
   });
 
+  // Dynamic theme colors
+  const globeColor = isLight ? "#2a6b8c" : "#dceeff";
+  const globeOpacity = isLight ? 0.38 : 0.28;
+  const markerColor = isLight ? "#101a33" : "#ffffff";
+  const ringColor = isLight ? "#101a33" : "#8fb6d9";
+  const ring1Opacity = isLight ? 0.18 : 0.22;
+  const ring2Opacity = isLight ? 0.12 : 0.14;
+
   return (
     <group>
       <mesh ref={globeRef} geometry={geometry}>
-        <meshBasicMaterial color="#dceeff" wireframe transparent opacity={0.28} />
+        <meshBasicMaterial color={globeColor} wireframe transparent opacity={globeOpacity} />
       </mesh>
 
       {markerPositions.map((pos, index) => (
         <mesh key={index} position={pos}>
           <sphereGeometry args={[0.035, 8, 8]} />
-          <meshBasicMaterial color="#ffffff" transparent opacity={0.9} />
+          <meshBasicMaterial color={markerColor} transparent opacity={0.9} />
         </mesh>
       ))}
 
       <group ref={ringGroupRef}>
         <mesh rotation={[Math.PI / 2.4, 0, 0]}>
           <torusGeometry args={[2.05, 0.004, 8, 96]} />
-          <meshBasicMaterial color="#8fb6d9" transparent opacity={0.22} />
+          <meshBasicMaterial color={ringColor} transparent opacity={ring1Opacity} />
         </mesh>
         <mesh rotation={[Math.PI / 1.7, Math.PI / 6, 0]}>
           <torusGeometry args={[2.3, 0.004, 8, 96]} />
-          <meshBasicMaterial color="#8fb6d9" transparent opacity={0.14} />
+          <meshBasicMaterial color={ringColor} transparent opacity={ring2Opacity} />
         </mesh>
       </group>
     </group>
@@ -68,6 +67,12 @@ function WireGlobe({ markers }) {
 }
 
 export default function NormalHeroScene({ markers = [], className = "" }) {
+  const { theme } = useTheme();
+  const isLight = theme === "light";
+
+  const sparklesColor = isLight ? "#2a6b8c" : "#dceeff";
+  const sparklesOpacity = isLight ? 0.55 : 0.35;
+
   return (
     <div
       className={`pointer-events-none select-none ${className}`}
@@ -79,8 +84,8 @@ export default function NormalHeroScene({ markers = [], className = "" }) {
         camera={{ position: [0, 0.2, 5.4], fov: 42 }}
       >
         <Suspense fallback={null}>
-          <WireGlobe markers={markers} />
-          <Sparkles count={60} size={1.6} scale={[6, 6, 6]} speed={0.2} opacity={0.35} color="#dceeff" />
+          <WireGlobe markers={markers} isLight={isLight} />
+          <Sparkles count={60} size={1.6} scale={[6, 6, 6]} speed={0.2} opacity={sparklesOpacity} color={sparklesColor} />
         </Suspense>
       </Canvas>
     </div>

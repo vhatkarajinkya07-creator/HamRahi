@@ -1,3 +1,4 @@
+// VerifyEmail.jsx
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "primereact/button";
@@ -60,11 +61,11 @@ export default function VerifyEmail() {
   }, [token, registrationSession, finalizeRegistration, navigate]);
 
   return (
-    <section className="grid min-h-screen place-items-center bg-[#050505] px-5 pt-[84px] text-white">
-      <div className="w-full max-w-[540px] rounded-[28px] border border-white/14 bg-white/[0.08] p-8 text-center shadow-[0_30px_90px_-46px_rgba(0,0,0,1)] backdrop-blur-3xl">
+    <section className="grid min-h-screen place-items-center bg-[var(--bg-base)] text-[var(--text-primary)] px-5 pt-[84px] transition-colors duration-300">
+      <div className="w-full max-w-[540px] rounded-[28px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 text-center shadow-xl backdrop-blur-md">
         <ProgressSpinner strokeWidth="4" className="mb-6" />
-        <h1 className="text-4xl">Email verification</h1>
-        <p className="mx-auto mt-4 max-w-[420px] text-sm leading-7 text-white/58">
+        <h1 className="text-4xl font-extrabold tracking-tight">Email verification</h1>
+        <p className="mx-auto mt-4 max-w-[420px] text-sm leading-7 text-[var(--text-secondary)]">
           {token
             ? "We are checking your verification link."
             : "Open the verification link from your inbox. This page will finish registration automatically."}
@@ -74,7 +75,7 @@ export default function VerifyEmail() {
 
         {!registrationSession && !token && (
           <div className="mt-7">
-            <Button as={Link} to="/register" label="Register again" icon="pi pi-refresh" />
+            <Button as={Link} to="/register" label="Register again" icon="pi pi-refresh" className="font-bold" />
           </div>
         )}
       </div>

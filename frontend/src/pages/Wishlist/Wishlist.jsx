@@ -1,3 +1,4 @@
+// Wishlist.jsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "primereact/button";
@@ -29,49 +30,91 @@ export default function Wishlist() {
   }, []);
 
   const removeItem = async (placeId) => {
-    await api.delete(`/wishlist/${placeId}`);
-    setItems((current) => current.filter((item) => item.placeId !== placeId));
+    try {
+      await api.delete(`/wishlist/${placeId}`);
+      setItems((current) => current.filter((item) => item.placeId !== placeId));
+    } catch (err) {
+      setError("Could not remove item from wishlist.");
+    }
   };
 
   return (
-    <section className="min-h-screen bg-[#050505] px-5 pb-20 pt-[120px] text-white">
-      <div className="mx-auto max-w-[1180px]">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <section className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] px-6 pb-24 pt-[130px] transition-colors duration-300">
+      <div className="mx-auto max-w-[1240px]">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between border-b border-[var(--border-subtle)] pb-8 mb-10">
           <div>
-            <span className="text-xs font-semibold uppercase text-white/48">Saved places</span>
-            <h1 className="mt-3 text-5xl">Wishlist</h1>
+            <span className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Saved spots</span>
+            <h1 className="mt-2 text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">Wishlist</h1>
           </div>
-          <Button label="Refresh" icon="pi pi-refresh" outlined onClick={loadWishlist} loading={loading} />
+          <Button
+            label="Refresh Board"
+            icon="pi pi-refresh"
+            outlined
+            onClick={loadWishlist}
+            loading={loading}
+            className="border-[var(--border-subtle)] text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5 px-5 py-3 font-bold text-sm rounded-xl"
+          />
         </div>
 
-        {error && <Message severity="error" text={error} className="mt-8 w-full" />}
+        {error && <Message severity="error" text={error} className="mt-6 w-full" />}
 
         {!loading && !error && items.length === 0 && (
-          <div className="mt-10 rounded-[28px] border border-white/14 bg-white/[0.08] p-8 text-center backdrop-blur-3xl">
-            <h2 className="text-2xl">No saved destinations yet</h2>
-            <Button as={Link} to="/#destinations" label="Explore destinations" icon="pi pi-compass" className="mt-5" />
+          <div className="mt-12 rounded-[32px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-16 text-center shadow-sm max-w-[620px] mx-auto">
+            <i className="pi pi-heart text-6xl text-[var(--text-secondary)]/30 mb-5 block" />
+            <h2 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">No saved destinations yet</h2>
+            <p className="text-sm text-[var(--text-secondary)] mt-3 mb-8 leading-6">Start exploring destinations around the globe to save them to your map.</p>
+            <Button as={Link} to="/#destinations" label="Explore destinations" icon="pi pi-compass" className="font-bold px-6 py-3.5 rounded-full" />
           </div>
         )}
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
-            <article key={item.placeId} className="overflow-hidden rounded-[24px] border border-white/14 bg-white/[0.08] backdrop-blur-3xl">
-              <img src={item.heroImage} alt={item.name} className="h-[220px] w-full object-cover" />
-              <div className="p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h2 className="text-2xl">{item.name}</h2>
-                    <p className="mt-1 text-sm text-white/52">{item.country}</p>
-                  </div>
+            <article
+              key={item.placeId}
+              className="overflow-hidden rounded-[28px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-md hover:shadow-lg transition-all duration-300 flex flex-col h-full hover:scale-[1.01]"
+            >
+              <div className="relative h-[250px] overflow-hidden">
+                <img
+                  src={item.heroImage}
+                  alt={item.name}
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-5 left-5 text-white pr-5">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-white/80">{item.country}</span>
+                  <h2 className="text-3xl font-extrabold tracking-tight mt-1 text-white leading-tight drop-shadow-sm">{item.name}</h2>
+                </div>
+              </div>
+              
+              <div className="p-6 flex flex-col justify-between flex-1 gap-6">
+                <div className="flex items-start justify-between gap-4">
+                  <p className="text-[15px] leading-relaxed text-[var(--text-secondary)] line-clamp-2">
+                    {item.tagline || `Discover the culture, food, and atmospheres of ${item.name}.`}
+                  </p>
                   {item.weather?.temperature && (
-                    <span className="rounded-full border border-white/12 bg-white/[0.08] px-3 py-1 text-xs text-white/70">
-                      {Math.round(item.weather.temperature)} C
+                    <span className="rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)] px-3.5 py-1.5 text-xs font-bold text-[var(--text-primary)] shrink-0 shadow-sm">
+                      {Math.round(item.weather.temperature)}°C
                     </span>
                   )}
                 </div>
-                <div className="mt-5 flex gap-3">
-                  <Button as={Link} to={`/destination/${item.placeId}`} label="Open" icon="pi pi-arrow-right" className="flex-1" />
-                  <Button icon="pi pi-trash" severity="danger" outlined aria-label="Remove" onClick={() => removeItem(item.placeId)} />
+                
+                {/* Action Buttons (Standard HTML buttons for perfect sizing & links) */}
+                <div className="mt-auto flex items-center gap-3.5">
+                  <Link
+                    to={`/destination/${item.placeId}`}
+                    className="flex-1 flex h-[52px] items-center justify-center gap-2.5 rounded-[18px] bg-[var(--text-primary)] px-6 text-sm font-bold text-[var(--bg-base)] transition-all hover:opacity-90 active:scale-95 shadow-sm"
+                  >
+                    <i className="pi pi-arrow-right text-[11px]" />
+                    <span>Open Details</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => removeItem(item.placeId)}
+                    className="flex h-[52px] w-[52px] items-center justify-center rounded-[18px] border border-red-500/20 bg-red-500/5 text-red-500 transition-all hover:bg-red-500/10 hover:border-red-500/40 active:scale-95 shrink-0"
+                    aria-label="Remove from wishlist"
+                  >
+                    <i className="pi pi-trash text-[16px]" />
+                  </button>
                 </div>
               </div>
             </article>

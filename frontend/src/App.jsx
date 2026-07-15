@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import AppRoutes from "./routes/AppRoutes";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
@@ -23,12 +24,14 @@ function ScrollToTop() {
 function AppShell() {
   return (
     <AuthProvider>
-      <ScrollToTop />
-      <Navbar />
-      <main>
-        <AppRoutes />
-      </main>
-      <Footer />
+      <ThemeProvider>
+        <ScrollToTop />
+        <Navbar />
+        <main>
+          <AppRoutes />
+        </main>
+        <Footer />
+      </ThemeProvider>
     </AuthProvider>
   );
 }

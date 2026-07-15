@@ -1,41 +1,52 @@
-# Authentication API Guide
+# HamRahi — Backend API Documentation
 
-# Axios Configuration
+> Full reference for all backend REST APIs. All authenticated endpoints require a valid JWT stored in an HttpOnly cookie. Use `withCredentials: true` on every axios request.
 
-Create a single axios instance.
+---
+
+## Axios Setup (Frontend)
 
 ```js
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true
+  baseURL: import.meta.env.VITE_API_URL || "/api",
+  withCredentials: true,
 });
 
 export default api;
 ```
 
-Always use this instance for authenticated requests.
+---
 
+## Base URL
 
-# Important Notes
+```
+http://localhost:5000/api
+```
 
-- Always use `withCredentials: true`.
-- `registrationSession` should exist only until registration is completed. baad me hta dena after verification
-- If registration is interrupted (refresh/close), the user can simply register again with the same email to receive a new verification email and registration session.
+---
 
+## Table of Contents
 
-____________________________________________________________________________________
-# Get Current User
+1. [Auth APIs](#auth-apis)
+2. [Destination APIs](#destination-apis)
+3. [Wishlist APIs](#wishlist-apis)
+4. [AI Itinerary API](#ai-itinerary-api)
+5. [Trip (Dashboard) APIs](#trip-dashboard-apis)
+6. [Upload API](#upload-api)
+7. [Frontend Flow Diagrams](#frontend-flow-diagrams)
+8. [Environment Variables](#environment-variables)
 
-Used to check whether the user is already authenticated (e.g. on app load or page refresh).
+---
+
+## Auth APIs
 
 ### GET `/api/auth/me`
 
-No request body required.
+Returns the currently logged-in user. Call once on app load.
 
-### Success Response
-
+**Response 200**
 ```json
 {
   "_id": "...",
@@ -46,91 +57,18 @@ No request body required.
 }
 ```
 
-### Unauthorized Response
-
+**Response 401**
 ```json
-{
-  "message": "Unauthorized"
-}
+{ "message": "Unauthorized" }
 ```
-
-### Frontend Usage
-
-Call this API once when the application starts.
-
-- **200** → User is authenticated. Save the returned user in global state/context.
-- **401** → User is not authenticated. Redirect to Login if accessing protected routes.
 
 ---
-
-# Google Authentication
-
-Google authentication is a separate sign-in method and does **not** require email verification.
-
-### POST `/api/auth/google-login`
-
-Request
-
-```json
-{
-  "credential": "<google_id_token>"
-}
-```
-
-The `credential` is obtained from the Google Login component.
-
-### Success Response
-
-```json
-{
-  "message": "google login done"
-}
-```
-
-The backend will automatically:
-
-- Verify the Google ID token.
-- Create the user if it doesn't exist.
-- Link the Google account if the email already exists.
-- Create a JWT.
-- Set the HttpOnly authentication cookie.
-
-No token needs to be stored on the frontend.
-
-### Frontend Flow
-
-```text
-User clicks "Continue with Google"
-        │
-        ▼
-Google Login Popup
-        │
-        ▼
-Receive Google credential
-        │
-        ▼
-POST /api/auth/google
-        │
-        ▼
-Backend sets authentication cookie
-        │
-        ▼
-Navigate to Home/Dashboard
-```
-
-_____________________________________________________________________________________
-
-# REGISTER via other email pages and flow
-
-`register page`
-# Register
 
 ### POST `/api/auth/register`
 
 Registers a new user and sends a verification email.
 
-### Request
-
+**Request**
 ```json
 {
   "name": "John Doe",
@@ -139,139 +77,61 @@ Registers a new user and sends a verification email.
 }
 ```
 
-### Success Response
-
+**Response 201**
 ```json
 {
   "message": "Verification email sent",
   "registrationSession": "<session_token>"
 }
 ```
-- Store `registrationSession` only in React state/context.
-- Navigate user to the Email Verification page (waiting page)
 
+Store `registrationSession` in React state/context only. Navigate to email verification waiting page.
 
-`the above api sends verification link to user : base-url/verify-email/:verification-token -> fronend page for verifying email`
-
-`verification page should call below api to verify : ` 
-# Email Verification
-
-The verification email redirects the user to:
-
-```
-/verify-email/:token
-```
-
-Frontend should call:
+---
 
 ### POST `/api/auth/verify-email/:token`
 
-Success:
+Called when the user clicks the link in their email. Token comes from the URL param.
 
+**Response 200**
 ```json
-{
-  "message": "Email verified successfully"
-}
+{ "message": "Email verified successfully" }
 ```
 
+---
 
-`register page or the page comes while waiting for verification should continously call below api to check whether email is verified by user from any other or same device :`
-# Verification Status
+### GET `/api/auth/verification-status?registrationSession=<token>`
 
-While the user is on the verification page, poll every **3 seconds**.
+Poll every 3 seconds while user is on the verification waiting page.
 
-### GET `/api/auth/verification-status`
-
-Query Params
-
-```
-registrationSession=<session_token>
-```
-
-Response
-
+**Response**
 ```json
-{
-  "isVerified": false
-}
+{ "isVerified": false }
 ```
+When `isVerified` becomes `true`, stop polling and call `finalize-registration`.
 
-Once it becomes
+---
 
+### POST `/api/auth/finalise-registration`
+
+Call immediately after verification status becomes `true`.
+
+**Request**
 ```json
-{
-  "isVerified": true
-}
+{ "registrationSession": "<session_token>" }
 ```
 
-stop polling.
-
-
-`if isVerified from the above api becomes true, call below api :`
-# Finalize Registration
-
-Immediately after verification succeeds.
-
-### POST `/api/auth/finalize-registration`
-
-Request
-
+**Response 200**
 ```json
-{
-  "registrationSession": "<session_token>"
-}
+{ "message": "Registration completed" }
 ```
+Clears `registrationSession` from state. JWT cookie is set. Redirect to Home.
 
-Response
-
-```json
-{
-  "message": "Registration completed"
-}
-```
-
-`registration got verified, navigate to main page`
-After success:
-- Clear `registrationSession` from frontend state.
-- Redirect user to Home/Dashboard.
-
-
-```text
-Register
-    │
-    ▼
-Receive registrationSession
-    │
-    ▼
-Go to Verify Email Page (waiting page)
-    │
-    ▼
-Poll verification-status every 3s
-    │
-    ▼
-User verifies email
-    │
-    ▼
-verification-status = true
-    │
-    ▼
-POST finalize-registration
-    │
-    ▼
-JWT Cookie Created
-    │
-    ▼
-Navigate to Dashboard
-```
-
-________________________________________________________________________________________
-
-# Login
+---
 
 ### POST `/api/auth/login`
 
-Request
-
+**Request**
 ```json
 {
   "email": "john@example.com",
@@ -279,492 +139,432 @@ Request
 }
 ```
 
-Response
-
+**Response 200**
 ```json
-{
-  "message": "Login successful"
-}
+{ "message": "Login successful" }
 ```
-
-JWT cookie is automatically set by the backend.
+JWT HttpOnly cookie is set automatically.
 
 ---
-_________________________________________________________________________________________
-
-# Logout
 
 ### POST `/api/auth/logout`
 
-Response
+**Response 200**
+```json
+{ "message": "Logged out successfully" }
+```
+Clears JWT cookie. Redirect to Login.
 
+---
+
+### POST `/api/auth/google-login`
+
+**Request**
+```json
+{ "credential": "<google_id_token>" }
+```
+
+**Response 200**
+```json
+{ "message": "google login done" }
+```
+Backend verifies token, creates/links user, sets JWT cookie. No token stored on frontend.
+
+---
+
+### PUT `/api/auth/profile` *(requires auth)*
+
+Update display name.
+
+**Request**
+```json
+{ "name": "New Name", "email": "same@email.com" }
+```
+
+**Response 200**
 ```json
 {
-  "message": "Logged out successfully"
+  "message": "Profile updated successfully",
+  "user": { "_id": "...", "name": "New Name", "email": "..." }
 }
 ```
 
-Backend clears the authentication cookie.
-
-Redirect user to the Login page.
-
----
 ---
 
-# HamRahi Backend API Documentation
+### PUT `/api/auth/password` *(requires auth)*
 
----
+Change password.
 
-# Authentication
-
-The following APIs require authentication (JWT stored in cookies):
-
-- Wishlist APIs
-- Itinerary API
-
-No Authorization header is required. Cookies are automatically sent using:
-
-```js
-axios.defaults.withCredentials = true;
-```
-
----
-
-# 1. Search Destination
-
-### Endpoint
-
-```http
-GET /destination/search?q=<search_query>
-```
-
-### Example
-
-```http
-GET /destination/search?q=tokyo
-```
-
-### Response
-
-```json
-[
-    {
-        "placeId": "R1543125",
-        "title": "Tokyo",
-        "subtitle": "Tokyo, Japan",
-        "coordinates": {
-            "latitude": 35.67,
-            "longitude": 139.76
-        },
-        "category": "boundary",
-        "type": "administrative"
-    }
-]
-```
-
----
-
-# 2. Destination Details
-
-### Endpoint
-
-```http
-GET /destination/:placeId
-```
-
-Example
-
-```http
-GET /destination/R1543125
-```
-
----
-
-### Response
-
+**Request**
 ```json
 {
+  "oldPassword": "current123",
+  "newPassword": "newSecure456"
+}
+```
+
+**Response 200**
+```json
+{ "message": "Password changed successfully" }
+```
+
+---
+
+## Destination APIs
+
+### GET `/api/destination/search?q=<query>`
+
+Search destinations. Returns up to 10 results.
+
+**Example:** `GET /api/destination/search?q=tokyo`
+
+**Response 200**
+```json
+[
+  {
     "placeId": "R1543125",
-
-    "basicInfo": {
-        "title": "Tokyo",
-        "subtitle": "Tokyo, Japan",
-
-        "coordinates": {
-            "latitude": 35.67,
-            "longitude": 139.76
-        },
-
-        "location": {
-            "city": "Tokyo",
-            "state": null,
-            "country": "Japan",
-            "countryCode": "JP"
-        },
-
-        "tagline": "Where tradition meets tomorrow.",
-
-        "tags": [
-            "Cities",
-            "Food",
-            "Shopping",
-            "Nightlife",
-            "Culture"
-        ]
-    },
-
-    "gallery": {
-        "heroImage": {
-            "title": "Tokyo",
-            "description": "...",
-            "heroImage": "https://..."
-        },
-
-        "images": [
-            {
-                "id": "...",
-                "imageUrl": "...",
-                "thumbnail": "...",
-                "photographer": "...",
-                "photographerProfile": "...",
-                "alt": "..."
-            }
-        ]
-    },
-
-    "stats": {
-        "rating": 4.8,
-        "reviewCount": 1240,
-        "bestSeason": "Mar-May, Sep-Nov",
-        "estimatedBudget": "Mid-range",
-        "difficulty": "Easy"
-    },
-
-    "weather": {
-        "temperature": 26.3,
-        "windSpeed": 15.3,
-        "condition": "Cloudy",
-        "icon": "cloudy"
-    },
-
-    "nearby": {
-        "attractions": [
-            {
-                "placeId": "N12345",
-                "title": "Tokyo Tower",
-
-                "coordinates": {
-                    "latitude": 35.6586,
-                    "longitude": 139.7454
-                },
-
-                "metadata": {
-                    "category": "attraction",
-                    "wikipedia": "en:Tokyo Tower",
-                    "wikidata": "Q17754",
-                    "website": null
-                }
-            }
-        ]
-    }
-}
-```
----
-
-# 3. Discover Feed
-
-Used for homepage swipe cards.
-
-Supports both:
-
-- Guest users
-- Logged in users
-
-Guest
-
-- Returns trending destinations.
-
-Logged In
-
-- Returns AI personalized destinations.
-
----
-
-### Endpoint
-
-```http
-GET /destination/discover
-```
-
----
-
-### Response
-
-```json
-[
-    {
-        "placeId": "R1543125",
-        "title": "Tokyo",
-        "subtitle": "Tokyo, Japan",
-        "coordinates": {
-            "latitude": 35.67,
-            "longitude": 139.76
-        },
-        "heroImage": {
-            "imageUrl": "..."
-        },
-        "tags": [
-            "Cities",
-            "Food",
-            "Culture"
-        ]
-    }
+    "title": "Tokyo",
+    "subtitle": "Tokyo, Japan",
+    "coordinates": { "latitude": 35.67, "longitude": 139.76 },
+    "heroImage": "https://...",
+    "tags": ["Cities", "Food", "Culture"]
+  }
 ]
 ```
 
-Response already contains complete destination objects. Frontend can render cards directly without making an additional `GET /destination/:placeId` request unless it explicitly wants refreshed destination details.
-
 ---
 
-# Wishlist APIs
+### GET `/api/destination/:placeId`
 
-Requires Login.
+Full destination details. Cached in MongoDB after first fetch.
 
----
+**Example:** `GET /api/destination/R1543125`
 
-# 1. Add to Wishlist
-
-```http
-POST /wishlist/:placeId
-```
-
-Example
-
-```http
-POST /wishlist/R1543125
-```
-
-Response
-
+**Response 200**
 ```json
 {
-    "message": "Added to wishlist"
+  "placeId": "R1543125",
+  "basicInfo": {
+    "title": "Tokyo",
+    "subtitle": "Tokyo, Japan",
+    "coordinates": { "latitude": 35.67, "longitude": 139.76 },
+    "location": { "city": "Tokyo", "state": null, "country": "Japan", "countryCode": "JP" },
+    "tagline": "Where tradition meets tomorrow.",
+    "tags": ["Cities", "Food", "Shopping", "Nightlife", "Culture"]
+  },
+  "gallery": {
+    "heroImage": { "title": "Tokyo", "description": "...", "heroImage": "https://..." },
+    "images": [
+      { "id": "...", "imageUrl": "...", "thumbnail": "...", "photographer": "...", "alt": "..." }
+    ]
+  },
+  "stats": {
+    "rating": 4.8,
+    "reviewCount": 1240,
+    "bestSeason": "Mar–May, Sep–Nov",
+    "estimatedBudget": "Mid-range",
+    "difficulty": "Easy"
+  },
+  "weather": { "temperature": 26.3, "windSpeed": 15.3, "condition": "Cloudy", "icon": "cloudy" },
+  "nearby": {
+    "attractions": [
+      {
+        "placeId": "N12345",
+        "title": "Tokyo Tower",
+        "coordinates": { "latitude": 35.6586, "longitude": 139.7454 },
+        "metadata": { "category": "attraction", "wikipedia": "en:Tokyo Tower", "wikidata": "Q17754", "website": null }
+      }
+    ]
+  },
+  "discover": { "featured": true, "categories": ["Cities"], "priority": 10 }
 }
 ```
 
 ---
 
-# 2. Remove from Wishlist
+### GET `/api/destination/discover`
 
-```http
-DELETE /wishlist/:placeId
-```
+Homepage swipe cards. Personalized for logged-in users, trending for guests.
 
-Example
-
-```http
-DELETE /wishlist/R1543125
-```
-
-Response
-
-```json
-{
-    "message": "Removed from wishlist"
-}
-```
-
----
-
-# 3. Get Wishlist
-
-```http
-GET /wishlist
-```
-
-Returns complete destination objects.
-
-Response
-
+**Response 200**
 ```json
 [
-    {
-        "placeId": "R1543125",
-
-        "basicInfo": {
-            "title": "Tokyo"
-        },
-
-        "gallery": {
-            "heroImage": {
-                "heroImage": "..."
-            }
-        },
-
-        "weather": {
-            "temperature": 27,
-            "condition": "Sunny"
-        }
-    }
-]
-```
-
-No extra API calls are required by frontend.
-
----
-
-# AI Itinerary
-
-Requires Login.
-
----
-
-### Endpoint
-
-```http
-POST /itinerary/generate
-```
-
-### Body
-
-```json
-{
+  {
     "placeId": "R1543125",
-    "days": 5,
+    "title": "Tokyo",
+    "subtitle": "Tokyo, Japan",
+    "coordinates": { "latitude": 35.67, "longitude": 139.76 },
+    "heroImage": { "imageUrl": "https://..." },
+    "tags": ["Cities", "Food", "Culture"]
+  }
+]
+```
+
+---
+
+## Wishlist APIs
+
+All endpoints require authentication.
+
+### POST `/api/wishlist/:placeId`
+Add to wishlist.
+```json
+{ "message": "Added to wishlist" }
+```
+
+### DELETE `/api/wishlist/:placeId`
+Remove from wishlist.
+```json
+{ "message": "Removed from wishlist" }
+```
+
+### GET `/api/wishlist`
+Returns full destination objects for all wishlisted places.
+
+```json
+[
+  {
+    "placeId": "R1543125",
+    "basicInfo": { "title": "Tokyo", "tags": ["Cities", "Food"] },
+    "gallery": { "heroImage": { "heroImage": "https://..." } },
+    "weather": { "temperature": 27, "condition": "Sunny" }
+  }
+]
+```
+
+---
+
+## AI Itinerary API
+
+Requires authentication.
+
+### POST `/api/itinerary/generate`
+
+**Request**
+```json
+{
+  "placeId": "R1543125",
+  "days": 5,
+  "budget": "Medium",
+  "travelStyle": "Friends",
+  "interests": ["Food", "Shopping", "Nightlife"]
+}
+```
+
+**Response 200**
+```json
+{
+  "destination": "Tokyo",
+  "tripSummary": "...",
+  "estimatedBudget": "~$1,200 USD",
+  "bestTimeToVisit": "March–May",
+  "packingEssentials": ["Comfortable shoes", "Umbrella"],
+  "localTips": ["Buy a Suica card", "Book teamLab in advance"],
+  "days": [
+    {
+      "day": 1,
+      "title": "Historic Tokyo",
+      "activities": [
+        { "time": "Morning", "activity": "Visit Senso-ji Temple", "description": "..." },
+        { "time": "Afternoon", "activity": "Street Food at Nakamise", "description": "..." }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## Trip (Dashboard) APIs
+
+All endpoints require authentication. Trips represent saved itineraries with diary logs.
+
+### GET `/api/trips`
+Returns all trips for the logged-in user.
+
+```json
+[
+  {
+    "_id": "...",
+    "placeId": "R1543125",
+    "name": "Tokyo Adventure",
+    "destination": "Tokyo",
+    "country": "Japan",
+    "heroImage": "https://...",
+    "status": "upcoming",
+    "startDate": "2026-09-10",
+    "endDate": "2026-09-17",
+    "daysCount": 7,
     "budget": "Medium",
     "travelStyle": "Friends",
-    "interests": [
-        "Food",
-        "Shopping",
-        "Nightlife"
-    ]
-}
+    "itinerarySummary": "...",
+    "diary": [],
+    "createdAt": "..."
+  }
+]
 ```
+
+**Status values:** `upcoming` | `active` | `completed`
 
 ---
 
-### Response
+### POST `/api/trips`
+Create a new trip (called when saving a generated itinerary).
 
+**Request**
 ```json
 {
-    "destination": "Tokyo",
-
-    "tripSummary": "...",
-
-    "estimatedBudget": "...",
-
-    "bestTimeToVisit": "...",
-
-    "packingEssentials": [
-        "...",
-        "..."
-    ],
-
-    "localTips": [
-        "...",
-        "..."
-    ],
-
-    "days": [
-        {
-            "day": 1,
-
-            "title": "Historic Tokyo",
-
-            "activities": [
-                {
-                    "time": "Morning",
-
-                    "activity": "Visit Senso-ji Temple",
-
-                    "description": "Explore Tokyo's oldest Buddhist temple."
-                },
-                {
-                    "time": "Afternoon",
-
-                    "activity": "Street Food at Nakamise",
-
-                    "description": "Taste authentic Japanese snacks."
-                }
-            ]
-        }
-    ]
+  "placeId": "R1543125",
+  "name": "Tokyo Adventure",
+  "startDate": "2026-09-10",
+  "endDate": "2026-09-17",
+  "daysCount": 7,
+  "budget": "Medium",
+  "travelStyle": "Friends",
+  "itinerarySummary": "...",
+  "packingEssentials": ["Umbrella"],
+  "localTips": ["Get Suica card"],
+  "days": []
 }
 ```
 
----
-
-# Frontend Flow
-
-## Homepage
-
-```
-GET /destination/discover
-        ↓
-Swipe Cards
-        ↓
-Click Card
-        ↓
-GET /destination/:placeId
-```
+**Response 201** — full trip object.
 
 ---
 
-## Search
+### PUT `/api/trips/:id`
+Update a trip's status, diary, name, dates, budget, or travelStyle.
 
+**Allowed fields:** `name` | `status` | `startDate` | `endDate` | `budget` | `travelStyle` | `itinerarySummary` | `diary`
+
+**Request (status update)**
+```json
+{ "status": "active" }
 ```
-GET /destination/search?q=...
-        ↓
-User selects destination
-        ↓
-GET /destination/:placeId
+
+**Request (add diary entry)**
+```json
+{
+  "diary": [
+    { "date": "2026-09-10", "text": "Visited Senso-ji!", "photo": "https://..." }
+  ]
+}
 ```
+
+**Response 200** — updated trip object.
 
 ---
 
-## Wishlist
+### DELETE `/api/trips/:id`
+Permanently delete a trip.
 
-```
-POST /wishlist/:placeId
-
-↓
-
-GET /wishlist
-
-↓
-
-DELETE /wishlist/:placeId
+**Response 200**
+```json
+{ "message": "Trip deleted successfully" }
 ```
 
 ---
 
-## AI Itinerary
+## Upload API
 
-```
-User fills form
+Requires authentication. Uploads photos to Cloudinary.
 
-↓
+### POST `/api/upload/photo`
 
-POST /itinerary/generate
+Multipart form upload. Field name: `photo`.
 
-↓
-
-Display itinerary
-```
-
----
-
-# Notes for Frontend
-
-- Always use `placeId` as the unique identifier.
-- Destination Details API returns everything required to render the destination page.
-- Discover API returns lightweight destination cards.
-- Wishlist APIs require authentication.
-- AI Itinerary API requires authentication.
-- Axios should use:
+**Content-Type:** `multipart/form-data`  
+**Max size:** 10 MB  
+**Allowed types:** jpg, jpeg, png, webp, gif
 
 ```js
-axios.defaults.withCredentials = true;
+const formData = new FormData();
+formData.append("photo", file);
+const { data } = await api.post("/upload/photo", formData, {
+  headers: { "Content-Type": "multipart/form-data" },
+});
+// data.url → Cloudinary CDN URL
+// data.publicId → Cloudinary public_id
 ```
 
-for authenticated requests.
+**Response 200**
+```json
+{
+  "url": "https://res.cloudinary.com/your_cloud/image/upload/...",
+  "publicId": "hamrahi/diary/abc123"
+}
+```
+
+Images are auto-optimized (`quality: auto:good`, max 1200×900).
+
+---
+
+## Frontend Flow Diagrams
+
+### Registration
+```
+POST /auth/register
+  → store registrationSession in state
+  → navigate to /verify-email
+  → poll GET /auth/verification-status every 3s
+  → when isVerified = true
+  → POST /auth/finalise-registration
+  → JWT cookie set → navigate to /
+```
+
+### Dashboard (My Trips)
+```
+GET /trips → display trips by status tab
+  Start Journey → PUT /trips/:id { status: "active" }
+  Finish Journey → PUT /trips/:id { status: "completed" }
+  Add Diary Entry → PUT /trips/:id { diary: [...] }
+  Delete Trip → DELETE /trips/:id
+```
+
+### Save Itinerary
+```
+POST /itinerary/generate → display itinerary
+  User clicks "Save to Trips"
+  → POST /trips { placeId, name, startDate, endDate, ... }
+  → Trip created → visible in My Trips Dashboard
+```
+
+### Photo Upload
+```
+User selects file from device
+  → POST /upload/photo (multipart)
+  → Cloudinary returns URL
+  → URL stored in diary entry
+```
+
+---
+
+## Environment Variables
+
+See `.env.example` at project root for all required variables.
+
+### Required for backend
+| Variable | Description |
+|---|---|
+| `MONGO_URI` | MongoDB Atlas connection string |
+| `JWT_SECRET` | Secret key for signing JWTs |
+| `NODE_ENV` | `development` or `production` |
+| `CLIENT_URL` | Frontend origin for CORS (e.g. `http://localhost:5173`) |
+| `EMAIL_USER` | Gmail address for sending verification emails |
+| `EMAIL_PASS` | Gmail App Password |
+| `GOOGLE_CLIENT_ID` | Google OAuth 2.0 Client ID |
+| `UNSPLASH_ACCESS_KEY` | Unsplash API key for destination images |
+| `GEMINI_API_KEY` | Google Gemini API key for AI itineraries & tags |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name |
+| `CLOUDINARY_API_KEY` | Cloudinary API key |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret |
+
+---
+
+## Notes
+
+- All authenticated endpoints expect cookies — use `withCredentials: true` on every request.
+- `placeId` is the universal identifier for destinations (OSM format: `R123`, `W456`, `N789`).
+- Destination details are cached in MongoDB after the first fetch — subsequent calls are fast.
+- Diary entries are stored as a sub-array on the Trip document; replace the full array on each update.
+- JWT is stored in an HttpOnly cookie — never accessible via JavaScript.

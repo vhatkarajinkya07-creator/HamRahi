@@ -122,7 +122,7 @@ export default function DestinationCard({
             {description}
           </motion.p>
 
-          <motion.div className="mt-7 grid grid-cols-3 gap-3" variants={fadeUp}>
+          <motion.div className="mt-7 grid grid-cols-2 gap-3" variants={fadeUp}>
             <div className="rounded-xl border border-white/12 bg-white/6 p-4 backdrop-blur-xl">
               <span className="flex items-center gap-1.5 text-base font-semibold text-white">
                 <i className="pi pi-star-fill text-[0.7rem]" aria-hidden="true" />
@@ -130,15 +130,6 @@ export default function DestinationCard({
               </span>
               <span className="mt-1 block text-[10px] uppercase text-white/42">
                 rating
-              </span>
-            </div>
-
-            <div className="rounded-xl border border-white/12 bg-white/6 p-4 backdrop-blur-xl">
-              <span className="text-base font-semibold text-white">
-                ${priceFrom}
-              </span>
-              <span className="mt-1 block text-[10px] uppercase text-white/42">
-                from
               </span>
             </div>
 

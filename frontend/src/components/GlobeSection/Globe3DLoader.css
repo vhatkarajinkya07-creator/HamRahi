@@ -1,0 +1,277 @@
+/* Globe3DLoader.css — Animated loading screen for 3D experience */
+
+/* Base overlay */
+.globe-loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000408;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: all;
+}
+
+/* Fade-out animation */
+.globe-loader-overlay.fade-out {
+  animation: loaderFadeOut 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes loaderFadeOut {
+  0%   { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+/* ── Starfield ───────────────────────────────────────────── */
+.stars-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: starTwinkle var(--dur, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  opacity: 0;
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50%       { opacity: var(--max-op, 0.8); transform: scale(1); }
+}
+
+/* ── Planet ring (outer pulse) ───────────────────────────── */
+.planet-ring-outer {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  border: 1px solid rgba(99, 179, 237, 0.15);
+  animation: ringExpand 3s ease-in-out infinite;
+}
+
+.planet-ring-mid {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 1px solid rgba(99, 179, 237, 0.25);
+  animation: ringExpand 3s ease-in-out infinite 0.4s;
+}
+
+@keyframes ringExpand {
+  0%, 100% { transform: scale(0.92); opacity: 0.4; }
+  50%       { transform: scale(1.08); opacity: 1; }
+}
+
+/* ── Globe sphere ────────────────────────────────────────── */
+.globe-sphere {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    #1a4a7a 0%,
+    #0d2f52 30%,
+    #071a30 65%,
+    #020d18 100%
+  );
+  box-shadow:
+    0 0 60px rgba(56, 152, 236, 0.3),
+    0 0 120px rgba(56, 152, 236, 0.1),
+    inset 0 0 40px rgba(0, 0, 0, 0.6);
+  animation: globeBreath 4s ease-in-out infinite;
+  overflow: hidden;
+}
+
+@keyframes globeBreath {
+  0%, 100% { box-shadow: 0 0 60px rgba(56,152,236,0.3), 0 0 120px rgba(56,152,236,0.1), inset 0 0 40px rgba(0,0,0,0.6); }
+  50%       { box-shadow: 0 0 90px rgba(56,152,236,0.5), 0 0 180px rgba(56,152,236,0.2), inset 0 0 40px rgba(0,0,0,0.6); }
+}
+
+/* Continent silhouettes via pseudo */
+.globe-sphere::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse 50px 35px at 35% 42%, rgba(34, 139, 34, 0.35) 0%, transparent 100%),
+    radial-gradient(ellipse 45px 28px at 62% 38%, rgba(34, 139, 34, 0.3) 0%, transparent 100%),
+    radial-gradient(ellipse 35px 22px at 22% 60%, rgba(34, 139, 34, 0.25) 0%, transparent 100%),
+    radial-gradient(ellipse 30px 18px at 75% 62%, rgba(34, 139, 34, 0.2) 0%, transparent 100%),
+    radial-gradient(ellipse 28px 15px at 50% 70%, rgba(34, 139, 34, 0.2) 0%, transparent 100%);
+}
+
+/* Atmosphere shimmer */
+.globe-sphere::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(100, 200, 255, 0.12) 0%,
+    transparent 60%
+  );
+  animation: atmoShimmer 3s ease-in-out infinite;
+}
+
+@keyframes atmoShimmer {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+/* Rotation bands */
+.globe-bands {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 18px,
+      rgba(56, 152, 236, 0.06) 18px,
+      rgba(56, 152, 236, 0.06) 19px
+    );
+  animation: bandScroll 8s linear infinite;
+  mask-image: radial-gradient(circle, black 100%);
+}
+
+@keyframes bandScroll {
+  0%   { background-position-y: 0px; }
+  100% { background-position-y: 220px; }
+}
+
+/* ── Orbit ring ──────────────────────────────────────────── */
+.orbit-ring {
+  position: absolute;
+  width: 290px;
+  height: 90px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(99, 179, 237, 0.3);
+  transform: rotateX(75deg);
+  animation: orbitRotate 4s linear infinite;
+}
+
+@keyframes orbitRotate {
+  from { transform: rotateX(75deg) rotateZ(0deg); }
+  to   { transform: rotateX(75deg) rotateZ(360deg); }
+}
+
+/* Satellite dot on orbit */
+.orbit-dot {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #63b3ed;
+  box-shadow: 0 0 10px #63b3ed, 0 0 20px #63b3ed;
+  transform: translateX(-50%);
+}
+
+/* ── Progress bar ────────────────────────────────────────── */
+.loader-progress-track {
+  width: 260px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 48px;
+}
+
+.loader-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4, #3b82f6);
+  background-size: 200% 100%;
+  animation: progressFill var(--duration, 4.5s) cubic-bezier(0.4, 0, 0.2, 1) forwards,
+             progressShimmer 1.5s linear infinite;
+}
+
+@keyframes progressFill {
+  0%   { width: 0%; }
+  60%  { width: 80%; }
+  90%  { width: 92%; }
+  100% { width: 100%; }
+}
+
+@keyframes progressShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Labels ──────────────────────────────────────────────── */
+.loader-title {
+  margin-top: 36px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  animation: labelFade 1s ease-in-out forwards;
+}
+
+.loader-subtitle {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: -0.02em;
+  animation: labelFade 1s ease-in-out 0.3s both;
+}
+
+.loader-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 400;
+  animation: labelFade 1s ease-in-out 0.6s both;
+}
+
+@keyframes labelFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Scan line effect ────────────────────────────────────── */
+.scan-line {
+  position: absolute;
+  width: 220px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(99, 179, 237, 0.6), transparent);
+  border-radius: 999px;
+  animation: scanPass 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes scanPass {
+  0%   { top: 0; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 220px; opacity: 0; }
+}
+
+/* ── Corner dots ─────────────────────────────────────────── */
+.corner-hud {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(99, 179, 237, 0.4);
+  border-style: solid;
+}
+
+.corner-hud.tl { top: 28px; left: 28px; border-width: 2px 0 0 2px; }
+.corner-hud.tr { top: 28px; right: 28px; border-width: 2px 2px 0 0; }
+.corner-hud.bl { bottom: 28px; left: 28px; border-width: 0 0 2px 2px; }
+.corner-hud.br { bottom: 28px; right: 28px; border-width: 0 2px 2px 0; }

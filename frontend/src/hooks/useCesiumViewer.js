@@ -13,7 +13,7 @@ export function useCesiumViewer(containerRef, options = {}) {
     const viewer = new Cesium.Viewer(containerRef.current, {
       animation: false,
       timeline: false,
-      baseLayerPicker: false, 
+      baseLayerPicker: false,
       geocoder: false,
       homeButton: false,
       sceneModePicker: false,
