@@ -43,16 +43,46 @@ export default function Navbar() {
   const closeDrawer = () => setMenuOpen(false);
   const toggleDrawer = () => setMenuOpen((open) => !open);
 
+  const isLight = theme === "light";
   const visibleLinks = links;
+
+  const headerClass = solid
+    ? "bg-[var(--bg-surface)]/90 border-[var(--border-subtle)] text-[var(--text-primary)] shadow-md"
+    : isLight
+    ? "bg-white/30 border-black/5 text-[var(--text-primary)] shadow-sm"
+    : "bg-black/20 border-white/10 text-white";
+
+  const btnTextClass = solid
+    ? "text-[var(--text-primary)] hover:bg-[var(--border-subtle)]/30"
+    : isLight
+    ? "text-[var(--text-primary)] hover:bg-black/5"
+    : "text-white hover:bg-white/10";
+
+  const brandTextClass = solid
+    ? "text-[var(--text-primary)]"
+    : isLight
+    ? "text-[var(--text-primary)]"
+    : "text-white";
+
+  const getNavLinkClass = (isActive) => {
+    if (solid || isLight) {
+      return `pb-1 text-sm font-semibold tracking-wide transition-all duration-300 border-b-2 ${
+        isActive
+          ? "border-[var(--theme-primary)] text-[var(--text-primary)] font-bold"
+          : "border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+      }`;
+    }
+    return `pb-1 text-sm font-semibold tracking-wide transition-all duration-300 border-b-2 ${
+      isActive
+        ? "border-white text-white font-bold"
+        : "border-transparent text-white/60 hover:text-white"
+    }`;
+  };
 
   return (
     <>
       <motion.header
-        className={`fixed top-0 z-50 w-full border-b transition-all duration-500 ease-in-out backdrop-blur-md ${
-          solid
-            ? "bg-[var(--bg-surface)]/90 border-[var(--border-subtle)] text-[var(--text-primary)] shadow-md"
-            : "bg-black/20 border-white/10 text-white"
-        }`}
+        className={`fixed top-0 z-50 w-full border-b transition-all duration-500 ease-in-out backdrop-blur-md ${headerClass}`}
         initial={{ y: -84 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -61,9 +91,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <button
               type="button"
-              className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 hover:bg-white/10 active:scale-95 md:hidden ${
-                solid ? "text-[var(--text-primary)]" : "text-white"
-              }`}
+              className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 active:scale-95 md:hidden ${btnTextClass}`}
               onClick={toggleDrawer}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
@@ -75,9 +103,7 @@ export default function Navbar() {
             <Link
               to="/"
               onClick={closeDrawer}
-              className={`text-[22px] font-extrabold tracking-tighter transition-colors duration-300 md:text-[28px] ${
-                solid ? "text-[var(--text-primary)]" : "text-white"
-              }`}
+              className={`text-[22px] font-extrabold tracking-tighter transition-colors duration-300 md:text-[28px] ${brandTextClass}`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               HUMRAHI
@@ -90,17 +116,7 @@ export default function Navbar() {
               <NavLink
                 key={l.label}
                 to={l.to}
-                className={({ isActive }) =>
-                  `pb-1 text-sm font-semibold tracking-wide transition-all duration-300 border-b-2 ${
-                    solid
-                      ? isActive
-                        ? "border-[var(--text-primary)] text-[var(--text-primary)] font-bold"
-                        : "border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                      : isActive
-                      ? "border-white text-white font-bold"
-                      : "border-transparent text-white/60 hover:text-white"
-                  }`
-                }
+                className={({ isActive }) => getNavLinkClass(isActive)}
               >
                 {l.label}
               </NavLink>
@@ -112,9 +128,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={toggleTheme}
-              className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 hover:bg-white/10 active:scale-95 ${
-                solid ? "text-[var(--text-primary)]" : "text-white"
-              }`}
+              className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 active:scale-95 ${btnTextClass}`}
               aria-label="Toggle light/dark theme"
             >
               <i className={`pi ${theme === "dark" ? "pi-sun" : "pi-moon"} text-lg`} />
@@ -127,9 +141,7 @@ export default function Navbar() {
                   logout();
                   closeDrawer();
                 }}
-                className={`text-[14px] font-semibold transition-opacity duration-300 hover:opacity-75 active:scale-95 ${
-                  solid ? "text-[var(--text-primary)]" : "text-white"
-                }`}
+                className={`text-[14px] font-semibold transition-opacity duration-300 hover:opacity-75 active:scale-95 ${brandTextClass}`}
               >
                 Logout
               </button>
@@ -137,9 +149,7 @@ export default function Navbar() {
               <Link
                 to="/login"
                 onClick={closeDrawer}
-                className={`text-[14px] font-semibold transition-opacity duration-300 hover:opacity-75 active:scale-95 ${
-                  solid ? "text-[var(--text-primary)]" : "text-white"
-                }`}
+                className={`text-[14px] font-semibold transition-opacity duration-300 hover:opacity-75 active:scale-95 ${brandTextClass}`}
               >
                 Login
               </Link>
