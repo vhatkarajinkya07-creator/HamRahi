@@ -9,9 +9,6 @@ export default function NormalDestinationGrid({ destinations, activeId, onSelect
     <motion.div
       className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
       variants={staggerContainer(0.08, 0.05)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.15 }}
     >
       {destinations.map((dest) => (
         <NormalDestinationCard

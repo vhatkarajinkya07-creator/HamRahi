@@ -1,3 +1,4 @@
+// Login.jsx
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -20,7 +21,6 @@ export default function Login() {
 
   const handleGoogleSuccess = async (credential) => {
     setError("");
-
     try {
       await googleLogin(credential);
       navigate(from, { replace: true });
@@ -50,36 +50,36 @@ export default function Login() {
   };
 
   return (
-    <section className="min-h-screen bg-[#050505] px-5 pb-20 pt-[120px] text-white">
-      <div className="mx-auto grid max-w-[1120px] gap-8 lg:grid-cols-[1fr_430px] lg:items-center">
+    <section className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] px-5 pb-20 pt-[120px] transition-colors duration-300 flex items-center justify-center">
+      <div className="mx-auto grid max-w-[1120px] w-full gap-8 lg:grid-cols-[1fr_430px] lg:items-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-flex rounded-full border border-white/12 bg-white/[0.08] px-4 py-2 text-xs font-semibold uppercase text-white/60 backdrop-blur-2xl">
+          <span className="inline-flex rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-2 text-xs font-semibold uppercase text-[var(--text-secondary)] shadow-sm">
             HamRahi account
           </span>
-          <h1 className="mt-6 max-w-[640px] text-5xl leading-none md:text-7xl">
+          <h1 className="mt-6 max-w-[640px] text-5xl font-extrabold tracking-tight leading-[1.05] text-[var(--text-primary)] md:text-7xl">
             Pick up your trip where you left it.
           </h1>
-          <p className="mt-6 max-w-[560px] text-base leading-8 text-white/62">
+          <p className="mt-6 max-w-[560px] text-base leading-8 text-[var(--text-secondary)]">
             Login keeps your wishlist and AI itinerary requests connected through the backend cookie session.
           </p>
         </motion.div>
 
         <motion.form
           onSubmit={handleSubmit}
-          className="rounded-[28px] border border-white/14 bg-white/[0.08] p-6 shadow-[0_30px_90px_-46px_rgba(0,0,0,1)] backdrop-blur-3xl md:p-8"
+          className="rounded-[28px] border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 shadow-xl backdrop-blur-md md:p-8"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <h2 className="text-2xl text-white">Login</h2>
-          <p className="mt-2 text-sm leading-6 text-white/54">Use the same email and password registered with HamRahi.</p>
+          <h2 className="text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">Login</h2>
+          <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">Use the same email and password registered with HamRahi.</p>
 
           <div className="mt-7 flex flex-col gap-5">
-            <label className="flex flex-col gap-2 text-sm font-semibold text-white/70">
+            <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--text-secondary)]">
               Email
               <InputText
                 value={form.email}
@@ -91,7 +91,7 @@ export default function Login() {
               />
             </label>
 
-            <label className="flex flex-col gap-2 text-sm font-semibold text-white/70">
+            <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--text-secondary)]">
               Password
               <Password
                 value={form.password}
@@ -113,19 +113,19 @@ export default function Login() {
             label="Login"
             icon="pi pi-sign-in"
             loading={submitting}
-            className="mt-7 w-full justify-center"
+            className="mt-7 w-full justify-center font-bold"
           />
 
-          <div className="mt-6 flex items-center gap-4 text-xs uppercase text-white/38">
-            <span className="h-px flex-1 bg-white/12" />
+          <div className="mt-6 flex items-center gap-4 text-xs uppercase text-[var(--text-secondary)]/50">
+            <span className="h-px flex-1 bg-[var(--border-subtle)]" />
             or
-            <span className="h-px flex-1 bg-white/12" />
+            <span className="h-px flex-1 bg-[var(--border-subtle)]" />
           </div>
 
           <GoogleAuthButton className="mt-6" onSuccess={handleGoogleSuccess} onError={setError} />
 
-          <p className="mt-5 text-center text-sm text-white/54">
-            New here? <Link className="font-semibold text-white" to="/register">Create account</Link>
+          <p className="mt-5 text-center text-sm text-[var(--text-secondary)]">
+            New here? <Link className="font-semibold text-[var(--text-primary)] hover:underline" to="/register">Create account</Link>
           </p>
         </motion.form>
       </div>

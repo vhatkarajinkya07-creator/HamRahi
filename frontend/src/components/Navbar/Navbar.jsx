@@ -1,28 +1,32 @@
-// don't change any thing in this until asked to AJINKYA
-
+// Navbar.jsx
 import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import "primeicons/primeicons.css";
 import { useScrollPosition } from "../../hooks/useScrollPosition";
 
 const links = [
   { to: "/", label: "Home", icon: "pi-home" },
-  { to: "/#destinations", label: "Explore", icon: "pi-compass" },
-  { to: "/wishlist", label: "Wishlist", icon: "pi-heart" },
-  { to: "/itinerary", label: "Itinerary", icon: "pi-sparkles" },
+  { to: "/dashboard", label: "My Trips", icon: "pi-calendar", protected: true },
+  { to: "/wishlist", label: "Wishlist", icon: "pi-heart", protected: true },
+  { to: "/profile", label: "Profile", icon: "pi-user", protected: true },
 ];
 
 export default function Navbar() {
   const scrollY = useScrollPosition();
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const solid = scrollY > 50;
+
+  const isHomePage = location.pathname === "/";
+  // On homepage, solidify once scrolled past the Hero section (500px). On other pages, solidify immediately.
+  const solid = isHomePage ? scrollY > 500 : scrollY > 10;
 
   useEffect(() => {
     document.body.classList.toggle("overflow-hidden", menuOpen);
-
     return () => document.body.classList.remove("overflow-hidden");
   }, [menuOpen]);
 
@@ -32,32 +36,34 @@ export default function Navbar() {
         setMenuOpen(false);
       }
     };
-
     window.addEventListener("keydown", handleEscape);
-
     return () => window.removeEventListener("keydown", handleEscape);
   }, []);
 
   const closeDrawer = () => setMenuOpen(false);
   const toggleDrawer = () => setMenuOpen((open) => !open);
 
+  const visibleLinks = links;
+
   return (
     <>
       <motion.header
-        className={`fixed top-0 z-50 w-full border-b border-white/10 backdrop-blur-[14px] transition-all duration-500 ease-in-out ${
+        className={`fixed top-0 z-50 w-full border-b transition-all duration-500 ease-in-out backdrop-blur-md ${
           solid
-            ? "bg-[rgba(10,10,10,0.85)] shadow-xl"
-            : "bg-[rgba(10,10,10,0.4)]"
+            ? "bg-[var(--bg-surface)]/90 border-[var(--border-subtle)] text-[var(--text-primary)] shadow-md"
+            : "bg-black/20 border-white/10 text-white"
         }`}
         initial={{ y: -84 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-4 md:px-16">
+        <div className="mx-auto flex h-[84px] max-w-[1280px] items-center justify-between px-6 py-4 md:px-16">
           <div className="flex items-center gap-4">
             <button
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-full text-white transition-all duration-300 hover:bg-white/10 active:scale-95 md:hidden"
+              className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 hover:bg-white/10 active:scale-95 md:hidden ${
+                solid ? "text-[var(--text-primary)]" : "text-white"
+              }`}
               onClick={toggleDrawer}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
@@ -69,23 +75,30 @@ export default function Navbar() {
             <Link
               to="/"
               onClick={closeDrawer}
-              className="text-[24px] font-bold tracking-tighter text-white md:text-[32px]"
+              className={`text-[22px] font-extrabold tracking-tighter transition-colors duration-300 md:text-[28px] ${
+                solid ? "text-[var(--text-primary)]" : "text-white"
+              }`}
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
             >
               HUMRAHI
             </Link>
           </div>
 
-          <nav className="hidden items-center gap-10 md:flex">
-            {links.map((l) => (
+          {/* Desktop Navigation Links */}
+          <nav className="hidden items-center gap-8 md:flex">
+            {visibleLinks.map((l) => (
               <NavLink
                 key={l.label}
                 to={l.to}
                 className={({ isActive }) =>
-                  `pb-1 font-medium transition-colors duration-300 ${
-                    isActive
-                      ? "border-b-2 border-white font-bold text-white"
-                      : "text-white/60 hover:text-white"
+                  `pb-1 text-sm font-semibold tracking-wide transition-all duration-300 border-b-2 ${
+                    solid
+                      ? isActive
+                        ? "border-[var(--text-primary)] text-[var(--text-primary)] font-bold"
+                        : "border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                      : isActive
+                      ? "border-white text-white font-bold"
+                      : "border-transparent text-white/60 hover:text-white"
                   }`
                 }
               >
@@ -95,11 +108,28 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-4">
+            {/* Theme Toggle Switcher */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 hover:bg-white/10 active:scale-95 ${
+                solid ? "text-[var(--text-primary)]" : "text-white"
+              }`}
+              aria-label="Toggle light/dark theme"
+            >
+              <i className={`pi ${theme === "dark" ? "pi-sun" : "pi-moon"} text-lg`} />
+            </button>
+
             {user ? (
               <button
                 type="button"
-                onClick={() => { logout(); closeDrawer(); }}
-                className="text-[14px] font-medium text-white transition-opacity duration-300 hover:opacity-70 active:scale-95"
+                onClick={() => {
+                  logout();
+                  closeDrawer();
+                }}
+                className={`text-[14px] font-semibold transition-opacity duration-300 hover:opacity-75 active:scale-95 ${
+                  solid ? "text-[var(--text-primary)]" : "text-white"
+                }`}
               >
                 Logout
               </button>
@@ -107,7 +137,9 @@ export default function Navbar() {
               <Link
                 to="/login"
                 onClick={closeDrawer}
-                className="text-[14px] font-medium text-white transition-opacity duration-300 hover:opacity-70 active:scale-95"
+                className={`text-[14px] font-semibold transition-opacity duration-300 hover:opacity-75 active:scale-95 ${
+                  solid ? "text-[var(--text-primary)]" : "text-white"
+                }`}
               >
                 Login
               </Link>
@@ -116,10 +148,11 @@ export default function Navbar() {
         </div>
       </motion.header>
 
+      {/* Mobile Drawer Overlay */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="fixed inset-0 z-[55] bg-black/50 backdrop-blur-sm md:hidden"
+            className="fixed inset-0 z-[55] bg-black/60 backdrop-blur-sm md:hidden"
             onClick={closeDrawer}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -129,60 +162,64 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
+      {/* Mobile Navigation Drawer */}
       <AnimatePresence>
         {menuOpen && (
           <motion.aside
             id="mobile-navigation-drawer"
-            className="fixed inset-y-0 left-0 z-[60] flex h-full w-[280px] flex-col border-r border-white/10 bg-[#0A0A0A] p-6 shadow-xl backdrop-blur-[20px] md:hidden"
+            className="fixed inset-y-0 left-0 z-[60] flex h-full w-[280px] flex-col border-r bg-[var(--bg-surface)] border-[var(--border-subtle)] p-6 shadow-2xl backdrop-blur-[20px] md:hidden text-[var(--text-primary)]"
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="mb-10 flex items-center justify-between">
-              <span className="text-[24px] font-bold text-white">HUMRAHI</span>
+            <div className="mb-8 flex items-center justify-between">
+              <span className="text-[22px] font-black tracking-tight">HUMRAHI</span>
 
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-full text-white transition-all duration-300 hover:bg-white/10 active:scale-95"
+                className="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 text-[var(--text-primary)]"
                 onClick={closeDrawer}
                 aria-label="Close menu"
               >
-                <i className="pi pi-times text-[20px]" />
+                <i className="pi pi-times text-[18px]" />
               </button>
             </div>
 
-            <nav className="flex flex-col gap-1">
-              {links.map((l) => (
+            <nav className="flex flex-col gap-1.5">
+              {visibleLinks.map((l) => (
                 <NavLink
                   key={l.label}
                   to={l.to}
                   onClick={closeDrawer}
                   className={({ isActive }) =>
-                    `flex items-center gap-6 rounded-full px-4 py-3 text-[14px] font-medium transition-all duration-300 ${
+                    `flex items-center gap-5 rounded-xl px-4 py-3 text-[14px] font-semibold transition-all duration-300 ${
                       isActive
-                        ? "bg-white/10 text-white"
-                        : "text-white/60 hover:bg-white/5 hover:text-white"
+                        ? "bg-[var(--bg-base)] text-[var(--text-primary)] shadow-sm border border-[var(--border-subtle)]"
+                        : "text-[var(--text-secondary)] hover:bg-black/5 dark:hover:bg-white/5 hover:text-[var(--text-primary)]"
                     }`
                   }
                 >
-                  <i className={`pi ${l.icon} text-[16px]`} />
+                  <i className={`pi ${l.icon} text-[15px]`} />
                   <span>{l.label}</span>
                 </NavLink>
               ))}
             </nav>
 
-            <div className="mt-auto border-t border-white/10 pt-6">
-              <div className="rounded-xl bg-white/5 p-4">
-                <p className="mb-2 text-[12px] font-semibold text-white/50">
+            <div className="mt-auto border-t border-[var(--border-subtle)] pt-6">
+              <div className="rounded-2xl bg-[var(--bg-base)] border border-[var(--border-subtle)] p-4">
+                <p className="mb-2.5 text-[11px] font-bold uppercase tracking-wider text-[var(--text-secondary)]">
                   {user ? user.name : "Member of HUMRAHI?"}
                 </p>
 
                 {user ? (
                   <button
                     type="button"
-                    onClick={() => { logout(); closeDrawer(); }}
-                    className="block w-full rounded-full bg-white py-3 text-center text-[14px] font-medium text-[#0A0A0A] transition-all hover:bg-white/90 active:scale-95"
+                    onClick={() => {
+                      logout();
+                      closeDrawer();
+                    }}
+                    className="block w-full rounded-full bg-[var(--text-primary)] py-3 text-center text-[13px] font-bold text-[var(--bg-base)] transition-all hover:opacity-90 active:scale-95"
                   >
                     Logout
                   </button>
@@ -190,7 +227,7 @@ export default function Navbar() {
                   <Link
                     to="/login"
                     onClick={closeDrawer}
-                    className="block w-full rounded-full bg-white py-3 text-center text-[14px] font-medium text-[#0A0A0A] transition-all hover:bg-white/90 active:scale-95"
+                    className="block w-full rounded-full bg-[var(--text-primary)] py-3 text-center text-[13px] font-bold text-[var(--bg-base)] transition-all hover:opacity-90 active:scale-95"
                   >
                     Sign In
                   </Link>
