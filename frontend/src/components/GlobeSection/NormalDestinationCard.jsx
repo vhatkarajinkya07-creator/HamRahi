@@ -103,7 +103,7 @@ export default function NormalDestinationCard({ destination, isActive, onSelect 
           </p>
 
           {/* Stats Badges */}
-          <div className="mt-auto grid grid-cols-3 gap-2 pt-2">
+          <div className="mt-auto grid grid-cols-2 gap-2 pt-2">
             <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-base)] px-2 py-2 text-center shadow-sm">
               <span className="flex items-center justify-center gap-1 text-sm font-bold text-[var(--text-primary)]">
                 <i className="pi pi-star-fill text-[0.65rem] text-[var(--theme-primary)]" aria-hidden="true" />
@@ -111,12 +111,6 @@ export default function NormalDestinationCard({ destination, isActive, onSelect 
               </span>
               <span className="mt-0.5 block text-[9px] uppercase font-bold text-[var(--text-secondary)]/50">
                 rating
-              </span>
-            </div>
-            <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-base)] px-2 py-2 text-center shadow-sm">
-              <span className="text-sm font-bold text-[var(--text-primary)]">${priceFrom}</span>
-              <span className="mt-0.5 block text-[9px] uppercase font-bold text-[var(--text-secondary)]/50">
-                price
               </span>
             </div>
             <div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-base)] px-2 py-2 text-center shadow-sm">
