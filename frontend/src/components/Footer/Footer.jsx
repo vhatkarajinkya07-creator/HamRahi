@@ -22,7 +22,6 @@ export default function Footer() {
 
         <div className="mt-10 pt-6 border-t border-[var(--border-subtle)]/40 flex flex-col gap-3 text-xs text-[var(--text-secondary)]/70 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} HUMRAHI. All rights reserved.</span>
-          <span>Demo product. All data is illustrative.</span>
         </div>
       </div>
     </footer>

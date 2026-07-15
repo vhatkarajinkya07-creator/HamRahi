@@ -47,8 +47,8 @@ export function mapDestinationSummary(destination) {
       destination.description ||
       fallback?.description ||
       `${title} brings culture, food, weather, nearby places, and trip planning into one simple view.`,
-    rating: fallback?.rating || 4.7,
-    reviews: fallback?.reviews || 0,
+    rating: destination.stats?.rating || fallback?.rating || 4.7,
+    reviews: destination.stats?.reviewCount || fallback?.reviews || 0,
     lat: Number(coordinates.latitude ?? fallback?.lat ?? 0),
     lon: Number(coordinates.longitude ?? fallback?.lon ?? 0),
     themeCategory: fallback?.themeCategory || pickTheme(tags, title),
@@ -94,7 +94,7 @@ export function mapDestinationDetails(destination) {
       ? images.map((image) => image.imageUrl || image.thumbnail).filter(Boolean)
       : summary.gallery,
     weather,
-    nearby: destination.nearby || [],
+    nearby: destination.nearby?.attractions || destination.nearby || [],
     raw: destination,
   };
 }

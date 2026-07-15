@@ -66,6 +66,16 @@ const destinationSchema = new mongoose.Schema(
             reviewCount: {
                 type: Number,
                 default: 0
+            },
+
+            baselineRating: {
+                type: Number,
+                default: null
+            },
+
+            baselineReviewCount: {
+                type: Number,
+                default: null
             }
         },
         bestSeason: {

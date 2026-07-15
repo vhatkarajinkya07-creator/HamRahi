@@ -43,6 +43,44 @@ export default function Destination({ destinationId }) {
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [showFlightModal, setShowFlightModal] = useState(false);
 
+  // Reviews & ratings dynamic state
+  const [reviewsList, setReviewsList] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [userRating, setUserRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [userComment, setUserComment] = useState("");
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    async function fetchReviews() {
+      if (!isBackendPlaceId(id)) return;
+      setReviewsLoading(true);
+      try {
+        const { data } = await api.get(`/destination/${id}/reviews`);
+        if (!active) return;
+        setReviewsList(data);
+        const myReview = data.find(r => r.user?._id === user?.id);
+        if (myReview) {
+          setUserRating(myReview.rating);
+          setUserComment(myReview.comment || "");
+        } else {
+          setUserRating(0);
+          setUserComment("");
+        }
+      } catch (err) {
+        console.error("Error fetching reviews:", err);
+      } finally {
+        if (active) setReviewsLoading(false);
+      }
+    }
+    fetchReviews();
+    return () => {
+      active = false;
+    };
+  }, [id, user]);
+
   const flightOptions = [
     {
       name: "Google Flights",
@@ -152,6 +190,56 @@ export default function Destination({ destinationId }) {
 
     checkWishlist();
   }, [user, destination]);
+
+  const handleSubmitReview = async () => {
+    if (userRating === 0) return;
+    setSubmittingReview(true);
+    setSubmitError("");
+    try {
+      await api.post(`/destination/${id}/reviews`, {
+        rating: userRating,
+        comment: userComment
+      });
+      
+      const { data: revData } = await api.get(`/destination/${id}/reviews`);
+      setReviewsList(revData);
+
+      const { data: destData } = await api.get(`/destination/${id}`);
+      setDestination(mapDestinationDetails(destData));
+
+      window.dispatchEvent(new Event("refresh-destinations"));
+    } catch (err) {
+      setSubmitError(err.response?.data?.message || "Failed to submit review.");
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
+  const handleDeleteReview = async () => {
+    const myReview = reviewsList.find(r => r.user?._id === user?.id);
+    if (!myReview) return;
+    
+    setSubmittingReview(true);
+    setSubmitError("");
+    try {
+      await api.delete(`/destination/${id}/reviews/${myReview._id}`);
+      
+      setUserRating(0);
+      setUserComment("");
+
+      const { data: revData } = await api.get(`/destination/${id}/reviews`);
+      setReviewsList(revData);
+
+      const { data: destData } = await api.get(`/destination/${id}`);
+      setDestination(mapDestinationDetails(destData));
+
+      window.dispatchEvent(new Event("refresh-destinations"));
+    } catch (err) {
+      setSubmitError(err.response?.data?.message || "Failed to delete review.");
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
 
   if (!loading && !destination) return <Navigate to="/" replace />;
 
@@ -326,6 +414,179 @@ export default function Destination({ destinationId }) {
                   </div>
                 </motion.div>
               )}
+
+              {/* Dynamic Reviews & Ratings Section */}
+              <motion.div id="reviews-section" variants={fadeUp} className="mt-12 pt-10 border-t border-[var(--border-subtle)]">
+                <h3 className="mb-6 text-xl font-bold flex items-center gap-2">
+                  <i className="pi pi-comments text-[var(--theme-primary)]" />
+                  Traveler Reviews & Ratings
+                </h3>
+
+                <div className="grid gap-6 md:grid-cols-[200px_1fr]">
+                  {/* Rating Summary Card */}
+                  <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)] p-5 text-center h-fit shadow-sm">
+                    <span className="text-5xl font-extrabold text-[var(--text-primary)] leading-none">
+                      {destination.rating || "New"}
+                    </span>
+                    <div className="flex justify-center gap-1.5 my-3 text-amber-500">
+                      {Array.from({ length: 5 }).map((_, i) => {
+                        const starVal = i + 1;
+                        const ratingVal = destination.rating || 0;
+                        const isFilled = ratingVal >= starVal;
+                        const isHalf = !isFilled && ratingVal >= starVal - 0.7;
+                        return (
+                          <i
+                            key={i}
+                            className={`pi ${
+                              isFilled ? "pi-star-fill" : isHalf ? "pi-star" : "pi-star text-[var(--text-secondary)]/20"
+                            } text-sm`}
+                          />
+                        );
+                      })}
+                    </div>
+                    <span className="block text-[11px] text-[var(--text-secondary)]/70 font-bold uppercase tracking-wider">
+                      {Number(destination.reviews || 0).toLocaleString()} reviews
+                    </span>
+                  </div>
+
+                  {/* Reviews Form & Feed */}
+                  <div className="flex flex-col gap-5">
+                    {/* Submission Form */}
+                    {user ? (
+                      <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm">
+                        <h4 className="font-bold text-sm mb-3.5 text-[var(--text-primary)]">
+                          {reviewsList.some(r => r.user?._id === user.id) ? "Update your review" : "Add a review"}
+                        </h4>
+
+                        {submitError && (
+                          <div className="mb-3.5 text-xs text-red-500 bg-red-500/10 border border-red-500/20 px-3.5 py-2.5 rounded-xl">
+                            {submitError}
+                          </div>
+                        )}
+
+                        <div className="flex items-center gap-3 mb-4">
+                          <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider">Your Rating:</span>
+                          <div className="flex gap-1.5 text-lg">
+                            {Array.from({ length: 5 }).map((_, i) => {
+                              const starVal = i + 1;
+                              const isActive = (hoverRating || userRating) >= starVal;
+                              return (
+                                <button
+                                  type="button"
+                                  key={i}
+                                  onClick={() => setUserRating(starVal)}
+                                  onMouseEnter={() => setHoverRating(starVal)}
+                                  onMouseLeave={() => setHoverRating(0)}
+                                  className={`transition-all duration-150 p-0.5 hover:scale-120 active:scale-90 cursor-pointer ${
+                                    isActive ? "text-amber-500" : "text-[var(--text-secondary)]/20"
+                                  }`}
+                                  aria-label={`Rate ${starVal} stars`}
+                                >
+                                  <i className="pi pi-star-fill" />
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        <textarea
+                          rows={3}
+                          value={userComment}
+                          onChange={(e) => setUserComment(e.target.value)}
+                          placeholder="Tell us about your experience in this destination..."
+                          className="w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)] p-3.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)]/50 focus:border-[var(--theme-primary)] focus:outline-none transition-colors duration-200"
+                        />
+
+                        <div className="flex justify-end gap-3 mt-4">
+                          {reviewsList.some(r => r.user?._id === user.id) && (
+                            <button
+                              type="button"
+                              onClick={handleDeleteReview}
+                              disabled={submittingReview}
+                              className="px-4 py-2 border border-red-500/30 text-red-400 bg-red-500/5 hover:bg-red-500/10 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50"
+                            >
+                              Delete Review
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={handleSubmitReview}
+                            disabled={submittingReview || userRating === 0}
+                            className="px-5 py-2 bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 text-white text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+                          >
+                            {submittingReview && <i className="pi pi-spinner pi-spin text-xs" />}
+                            {reviewsList.some(r => r.user?._id === user.id) ? "Update Review" : "Submit Review"}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)]/40 p-5 text-center backdrop-blur-md">
+                        <p className="text-sm text-[var(--text-secondary)] mb-3.5">
+                          Have you traveled here? Sign in to rate and share your experience with other travelers.
+                        </p>
+                        <Link
+                          to="/login"
+                          state={{ from: `/destination/${id}` }}
+                          className="inline-flex h-9 items-center justify-center rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary)]/90 px-5 text-xs font-bold text-white transition-all duration-200 shadow-sm"
+                        >
+                          Sign In to Review
+                        </Link>
+                      </div>
+                    )}
+
+                    {/* Reviews Feed */}
+                    <div className="flex flex-col gap-3.5 mt-1.5">
+                      {reviewsLoading ? (
+                        <div className="flex justify-center py-6">
+                          <i className="pi pi-spinner pi-spin text-xl text-[var(--theme-primary)]" />
+                        </div>
+                      ) : reviewsList.length > 0 ? (
+                        reviewsList.map((rev) => (
+                          <div
+                            key={rev._id}
+                            className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface-raised)]/20 p-4.5 flex flex-col gap-2.5 shadow-sm"
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="block font-bold text-xs text-[var(--text-primary)]">
+                                  {rev.user?.name || "Verified Traveler"}
+                                </span>
+                                <span className="text-[9px] text-[var(--text-secondary)]/50 font-mono mt-0.5 block">
+                                  {new Date(rev.createdAt).toLocaleDateString(undefined, {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                  })}
+                                </span>
+                              </div>
+                              <div className="flex gap-0.5 text-amber-500 text-xs">
+                                {Array.from({ length: 5 }).map((_, idx) => (
+                                  <i
+                                    key={idx}
+                                    className={`pi pi-star-fill ${
+                                      idx < rev.rating ? "text-amber-500" : "text-[var(--text-secondary)]/15"
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            {rev.comment && (
+                              <p className="text-sm leading-relaxed text-[var(--text-secondary)] font-medium">
+                                {rev.comment}
+                              </p>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-8 rounded-2xl border border-dashed border-[var(--border-subtle)] bg-[var(--bg-base)] text-[var(--text-secondary)]/50 text-xs">
+                          <i className="pi pi-star text-xl mb-2 block opacity-40" />
+                          No traveler reviews yet. Be the first to share your experience!
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
 
             {/* Sidebar Sticky Panel */}
@@ -335,7 +596,23 @@ export default function Destination({ destinationId }) {
               initial="hidden"
               animate="visible"
             >
-              <Info label="Rating" value={`${destination.rating || "New"} (${Number(destination.reviews || 0).toLocaleString()})`} />
+              <Info
+                label="Rating"
+                value={
+                  <button
+                    onClick={() => {
+                      document.getElementById("reviews-section")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="hover:text-[var(--theme-primary)] hover:underline flex items-center gap-1 font-bold text-right cursor-pointer border-0 bg-transparent p-0 text-sm text-[var(--text-primary)] transition-colors duration-200 focus:outline-none"
+                  >
+                    <span>{destination.rating || "New"}</span>
+                    <span className="text-[var(--text-secondary)] font-normal text-xs">
+                      ({Number(destination.reviews || 0).toLocaleString()})
+                    </span>
+                    <i className="pi pi-arrow-down text-[9px] text-[var(--text-secondary)]/70" />
+                  </button>
+                }
+              />
               <Info label="Weather" value={destination.weather?.condition ? `${destination.weather.condition}, ${Math.round(destination.weather.temperature)} C` : "Live soon"} />
               <Info label="Best season" value={destination.bestSeason} />
               <Info label="Coordinates" value={`${destination.lat.toFixed(2)}, ${destination.lon.toFixed(2)}`} mono />

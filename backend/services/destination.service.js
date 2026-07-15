@@ -212,7 +212,7 @@ const getDestinationDetails = async (placeId) => {
         throw new Error("Invalid Place ID");
     }
 
-    const data = await nominatimGet(
+    const response = await axios.get(
         "https://nominatim.openstreetmap.org/lookup",
         {
             params: {
@@ -228,6 +228,8 @@ const getDestinationDetails = async (placeId) => {
             }
         }
     );
+
+    const data = response.data;
 
     if (!data.length) {
         throw new Error("Destination not found");
@@ -265,16 +267,29 @@ const getDestinationDetails = async (placeId) => {
         getNearbyPlaces(Number(place.lat), Number(place.lon))
     ]);
 
-    const [tags, tagline] = await Promise.all([
-        getDestinationTags(
-            heroImage.title,
-            heroImage.description
-        ),
-        getDestinationTagline(
-            heroImage.title,
-            heroImage.description
-        )
-    ]);
+    let tags = ["Explore", "Nature", "Culture"];
+    let tagline = `Discover the wonder of ${title}.`;
+
+    try {
+        const [aiTags, aiTagline] = await Promise.all([
+            getDestinationTags(
+                heroImage.title,
+                heroImage.description
+            ),
+            getDestinationTagline(
+                heroImage.title,
+                heroImage.description
+            )
+        ]);
+        if (Array.isArray(aiTags) && aiTags.length > 0) {
+            tags = aiTags;
+        }
+        if (aiTagline) {
+            tagline = aiTagline;
+        }
+    } catch (aiErr) {
+        console.error("AI service failed, using local fallback tags and tagline:", aiErr.message);
+    }
 
     await Destination.create({
         placeId,
@@ -356,8 +371,8 @@ const getDestinationDetails = async (placeId) => {
                     place.address?.country_code?.toUpperCase() || null
             },
 
-            tagline: metadata.tagline,
-            tags : metadata.tags,
+            tagline,
+            tags,
         }, 
 
         gallery: {

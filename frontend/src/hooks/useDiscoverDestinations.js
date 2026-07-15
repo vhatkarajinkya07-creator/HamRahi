@@ -29,8 +29,15 @@ export function useDiscoverDestinations() {
 
     loadDiscover();
 
+    const handleRefresh = () => {
+      loadDiscover();
+    };
+
+    window.addEventListener("refresh-destinations", handleRefresh);
+
     return () => {
       active = false;
+      window.removeEventListener("refresh-destinations", handleRefresh);
     };
   }, []);
 
