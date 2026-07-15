@@ -6,6 +6,81 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Message } from "primereact/message";
 import api from "../../services/api";
 
+// ─── Cloudinary photo uploader sub-component ─────────────────────────────────
+function DiaryPhotoUploader({ value, onChange }) {
+  const fileInputRef = useRef(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadError("");
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("photo", file);
+      const { data } = await api.post("/upload/photo", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      onChange(data.url);
+    } catch (err) {
+      setUploadError(err.response?.data?.message || "Upload failed. Try again.");
+    } finally {
+      setUploading(false);
+      // Reset input so same file can be re-selected
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Photo (optional)</span>
+
+      {value ? (
+        // Thumbnail preview with remove
+        <div className="relative w-full rounded-xl overflow-hidden border border-[var(--border-subtle)] group">
+          <img src={value} alt="Diary" className="h-32 w-full object-cover" />
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="absolute top-2 right-2 grid h-7 w-7 place-items-center rounded-full bg-black/60 text-white hover:bg-red-500 transition-colors"
+            title="Remove photo"
+          >
+            <i className="pi pi-times text-xs" />
+          </button>
+        </div>
+      ) : (
+        // Upload button
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="flex items-center justify-center gap-2 w-full h-[52px] rounded-xl border-2 border-dashed border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)] hover:border-[var(--theme-primary)] hover:text-[var(--theme-primary)] transition-colors disabled:opacity-50 cursor-pointer"
+        >
+          {uploading ? (
+            <><i className="pi pi-spin pi-spinner" /> Uploading…</>
+          ) : (
+            <><i className="pi pi-camera" /> Upload Photo from Device</>
+          )}
+        </button>
+      )}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+
+      {uploadError && (
+        <p className="text-xs text-red-400">{uploadError}</p>
+      )}
+    </div>
+  );
+}
+
 export default function Dashboard() {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -387,15 +462,10 @@ export default function Dashboard() {
                               onChange={(e) => setDiaryDate(e.target.value)}
                             />
                           </label>
-                          <label className="flex flex-col gap-2 text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">
-                            Photo URL (optional)
-                            <InputText
-                              type="url"
-                              value={diaryPhoto}
-                              onChange={(e) => setDiaryPhoto(e.target.value)}
-                              placeholder="https://..."
-                            />
-                          </label>
+                          <DiaryPhotoUploader
+                            value={diaryPhoto}
+                            onChange={setDiaryPhoto}
+                          />
                         </div>
                         <label className="flex flex-col gap-2 text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">
                           What happened?
