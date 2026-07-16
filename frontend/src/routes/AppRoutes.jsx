@@ -10,6 +10,7 @@ import Itinerary from "../pages/Itinerary/Itinerary";
 import Profile from "../pages/Profile/Profile";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+import GuestRoute from "../components/GuestRoute/GuestRoute";
 import Test1 from "../pages/test/test1";
 
 export default function AppRoutes() {
@@ -18,9 +19,9 @@ export default function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/destination/:id" element={<Destination />} />
       <Route path="/about" element={<About />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
+      <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
+      <Route path="/verify-email/:verificationToken" element={<VerifyEmail />} />
       <Route path="/verify-email/:token" element={<VerifyEmail />} />
       <Route path="/test1" element={<Test1 />} />
       <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />

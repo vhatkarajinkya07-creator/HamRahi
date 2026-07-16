@@ -55,7 +55,10 @@ const registerUser = async (req, res) => {
 
 		await sendVerificationEmail(email, verificationToken);
 
-		res.status(201).json({ message: 'verification email sent', registrationSession });
+		res.status(201).json({ 
+			message: 'verification email sent', 
+			registrationSession
+		 });
 	} catch(err){
 		console.error(err);
 		res.status(500).json({ message: 'Server error' });

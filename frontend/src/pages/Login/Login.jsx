@@ -40,7 +40,8 @@ export default function Login() {
     setError("");
 
     try {
-      await login(form);
+      const t = await login(form);
+      console.log(t)
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Check your email and password.");
