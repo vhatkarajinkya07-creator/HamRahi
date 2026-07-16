@@ -5,7 +5,7 @@ export default function GuestRoute({ children }) {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return null; // or your full-screen loader
+    return null; // full-screen loader
   }
 
   if (user) {

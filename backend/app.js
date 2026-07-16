@@ -1,16 +1,12 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const helmet = require('helmet')
 
 require('dotenv').config();
 
 const app = express();
 
-// CLIENT_URL was already defined in .env but never wired up anywhere,
-// so cross-origin requests from the frontend (different port/host than
-// the API) were being blocked by the browser with no CORS headers set.
-// Allow the configured CLIENT_URL plus the common local dev hosts so it
-// works whether the frontend is opened on localhost or 127.0.0.1.
 const allowedOrigins = new Set(
   [
     process.env.CLIENT_URL,
@@ -22,7 +18,6 @@ const allowedOrigins = new Set(
 app.use(
   cors({
     origin(origin, callback) {
-      // Allow non-browser tools (no Origin header, e.g. curl/Postman).
       if (!origin || allowedOrigins.has(origin)) {
         return callback(null, true);
       }
@@ -34,6 +29,7 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet({ crossOriginOpenerPolicy: false }));
 
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/destination', require('./routes/destination.routes'));

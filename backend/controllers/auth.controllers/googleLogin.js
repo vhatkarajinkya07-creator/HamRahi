@@ -1,4 +1,6 @@
 const { OAuth2Client } = require("google-auth-library");
+const User = require('../../models/user.model')
+const jwt = require('jsonwebtoken')
 
 const googleLogin = async (req,res) =>{
     const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -12,7 +14,7 @@ const googleLogin = async (req,res) =>{
 
     const {email, name, sub} = payload;
 
-    const user = await User.findOne({
+    let user = await User.findOne({
         email
     });
 

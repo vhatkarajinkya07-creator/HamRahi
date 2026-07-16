@@ -19,7 +19,6 @@ export default function GoogleAuthButton({ onSuccess, onError, className = "" })
         theme="filled_black"
         shape="pill"
         size="large"
-        width="100%"
         text="continue_with"
         onSuccess={(response) => {
           if (response?.credential) {

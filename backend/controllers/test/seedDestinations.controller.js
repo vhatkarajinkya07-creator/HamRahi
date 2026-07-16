@@ -23,35 +23,9 @@ const seedDestinations = async (req, res) => {
         const failed = [];
 
         let success = 0;
-        let skipped = 0;
         let backfilled = 0;
 
         for (const destination of destinations) {
-
-            const existingDoc = await Destination.findOne({
-                title: destination.title
-            });
-
-            if (existingDoc) {
-
-                if (existingDoc.bestSeason !== destination.bestSeason) {
-
-                    existingDoc.bestSeason = destination.bestSeason;
-
-                    await existingDoc.save();
-
-                    backfilled++;
-
-                    console.log(`↺ Backfilled bestSeason for ${destination.title}`);
-
-                }
-
-                skipped++;
-
-                console.log(`Skipping ${destination.title}`);
-
-                continue;
-            }
 
             try {
 
@@ -60,7 +34,6 @@ const seedDestinations = async (req, res) => {
                 const searchResults = await searchDestination(destination.title);
 
                 if (!searchResults.length) {
-
                     failed.push({
                         title: destination.title,
                         reason: "Search failed"
@@ -71,61 +44,61 @@ const seedDestinations = async (req, res) => {
 
                 const searchResult = searchResults[0];
 
-                const existingByPlaceId = await Destination.findOne({
+                let existing = await Destination.findOne({
                     placeId: searchResult.placeId
                 });
-
-                if (existingByPlaceId) {
-
-                    if (existingByPlaceId.bestSeason !== destination.bestSeason) {
-
-                        existingByPlaceId.bestSeason = destination.bestSeason;
-
-                        await existingByPlaceId.save();
-
-                        backfilled++;
-
-                        console.log(`↺ Backfilled bestSeason for ${destination.title}`);
-
+                if(!existing) 
+                    existing = await Destination.create({
+                        placeId: searchResult.placeId,
+                        title: searchResult.title,
+                        subtitle: searchResult.subtitle,
+                        coordinates: searchResult.coordinates,
+                        tagline: destination.tagline,
+                        tags: destination.tags,
+                        stats: {
+                            rating: 0,
+                            reviewCount: 0
+                        },
+                        bestSeason: destination.bestSeason,
+                        difficulty: destination.difficulty,
+                        estimatedBudget: destination.estimatedBudget,
+                        discover: destination.discover
+                    });
+                
+                if(
+                    !existing.heroImage ||
+                    !existing.heroImage.title ||
+                    !existing.heroImage.description ||
+                    !existing.heroImage.imageUrl
+                ){
+                    const wiki = await getWikipediaSummary(searchResult.title) 
+                    existing.heroImage = {
+                        title : wiki.title,
+                        description : wiki.description,
+                        imageUrl : wiki.heroImage
                     }
-
-                    console.log(`${destination.title} already exists`);
-
-                    skipped++;
-
-                    continue;
                 }
-
-                const imageQuery = [
-                    searchResult.title,
-                    searchResult.subtitle
-                ]
-                    .filter(Boolean)
-                    .join(", ");
-
-                const [
-                    heroImage,
-                    gallery,
-                    weather,
-                    nearby
-                ] = await Promise.all([
-
-                    getWikipediaSummary(searchResult.title),
-
-                    getDestinationImages(imageQuery),
-
-                    getWeather(
-                        searchResult.coordinates.latitude,
-                        searchResult.coordinates.longitude
-                    ),
-
-                    getNearbyPlaces(
+                if(!existing.gallery || existing.gallery.length === 0){
+                    const imageQuery = [
+                        searchResult.title,
+                        searchResult.subtitle
+                    ]
+                        .filter(Boolean)
+                        .join(", ");
+                    existing.gallery = await getDestinationImages(imageQuery) 
+                }
+                if(!existing.weather){
+                    existing.weather = await getWeather(
                         searchResult.coordinates.latitude,
                         searchResult.coordinates.longitude
                     )
-
-                ]);
-
+                }
+                if(!existing.nearby || existing.nearby.length === 0){
+                    existing.nearby = await getNearbyPlaces(
+                        searchResult.coordinates.latitude,
+                        searchResult.coordinates.longitude
+                    )
+                }
                 const subtitleParts = searchResult.subtitle
                     .split(",")
                     .map(part => part.trim());
@@ -141,64 +114,21 @@ const seedDestinations = async (req, res) => {
                     subtitleParts.length >= 3
                         ? subtitleParts[0]
                         : searchResult.title;
-
-                await Destination.create({
-
-                    placeId: searchResult.placeId,
-
-                    title: searchResult.title,
-
-                    subtitle: searchResult.subtitle,
-
-                    location: {
+                
+                if (
+                    !existing.location ||
+                    !existing.location.city ||
+                    !existing.location.country
+                ) {
+                    existing.location = {
                         city,
                         state,
                         country,
                         countryCode: null
-                    },
-
-                    coordinates: searchResult.coordinates,
-
-                    tagline: destination.tagline,
-
-                    tags: destination.tags,
-
-                    heroImage: {
-                        title: heroImage.title,
-                        description: heroImage.description,
-                        imageUrl: heroImage.heroImage
-                    },
-
-                    gallery,
-
-                    stats: {
-                        rating: 0,
-                        reviewCount: 0
-                    },
-
-                    bestSeason: destination.bestSeason,
-
-                    difficulty: destination.difficulty,
-
-                    estimatedBudget: destination.estimatedBudget,
-
-                    weather,
-
-                    nearby,
-
-                    discover: destination.discover
-
-                });
-
-                success++;
-
-                console.log(`✔ ${destination.title}`);
-
-                // Nominatim rate limit
-                await new Promise(resolve =>
-                    setTimeout(resolve, 1200)
-                );
-
+                    }
+                }
+                await existing.save() 
+                success++
             }
 
             catch (err) {
@@ -221,8 +151,6 @@ const seedDestinations = async (req, res) => {
             success,
 
             skipped,
-
-            backfilled,
 
             failedCount: failed.length,
 

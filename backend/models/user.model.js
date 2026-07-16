@@ -7,9 +7,11 @@ const userSchema = new mongoose.Schema({
 		unique : true,
 		lowercase : true
 	},
-	password :{
-		type : String,
-		required : true
+	password: {
+		type: String,
+		required: function () {
+			return !this.googleId; 
+		},
 	},
 	name :{
 		type : String,
@@ -33,8 +35,9 @@ const userSchema = new mongoose.Schema({
 	},
 	googleId: {
 		type: String,
-		default: null
-	},
+		unique: true,
+		sparse: true, 
+		},
 
 	provider: {
 		type: String,
